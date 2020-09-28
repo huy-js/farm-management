@@ -1,5 +1,5 @@
 const jwtHelper = require("../helpers/jwt.helper");
-require("dotenv").config({ path: __dirname + "/./../../.env" });
+require("dotenv").config();
 //const debug = console.log.bind(console);
 
 // Biến cục bộ trên server này sẽ lưu trữ tạm danh sách token
