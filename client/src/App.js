@@ -10,10 +10,12 @@ import {
 import Home from "./components/home/Home";
 import Register from "./components/login-register/Register";
 import Login from "./components/login-register/Login";
-import ManagerFarmer from "./components/manager/manager-farmer";
+import ManagerFarmer from "./components/manager/farmer/manager-farmer";
+import CooperativeManagement from "./components/manager/cooperative/cooperative-management";
+//import CreateFarmer from "./components/manager/farmer/create_farmer";
 import { connect } from "react-redux";
 
-import { checkUserLogin } from "./trainRedux/action"; // kiem tra dau vao ra result
+import { checkUserLogin } from "./trainRedux/action/actionAuth"; // kiem tra dau vao ra result
 import { checkLogin } from "./components/helpers/checkLogin"; // lay data checkUserLogin thuc thi chuyen nhanh'
 
 // đăng xuất
@@ -47,6 +49,18 @@ let Show = ({ resultLogin, name }) => {
     </ul>
   );
 };
+let ShowManage = ({ valueHere }) => {
+  //console.log(valueHere);
+  return valueHere === "abc" ? (
+    <Link to={"/cooperative-management"} className="nav-link">
+      CooperativeManagement
+    </Link>
+  ) : (
+    <Link to={"/manager-farmer"} className="nav-link">
+      ManagerFarmer
+    </Link>
+  );
+};
 class App extends Component {
   constructor(props) {
     super(props);
@@ -56,10 +70,10 @@ class App extends Component {
     };
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     // let result = false;
     //console.log("reload");
-    let result = this.props.checkUserLogin();
+    let result = await this.props.checkUserLogin();
     //console.log(result);
     if (result) {
       this.setState({
@@ -88,9 +102,10 @@ class App extends Component {
                 </Link>
               </li>
               <li style={{ display: this.state.display }}>
-                <Link to={"/manager-farmer"} className="nav-link">
+                {/* <Link to={"/manager-farmer"} className="nav-link">
                   ManagerFarmer
-                </Link>
+                </Link> */}
+                <ShowManage valueHere={this.props.infor.currentUser.name} />
               </li>
             </ul>
             <Show
@@ -124,6 +139,22 @@ class App extends Component {
                 path="/manager-farmer"
                 component={() =>
                   checkLogin(isLogin) ? <ManagerFarmer /> : <Redirect to="/" />
+                }
+              />
+              {/* <Route
+                path="/manager-farmer/create-farmer"
+                component={() =>
+                  checkLogin(isLogin) ? <CreateFarmer /> : <Redirect to="/" />
+                }
+              /> */}
+              <Route
+                path="/cooperative-management"
+                component={({ match }) =>
+                  checkLogin(isLogin) ? (
+                    <CooperativeManagement match={match} />
+                  ) : (
+                    <Redirect to="/" />
+                  )
                 }
               />
             </Switch>

@@ -7,13 +7,9 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 //"access-token-secret-example";
 let isAuth = async (req, res, next) => {
   // Lấy token được gửi lên từ phía client, thông thường tốt nhất là các bạn nên truyền token vào header
-
-  const tokenFromClient =
-    req.body.token ||
-    req.query.token ||
-    req.headers["x-access-token"] ||
-    req.header("authorization");
-  console.log("tai isAuth" + tokenFromClient);
+  //console.log("dadasda");
+  const tokenFromClient = req.header("authorization");
+  // console.log("tai isAuth" + tokenFromClient);
   if (tokenFromClient) {
     // Nếu tồn tại token
     try {

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./login-register.css";
 import { connect } from "react-redux";
 //import { userLoginFetch } from "../trainRedux/textAction";
-import { userLoginFetch } from "../../trainRedux/action";
+import { userLoginFetch } from "../../trainRedux/action/actionAuth";
 class Login extends Component {
   constructor(props) {
     super(props);
