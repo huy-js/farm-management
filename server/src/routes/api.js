@@ -8,12 +8,15 @@ let initAPIs = (app) => {
   router.post("/login", AuthController.login);
   router.post("/refresh-token", AuthController.refreshToken);
 
-  //goi isAuth tren api muon kiem tra token
+  //goi isAuthcheck sau moi lan vao 1 duong dan trong react
   router.get("/checklogin", AuthMiddleWare.isAuthCheck);
-
+  // kiem tra trang thai dang nhap tai server
+  //cac duong dan nam sau router nay can dam bao da dang nhap
   router.use(AuthMiddleWare.isAuth);
+  // router test => api => controller => res.json cho client
   router.get("/friends", FriendController.friendLists);
   // management
+  // client => api => controller => mongo luu data
   router.post("/createfarmer", ManagementController.createFarmer);
   router.get("/showfarmer", ManagementController.showFarmer);
   // admin

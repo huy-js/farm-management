@@ -1,10 +1,12 @@
 const farmer = require("../models/farmerModel");
 const cooperation = require("../models/cooperationModel");
-
+// async await luon di voi nhau
 let createFarmer = async (req, res) => {
   try {
     console.log(req.body.datacreate);
-    await farmer.createNew(req.body.datacreate);
+    // goi await tai vi tri can truy van data
+    // bac cac tuyen trinh doi truyen trinh nay song moi dc lam tuyen trinh khac
+    await farmer.createNew(req.body.datacreate); // createNew laf function dc tao trong file model
     return res.status(200).json({ message: "create succession." });
   } catch (error) {
     return res.status(500).json({ message: "create failed" });

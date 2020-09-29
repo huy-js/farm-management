@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+// tach router ra 1 file rieng
 const initAPIs = require("./src/routes/api");
 const mongoose = require("mongoose");
 // connect mongodb
