@@ -4,11 +4,13 @@ const app = express();
 const initAPIs = require("./src/routes/api");
 const mongoose = require("mongoose");
 // connect mongodb
-mongoose.connect("mongodb://localhost:27017/farm-management", {
+const uri = process.env.MONGO_URI;
+mongoose.connect(uri, {
   useNewUrlParser: true,
+  useUnifiedTopology: true
 });
-mongoose.connection.once("open", function () {
-  //console.log("Database Connection Established Successfully.");
+mongoose.connection.once("open", () => {
+  console.log("Database Connection Established Successfully.");
 });
 // Cho phép các api của ứng dụng xử lý dữ liệu từ body của request
 app.use(express.json());

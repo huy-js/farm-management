@@ -17,6 +17,8 @@ import { connect } from "react-redux";
 
 import { checkUserLogin } from "./trainRedux/action/actionAuth"; // kiem tra dau vao ra result
 import { checkLogin } from "./components/helpers/checkLogin"; // lay data checkUserLogin thuc thi chuyen nhanh'
+// import Spinner from './components/UI/Spinner/Spinner';
+// import Input from './components/UI/Input/Input';
 
 // đăng xuất
 let Logout = () => {
@@ -160,6 +162,12 @@ class App extends Component {
             </Switch>
           </header>
         </div>
+        {/* <div>
+          <Spinner/>
+          <form>
+            <Input elementType="input" type="text" name="name" placeholder="Input Name"/>
+          </form>
+        </div> */}
       </Router>
     );
   }

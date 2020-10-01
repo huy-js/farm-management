@@ -25,9 +25,9 @@ class Login extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
-    //console.log(this.state);
+    console.log(this.state);
     let result = await this.props.userLoginFetchs(this.state);
-    //console.log(result);
+    console.log(result);
     if (!result) {
       alert("sai thông tin đăng nhập rồi");
     }

@@ -5,9 +5,10 @@ const AuthController = require("../controllers/AuthController");
 const FriendController = require("../controllers/FriendController");
 const ManagementController = require("../controllers/ManagementController");
 let initAPIs = (app) => {
+  router.post("/register", AuthController.register);
   router.post("/login", AuthController.login);
+  router.post("/loginH", AuthController.loginH);
   router.post("/refresh-token", AuthController.refreshToken);
-
   //goi isAuthcheck sau moi lan vao 1 duong dan trong react
   router.get("/checklogin", AuthMiddleWare.isAuthCheck);
   // kiem tra trang thai dang nhap tai server
