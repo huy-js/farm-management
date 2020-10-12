@@ -1,58 +1,36 @@
 const jwtHelper = require("../helpers/jwt.helper");
+const userModel = require("../models/userModel");
+const cooperaModel = require("../models/cooperationModel");
 require("dotenv").config();
-//const debug = console.log.bind(console);
 
-// Biến cục bộ trên server này sẽ lưu trữ tạm danh sách token
-// Trong dự án thực tế, nên lưu chỗ khác, có thể lưu vào Redis hoặc DB
 let tokenList = {};
 
-// Thời gian sống của token
-// const accessTokenLife = "1h";
 const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
-//  "1h";
-// Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
-const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-//"access-token-secret-example";
 
-// Thời gian sống của refreshToken
-//const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "3650d";
-// Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
-//const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-example-trungquandev.com-green-cat-a@";
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
 let login = async (req, res) => {
   try {
-    const userFakeData = {
-      _id: "1234-5678-910JQK-tqd",
-      name: "abc",
-      email: req.body.email,
-    };
-    console.log(req.body);
-    console.log(userFakeData);
-    if (req.body.password != 1) {
+    let user = await userModel.findByEmail(req.body.email);
+    console.log(user);
+    if(!user ){
+        return res
+        .status(500)
+        .json({ message: "thông tin đăng nhập không chính xác" });
+    }
+    if( !await user.comparePassword(req.body.password)){
       return res
         .status(500)
         .json({ message: "thông tin đăng nhập không chính xác" });
     }
-    //debug(`Thực hiện tạo mã Token, [thời gian sống 1 giờ.]`);
+
     const accessToken = await jwtHelper.generateToken(
-      userFakeData,
+      user,
       accessTokenSecret,
       accessTokenLife
     );
-
-    //debug(`Thực hiện tạo mã Refresh Token, [thời gian sống 10 năm] =))`);
-    // const refreshToken = await jwtHelper.generateToken(
-    //   userFakeData,
-    //   refreshTokenSecret,
-    //   refreshTokenLife
-    // );
-
-    // Lưu lại 2 mã access & Refresh token, với key chính là cái refreshToken để đảm bảo unique và không sợ hacker sửa đổi dữ liệu truyền lên.
-    // lưu ý trong dự án thực tế, nên lưu chỗ khác, có thể lưu vào Redis hoặc DB
-    // tokenList[refreshToken] = { accessToken, refreshToken };
-    //return res.status(200).json({ accessToken, refreshToken });
     tokenList[refreshToken] = { accessToken };
-    // debug(`Gửi Token và Refresh Token về cho client...`);
+ 
     return res.status(200).json({ accessToken });
   } catch (error) {
     return res.status(500).json(error);
@@ -102,8 +80,39 @@ let refreshToken = async (req, res) => {
     });
   }
 };
+let register = async (req, res) => {
+  try {
+    // console.log(req.body);
+    if ((await cooperaModel.findCooperative(req.body.data.taxCode)) !== null) {
+      return res.status(500).json({ message: "htx da ton tai" });
+    }
+
+    let user = {
+      username: req.body.data.username,
+      email: req.body.data.email,
+      phonenumber: req.body.data.phonenumber,
+    };
+    //console.log(user);
+    let userData = await userModel.createNew(user);
+    let coopera = {
+      Owner: req.body.data.Owner,
+      phoneOwner: req.body.data.phoneOwner,
+      nameOfCooperative: req.body.data.nameOfCooperative,
+      technicalStaff: userData._id,
+      address: req.body.data.address,
+      numberQR: req.body.data.numberQR,
+      taxCode: req.body.data.taxCode,
+    };
+    await cooperaModel.createNew(coopera);
+
+    return res.status(200).json({ message: "success" });
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
 
 module.exports = {
   login: login,
   refreshToken: refreshToken,
+  register: register,
 };

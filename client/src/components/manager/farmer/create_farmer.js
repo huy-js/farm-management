@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { userCreateFarmerFetch } from "../../../trainRedux/action/actionManagement";
+import { userCreateFarmerFetch } from "../../../trainRedux/action/admin/actionManagement";
 
 class Createfarmer extends Component {
   constructor(props) {

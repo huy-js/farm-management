@@ -7,8 +7,25 @@ export const login = (userObj) => ({
   payload: userObj,
 });
 
+export const userRegisterFetch = (data) => {
+ // console.log(data);
+  return (dispatch) => {
+    return axios
+      .post("http://localhost:3456/register", {
+        data,
+      })
+      .then((res) => {
+        return true;
+      })
+      .catch((error) => {
+        // console.log(error.response.data.message);
+        return false;
+      });
+  };
+};
+
 export const userLoginFetch = (user) => {
-  console.log(user);
+  //console.log(user);
   return (dispatch) => {
     return axios
       .post("http://localhost:3456/login", {
@@ -22,7 +39,7 @@ export const userLoginFetch = (user) => {
         return true;
       })
       .catch((error) => {
-        console.log(error.response.data.message);
+        //console.log(error.response.data.message);
         return false;
       });
   };
@@ -39,10 +56,10 @@ export const checkUserLogin = () => {
         })
         .then((res) => {
           const decodedToken = jwt_decode(accessToken);
-          if (Date.now() > new Date(decodedToken.exp) * 1000) {
-            localStorage.clear();
-            return false;
-          }
+          // if (Date.now() > new Date(decodedToken.exp) * 1000) {
+          //   localStorage.clear();
+          //   return false;
+          // }
           dispatch(login(decodedToken.data));
           return true;
         })

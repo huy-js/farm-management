@@ -1,16 +1,23 @@
+import jwt_decode from "jwt-decode";
 import * as types from "./actionType";
 
-//import jwt_decode from "jwt-decode";
-// const token = localStorage.getItem("userToken");
-// const userprofile = {}
-// if (token !== null) {
-// const accessToken = JSON.parse(token).accessToken;
-// const decodedToken = jwt_decode(accessToken);
 
-// }
+ const tokenJSON = JSON.parse(localStorage.getItem("userToken"));
+// // const accessToken = tokenJSON.accessToken;
+// // const decoded = jwt_decode(accessToken);
+// // console.log(decoded)
+
+let userData = ()=>{
+  const accessToken = tokenJSON.accessToken;
+  const decoded = jwt_decode(accessToken);
+  return decoded.data
+}
 const initialState = {
-  currentUser: {},
+  currentUser: tokenJSON ? userData() : {} 
 };
+// const initialState = {
+//   currentUser: {}
+// };
 
 var myReducer = (state = initialState, action) => {
   switch (action.type) {

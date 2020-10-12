@@ -5,8 +5,9 @@ const AuthController = require("../controllers/AuthController");
 const FriendController = require("../controllers/FriendController");
 const ManagementController = require("../controllers/ManagementController");
 let initAPIs = (app) => {
+  //all
   router.post("/login", AuthController.login);
-  router.post("/refresh-token", AuthController.refreshToken);
+  router.post("/register", AuthController.register);
 
   //goi isAuthcheck sau moi lan vao 1 duong dan trong react
   router.get("/checklogin", AuthMiddleWare.isAuthCheck);
@@ -17,9 +18,13 @@ let initAPIs = (app) => {
   router.get("/friends", FriendController.friendLists);
   // management
   // client => api => controller => mongo luu data
+  //user
   router.post("/createfarmer", ManagementController.createFarmer);
-  router.get("/showfarmer", ManagementController.showFarmer);
+  router.get("/showfarmer/:id", ManagementController.showFarmer);
   // admin
+  router.get("/showlistuser", ManagementController.showListUser);
+  router.put("/updateactive", ManagementController.updateActiveUser);
+  router.put("/createPwandSendMail", ManagementController.createPwAndSendMail);
   router.post("/createcooperation", ManagementController.createCooperation);
   router.get("/showcooperation", ManagementController.showCooperation);
   return app.use("/", router);

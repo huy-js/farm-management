@@ -2,7 +2,7 @@
 import axios from "axios";
 //import jwt_decode from "jwt-decode";
 
-export const userCreateFarmerFetch = (datacreate) => {
+export const showListUserFetch = () => {
   return (dispatch) => {
     const token = localStorage.userToken;
     // console.log(datacreate);
@@ -11,21 +11,14 @@ export const userCreateFarmerFetch = (datacreate) => {
       const accessToken = JSON.parse(token).accessToken;
       // console.log(accessToken);
       return axios
-        .post(
-          "http://localhost:3456/createfarmer",
-          {
-            datacreate: datacreate,
-          },
-          {
-            headers: { Authorization: `${accessToken}` },
-          }
-        )
+        .get("http://localhost:3456/showlistuser", {
+          headers: { Authorization: `${accessToken}` },
+        })
         .then((res) => {
-          console.log(res);
-          return true;
+          return res.data;
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           // localStorage.clear();
           return false;
         });
@@ -37,7 +30,8 @@ export const userCreateFarmerFetch = (datacreate) => {
   };
 };
 
-export const showFarmerFetch = (datacreate) => {
+export const updateActiveUserFetch = (id) => {
+  //console.log(id);
   return (dispatch) => {
     const token = localStorage.userToken;
     // console.log(datacreate);
@@ -46,9 +40,13 @@ export const showFarmerFetch = (datacreate) => {
       const accessToken = JSON.parse(token).accessToken;
       // console.log(accessToken);
       return axios
-        .get("http://localhost:3456/showfarmer", {
-          headers: { Authorization: `${accessToken}` },
-        })
+        .put(
+          "http://localhost:3456/updateactive",
+          { id },
+          {
+            headers: { Authorization: `${accessToken}` },
+          }
+        )
         .then((res) => {
           // console.log(res);
           return res.data;
@@ -63,8 +61,8 @@ export const showFarmerFetch = (datacreate) => {
     }
   };
 };
-// admin
-export const userCreateCooperationFetch = (datacreate) => {
+export const createPwAndSendFetch = (id) => {
+  console.log(id);
   return (dispatch) => {
     const token = localStorage.userToken;
     // console.log(datacreate);
@@ -73,28 +71,24 @@ export const userCreateCooperationFetch = (datacreate) => {
       const accessToken = JSON.parse(token).accessToken;
       // console.log(accessToken);
       return axios
-        .post(
-          "http://localhost:3456/createcooperation",
-          {
-            datacreate: datacreate,
-          },
+        .put(
+          "http://localhost:3456/createPwandSendMail",
+          { id },
           {
             headers: { Authorization: `${accessToken}` },
           }
         )
         .then((res) => {
-          console.log(res);
-          return true;
+          // console.log(res);
+          return res.data;
         })
         .catch((error) => {
           console.log(error);
-          // localStorage.clear();
-          return false;
+          localStorage.clear();
         });
     } else {
       console.log("ko token");
       localStorage.removeItem("userToken");
-      return false;
     }
   };
 };

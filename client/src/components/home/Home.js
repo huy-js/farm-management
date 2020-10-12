@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 //import { getProfileFetch } from "../trainRedux/action";
-import "./home.css";
+//import "./home.css";
 class Home extends Component {
   // componentDidMount = () => {
   //   this.props.getProfileFetch();
@@ -9,62 +9,70 @@ class Home extends Component {
   render() {
     return (
       <div>
-        {/* <h2>Home {this.props.infor.currentUser.email}</h2> */}
-        <main>
-          <div className="card-container">
-            <div className="card">
-              <div className="card-top">
-                <img
-                  src="https://images.unsplash.com/photo-1595147389795-37094173bfd8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1949&q=80"
-                  alt="Unsplash "
-                />
-              </div>
-              <div className="card-content">
-                <h6 className="tag tag-travel">PUBLIC</h6>
-                <h3 className="title">Under Blue sky</h3>
-              </div>
+        <main className="page landing-page">
+          <section
+            className="clean-block clean-hero"
+            style={{
+              backgroundImage: `url("assets/img/tech/image4.jpg")`,
+              color: `rgba(9, 162, 255, 0.85)`,
+            }}
+          >
+            <div className="text">
+              <h2>Lorem ipsum dolor sit amet.</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                quam urna, dignissim nec auctor in, mattis vitae leo.
+              </p>
+              <button
+                className="btn btn-outline-light btn-lg"
+                type="button"
+                data-toggle="modal"
+                data-target="#exampleModalCenter"
+              >
+                Learn More
+              </button>
             </div>
-            <div className="card">
-              <div className="card-top">
-                <img
-                  src="https://images.unsplash.com/photo-1593198095345-311f4d23d511?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1934&q=80"
-                  alt="Unsplash "
-                />
-              </div>
-              <div className="card-content">
-                <h6 className="tag tag-nature">VIET-GAP</h6>
-
-                <h3 className="title">Tower In Forest</h3>
-              </div>
-            </div>
-            <div className="card">
-              <div className="card-top">
-                <img
-                  src="https://images.unsplash.com/photo-1594468075989-748bf89136c2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2000&q=80"
-                  alt="Unsplash "
-                />
-              </div>
-              <div className="card-content">
-                <h6 className="tag tag-architecture">MANAGER</h6>
-
-                <h3 className="title">Building PUBLIC</h3>
-              </div>
-            </div>
-            {/* <div className="card">
-              <div className="card-top">
-                <img
-                  src="https://images.unsplash.com/photo-1594468075989-748bf89136c2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2000&q=80"
-                  alt="Unsplash "
-                />
-              </div>
-              <div className="card-content">
-                <h6 className="tag tag-architecture">MANAGER</h6>
-
-                <h3 className="title">Building PUBLIC</h3>
-              </div>
-            </div> */}
-          </div>
+          </section>
         </main>
+        <div
+          className="modal fade"
+          id="exampleModalCenter"
+          // tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalCenterTitle"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLongTitle">
+                  Modal title
+                </h5>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">...</div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" className="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

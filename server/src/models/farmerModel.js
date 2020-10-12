@@ -6,10 +6,12 @@ let farmerSchema = new Schema(
   {
     farmOwner: { type: String }, // chủ nông trại
     address: { type: String },
-    landArea: { type: String }, // diện tích
+    landArea: {type:Number}, // diện tích
     typeOfTree: { type: String }, // giống cây
-    soilType: { type: String }, // loại đất
-    waterSource: { type: String }, // nguồn nước
+    // soilType: { type: String }, // loại đất
+    // waterSource: { type: String }, // nguồn nước
+    totalTrees:{type:Number},
+    CooperativeId:{ type: String },
     deletedAt: { type: Boolean, default: false },
   },
   {
@@ -24,8 +26,8 @@ farmerSchema.statics = {
   createNew(item) {
     return this.create(item);
   },
-  showFarmer() {
-    return this.find().exec();
+  showFarmer(id) {
+    return this.find({CooperativeId:id}).exec();
   },
 };
 

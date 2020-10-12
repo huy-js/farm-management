@@ -1,81 +1,162 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import "./login-register.css";
+// import { createHashHistory } from "history";
+import {history} from "../helpers/history"
+import { connect } from "react-redux";
+import { userRegisterFetch } from "../../trainRedux/action/actionAuth";
+//import "./login-register.css";
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      password: "",
-      isLogin: false,
+      nameOfCooperative: "", // ten htx
+      address: "",
+      taxCode: "", // ma thue
+      Owner: "", // nguoi dai dien
+      phoneOwner: "", //sdt nguoi dai dien
+      numberQR: "", // so QR du kien mua
+      username: "", // ten can bo dang ky qr
+      email: "", // mail can bo dk qr
+      phonenumber: "", // sdt can bo dk qr
     };
   }
+
+  handleChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  handleSubmit = async (event) => {
+    event.preventDefault();
+    //const history = createHashHistory();
+    console.log(this.state);
+    await this.props.userRegisterFetch(this.state);
+    return history.goBack();
+  };
   render() {
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-3 col-md-2"></div>
-          <div className="col-lg-6 col-md-8 login-box">
-            <div className="col-lg-12 login-key">
-              {/* <i className="fa fa-key" aria-hidden="true"></i> */}
-              <i className="fa fa-address-card" aria-hidden="true"></i>
+      <main className="page contact-us-page">
+        <section className="clean-block clean-form dark">
+          <div className="container">
+            <div className="block-heading" style={{ paddingTop: "30px" }}>
+              <h2 className="text-info">Đăng ký QR</h2>
             </div>
-            <div className="col-lg-12 login-title">REGISTER</div>
-
-            <div className="col-lg-12 login-form">
-              <div className="col-lg-12 login-form">
-                <form onSubmit={this.handleSubmit}>
-                  <div className="form-group">
-                    <label className="form-control-label">EMAIL</label>
-                    <input
-                      type="email"
-                      name="email"
-                      className="form-control "
-                      // aria-describedby="emailHelp"
-                      //value={this.state.email}
-                      // onChange={this.handleChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-control-label">USERNAME</label>
-                    <input
-                      name="username"
-                      type="text"
-                      className="form-control"
-                      // aria-describedby="emailHelp"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-control-label">PASSWORD</label>
-                    <input
-                      type="password"
-                      name="password"
-                      className="form-control "
-                      // value={this.state.password}
-                      //onChange={this.handleChange}
-                    />
-                  </div>
-
-                  <div className="col-lg-12 loginbttm">
-                    <div className="col-lg-6 login-btm login-text">
-                      Bạn đã có tài khoản rồi? {""}
-                      <Link to="/login">Sign in</Link>
-                    </div>
-                    <div className="col-lg-6 login-btm login-button">
-                      <button type="submit" className="btn btn-outline-primary">
-                        REGISTER
-                      </button>
-                    </div>
-                  </div>
-                </form>
+            <form
+              style={{ paddingBottom: "50px" }}
+              onSubmit={this.handleSubmit}
+            >
+              <div className="form-group">
+                <label>Tên HTX</label>
+                <input
+                  onChange={this.handleChange}
+                  className="form-control"
+                  type="text"
+                  name="nameOfCooperative"
+                  value={this.state.nameOfCooperative}
+                />
               </div>
-            </div>
-            <div className="col-lg-3 col-md-2"></div>
+              <div className="form-group">
+                <label>Địa chỉ HTX</label>
+                <input
+                  onChange={this.handleChange}
+                  className="form-control"
+                  type="text"
+                  name="address"
+                  value={this.state.address}
+                />
+              </div>
+              <div className="form-group">
+                <label>Mã số HTX(mã thuế)</label>
+                <input
+                  onChange={this.handleChange}
+                  className="form-control"
+                  type="text"
+                  name="taxCode"
+                  value={this.state.taxCode}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Tên người đại diện</label>
+                <input
+                  onChange={this.handleChange}
+                  className="form-control"
+                  type="text"
+                  name="Owner"
+                  value={this.state.Owner}
+                />
+              </div>
+              <div className="form-group">
+                <label>Điện thoại liên lạc</label>
+                <input
+                  onChange={this.handleChange}
+                  className="form-control"
+                  type="text"
+                  name="phoneOwner"
+                  value={this.state.phoneOwner}
+                />
+              </div>
+              <div className="form-group">
+                <label>sô QR dụ kiến(tính theo cây)</label>
+                <input
+                  onChange={this.handleChange}
+                  className="form-control"
+                  type="number"
+                  min="0"
+                  name="numberQR"
+                  value={this.state.numberQR}
+                />
+              </div>
+              <div className="form-group">
+                <label>Tên cán bộ đăng ký</label>
+                <input
+                  onChange={this.handleChange}
+                  className="form-control"
+                  type="text"
+                  name="username"
+                  value={this.state.username}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Email liên hệ</label>
+                <input
+                  onChange={this.handleChange}
+                  className="form-control"
+                  type="email"
+                  name="email"
+                  value={this.state.email}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Điện thoại cần liên hệ</label>
+                <input
+                  onChange={this.handleChange}
+                  className="form-control"
+                  type="text"
+                  name="phonenumber"
+                  value={this.state.phonenumber}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <button className="btn btn-primary btn-block" type="submit">
+                  Gửi
+                </button>
+              </div>
+            </form>
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
     );
   }
 }
 
-export default Register;
+// export default Register;
+
+const mapDispatchToProps = (dispatch, props) => ({
+  userRegisterFetch: (datacreate) => dispatch(userRegisterFetch(datacreate)),
+});
+
+export default connect(null, mapDispatchToProps)(Register);

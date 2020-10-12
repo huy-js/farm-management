@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import "./login-register.css";
+//import { Link } from "react-router-dom";
+//import "./login-register.css";
 import { connect } from "react-redux";
 //import { userLoginFetch } from "../trainRedux/textAction";
 import { userLoginFetch } from "../../trainRedux/action/actionAuth";
@@ -41,70 +41,58 @@ class Login extends Component {
     //   return <Redirect to="/" />;
     // }
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-3 col-md-2"></div>
-          <div className="col-lg-6 col-md-8 login-box">
-            <div className="col-lg-12 login-key">
-              <i className="fa fa-key" aria-hidden="true"></i>
+      <main className="page contact-us-page">
+        <section className="clean-block clean-form dark">
+          <div className="container">
+            <div className="block-heading" style={{ paddingTop: "30px" }}>
+              <h2 className="text-info">Đăng nhập</h2>
             </div>
-            <div className="col-lg-12 login-title">LOGIN</div>
-
-            <div className="col-lg-12 login-form">
-              <div className="col-lg-12 login-form">
-                <form onSubmit={this.handleSubmit}>
-                  <div className="form-group">
-                    <label className="form-control-label">EMAIL</label>
-                    <input
-                      type="email"
-                      name="email"
-                      className="form-control "
-                      // aria-describedby="emailHelp"
-                      value={this.state.email}
-                      onChange={this.handleChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-control-label">PASSWORD</label>
-                    <input
-                      type="password"
-                      name="password"
-                      className="form-control "
-                      value={this.state.password}
-                      onChange={this.handleChange}
-                    />
-                  </div>
-
-                  <div className="col-lg-12 loginbttm">
-                    <div className="col-lg-6 login-btm login-text">
-                      Bạn chưa có tài khoản ?{" "}
-                      <Link to="/register">Register</Link>
-                    </div>
-                    <div className="col-lg-6 login-btm login-button">
-                      <button type="submit" className="btn btn-outline-primary">
-                        LOGIN
-                      </button>
-                    </div>
-                  </div>
-                </form>
+            <form
+              onSubmit={this.handleSubmit}
+              style={{ paddingBottom: "60px" }}
+            >
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  className="form-control"
+                  type="email"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.handleChange}
+                />
               </div>
-            </div>
-            <div className="col-lg-3 col-md-2"></div>
+              <div className="form-group">
+                <label>Passwork</label>
+                <input
+                  type="password"
+                  name="password"
+                  className="form-control "
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <button className="btn btn-primary btn-block" type="submit">
+                  Send
+                </button>
+              </div>
+            </form>
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    infor: state.login,
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     infor: state.login,
+//   };
+// };
 // export default connect(mapStateToProps, null)(Login);
 
 const mapDispatchToProps = (dispatch, props) => ({
   userLoginFetchs: (userInfo) => dispatch(userLoginFetch(userInfo)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);

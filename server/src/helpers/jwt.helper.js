@@ -5,8 +5,12 @@ let generateToken = (user, secretSignature, tokenLife) => {
     // Định nghĩa những thông tin của user mà bạn muốn lưu vào token ở đây
     const userData = {
       _id: user._id,
-      name: user.name,
+      username: user.username,
       email: user.email,
+      phonenumber: user.phonenumber,
+      role: user.role,
+      isActive: user.isActive,
+      profile: user.profile,
     };
     // Thực hiện ký và tạo token
     jwt.sign(
