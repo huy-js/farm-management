@@ -55,12 +55,12 @@ export const checkUserLogin = () => {
           headers: { Authorization: `${accessToken}` },
         })
         .then((res) => {
-          const decodedToken = jwt_decode(accessToken);
+          //const decodedToken = jwt_decode(accessToken);
           // if (Date.now() > new Date(decodedToken.exp) * 1000) {
           //   localStorage.clear();
           //   return false;
           // }
-          dispatch(login(decodedToken.data));
+          //dispatch(login(decodedToken.data));
           return true;
         })
         .catch((error) => {

@@ -3,7 +3,7 @@ export const checkLogin = () => {
   const token = localStorage.getItem("userToken");
   // console.log(token);
  
-  if (token !== null) {
+  if (token != null) {
     const accessToken = JSON.parse(token).accessToken;
     // console.log(accessToken);
     const decodedToken = jwt_decode(accessToken);

@@ -7,11 +7,12 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
-// import {history} from "./components/helpers/history"
+ 
 import Home from "./components/home/Home";
 import Register from "./components/login-register/Register";
 import Login from "./components/login-register/Login";
 import ManagerFarmer from "./components/manager/farmer/manager-farmer";
+import Profile from "./components/profile/Profile";
 // import CooperativeManagement from "./components/manager/cooperative/cooperative-management";
 // import CreateFarmer from "./components/manager/farmer/create_farmer";
 import ListUser from "./components/manager/user/list_user";
@@ -51,11 +52,12 @@ let ShowManage = ({ role }) => {
        </Link>
      </li>
    ) : (
-     <li className="nav-item" role="presentation">
-       <Link to={"/manager-farmer"} className="nav-link">
-         MANAGER-FARMER
-       </Link>
-     </li>
+    <li className="nav-item" role="presentation">
+        <Link to={"/manager-farmer"} className="nav-link">
+          MANAGER-FARMER
+        </Link>
+      </li>
+    
    );
  };
 class App extends Component {
@@ -72,7 +74,7 @@ class App extends Component {
     // let result = false;
     //console.log("reload");
     let result = await this.props.checkUserLogin();
-    //console.log(result);
+    console.log("check login " + result);
     if (result) {
       this.setState({
         isLogin: true,
@@ -96,7 +98,15 @@ class App extends Component {
         <div>
           <nav className="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
             <div className="container">
-              <span className="navbar-brand logo">Brand</span>
+              <span className="navbar-brand logo">
+                <ul className="nav navbar-nav ml-auto">
+                    <li className="nav-item" role="presentation">
+                          <Link to={"/profile"} className="nav-link">
+                                {this.props.infor.currentUser.username}
+                            </Link>
+                    </li>
+                </ul>
+              </span>
               <button
                 data-toggle="collapse"
                 className="navbar-toggler"
@@ -158,12 +168,12 @@ class App extends Component {
                 checkLogin() ? <ListUser /> : <Redirect to="/" />
               }
             />
-            {/* <Route
-                path="/manager-farmer/create-farmer"
+            <Route
+                path="/profile"
                 component={() =>
-                  checkLogin(isLogin) ? <CreateFarmer /> : <Redirect to="/" />
+                  checkLogin() ? <Profile /> : <Redirect to="/" />
                 }
-              /> */}
+           />
             {/* <Route
               path="/cooperative-management"
               component={({ match }) =>
