@@ -11,8 +11,9 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
 let login = async (req, res) => {
   try {
+    console.log(req.body)
     let user = await userModel.findByEmail(req.body.email);
-    console.log(user);
+   // console.log(user);
     if(!user ){
         return res
         .status(500)
@@ -29,7 +30,7 @@ let login = async (req, res) => {
       accessTokenSecret,
       accessTokenLife
     );
-    tokenList[refreshToken] = { accessToken };
+    //tokenList[refreshToken] = { accessToken };
  
     return res.status(200).json({ accessToken });
   } catch (error) {

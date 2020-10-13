@@ -1,12 +1,13 @@
 //import * as types from "../actionType";
 import axios from "axios";
 //import jwt_decode from "jwt-decode";
-
+import {token} from "../../../components/helpers/checkLogin"
 
 export const showFarmerFetch = (id) => {
+
 //  console.log(id)
   return (dispatch) => {
-    const token = localStorage.userToken;
+    //const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
@@ -32,7 +33,7 @@ export const showFarmerFetch = (id) => {
 };
 export const userCreateFarmerFetch = (data) => {
   return (dispatch) => {
-    const token = localStorage.userToken;
+   // const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {

@@ -26,7 +26,7 @@ class Login extends Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     //console.log(this.state);
-    let result = await this.props.userLoginFetchs(this.state);
+    let result = await this.props.userLoginFetch(this.state);
     //console.log(result);
     if (!result) {
       alert("sai thông tin đăng nhập rồi");
@@ -92,7 +92,7 @@ class Login extends Component {
 // export default connect(mapStateToProps, null)(Login);
 
 const mapDispatchToProps = (dispatch, props) => ({
-  userLoginFetchs: (userInfo) => dispatch(userLoginFetch(userInfo)),
+  userLoginFetch: (userInfo) => dispatch(userLoginFetch(userInfo)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

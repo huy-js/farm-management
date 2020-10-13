@@ -1,10 +1,10 @@
 //import * as types from "../actionType";
 import axios from "axios";
 //import jwt_decode from "jwt-decode";
-
+import {token} from "../../../components/helpers/checkLogin"
 export const showListUserFetch = () => {
   return (dispatch) => {
-    const token = localStorage.userToken;
+    //const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
@@ -33,7 +33,7 @@ export const showListUserFetch = () => {
 export const updateActiveUserFetch = (id) => {
   //console.log(id);
   return (dispatch) => {
-    const token = localStorage.userToken;
+   // const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
@@ -64,7 +64,7 @@ export const updateActiveUserFetch = (id) => {
 export const createPwAndSendFetch = (id) => {
   console.log(id);
   return (dispatch) => {
-    const token = localStorage.userToken;
+   // const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
@@ -94,7 +94,7 @@ export const createPwAndSendFetch = (id) => {
 };
 export const showCooperationFetch = (datacreate) => {
   return (dispatch) => {
-    const token = localStorage.userToken;
+    //const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {

@@ -1,6 +1,7 @@
 import * as types from "../actionType";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import {token} from "../../components/helpers/checkLogin"
 
 export const login = (userObj) => ({
   type: types.LOGIN,
@@ -25,7 +26,7 @@ export const userRegisterFetch = (data) => {
 };
 
 export const userLoginFetch = (user) => {
-  //console.log(user);
+  console.log(user);
   return (dispatch) => {
     return axios
       .post("http://localhost:3456/login", {
@@ -33,13 +34,15 @@ export const userLoginFetch = (user) => {
         password: user.password,
       })
       .then((res) => {
+       // console.log(res.data)
         const decodedToken = jwt_decode(res.data.accessToken);
         localStorage.setItem("userToken", JSON.stringify(res.data));
         dispatch(login(decodedToken.data));
         return true;
       })
       .catch((error) => {
-        //console.log(error.response.data.message);
+        console.log(error.response.data)
+       // console.log(error.response.data.message);
         return false;
       });
   };
@@ -47,7 +50,7 @@ export const userLoginFetch = (user) => {
 
 export const checkUserLogin = () => {
   return (dispatch) => {
-    const token = localStorage.userToken;
+  //  const token = localStorage.userToken;
     if (token) {
       const accessToken = JSON.parse(token).accessToken;
       return axios
@@ -55,7 +58,7 @@ export const checkUserLogin = () => {
           headers: { Authorization: `${accessToken}` },
         })
         .then((res) => {
-          //const decodedToken = jwt_decode(accessToken);
+          // const decodedToken = jwt_decode(accessToken);
           // if (Date.now() > new Date(decodedToken.exp) * 1000) {
           //   localStorage.clear();
           //   return false;
