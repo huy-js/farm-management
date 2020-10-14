@@ -76,10 +76,19 @@ let createFarmer = async (req, res) => {
   try {
     //console.log(req.body.data);
     let data = req.body.data
+    let ranDomPassWord = generator.generate({
+      length: 5,
+      numbers: true, 
+    });
+    //console.log(ranDomPassWord);
+    let salt = bcrypt.genSaltSync(saltRounds); // tao muoi bam :))
+    let password = bcrypt.hashSync(ranDomPassWord, salt);
+
     let idCoopera = await coopertationModel.findIdCoopera(data.idUser);
     if(idCoopera)
     {
       delete data['idUser']
+      data.password = password
       data.CooperativeId = idCoopera._id
     }
     else{
@@ -103,7 +112,10 @@ let showFarmer = async (req, res) => {
     let idCoopera = await coopertationModel.findIdCoopera(idUser);
 
     let getData = await farmerModel.showFarmer(idCoopera._id);
-
+      getData.map( async (e)=>{
+        let pw = await bcrypt.compareSync(e.password)
+        console.log(pw )
+      })
     return res.status(200).json(getData);
   } catch (error) {
     return res.status(500).json({ message: "get data farmer" });

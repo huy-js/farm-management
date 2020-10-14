@@ -13,6 +13,8 @@ import Register from "./components/login-register/Register";
 import Login from "./components/login-register/Login";
 import ManagerFarmer from "./components/manager/farmer/manager-farmer";
 import Profile from "./components/profile/Profile";
+//import OrderCustomer from "./components/manager/order/order_customer";
+import ManagerOrder from "./components/manager/order/manager_order";
 // import CooperativeManagement from "./components/manager/cooperative/cooperative-management";
 // import CreateFarmer from "./components/manager/farmer/create_farmer";
 import ListUser from "./components/manager/user/list_user";
@@ -46,18 +48,31 @@ let Show = ({ resultLogin }) => {
 let ShowManage = ({ role }) => {
   // console.log(role);
    return role ==="admin" ? (
+    <ul className="nav navbar-nav ml-auto">
      <li className="nav-item" role="presentation">
        <Link to={"/list-user"} className="nav-link">
          LIST-USER
        </Link>
      </li>
+     <li className="nav-item" role="presentation">
+       <Link to={"/manager-order"} className="nav-link">
+         MANAGER-ORDER
+       </Link>
+     </li>
+    </ul>
    ) : (
-    <li className="nav-item" role="presentation">
-        <Link to={"/manager-farmer"} className="nav-link">
-          MANAGER-FARMER
-        </Link>
-      </li>
-    
+     <ul className="nav navbar-nav ml-auto">
+        <li className="nav-item" role="presentation">
+            <Link to={"/manager-farmer"} className="nav-link">
+              MANAGER-FARMER
+            </Link>
+            </li>
+            <li className="nav-item" role="presentation">
+            <Link to={"/distribution-place"} className="nav-link">
+              DISTRIBUTION-PLACE
+            </Link>
+          </li>
+      </ul>
    );
  };
 class App extends Component {
@@ -101,9 +116,11 @@ class App extends Component {
               <span className="navbar-brand logo">
                 <ul className="nav navbar-nav ml-auto">
                     <li className="nav-item" role="presentation">
-                          <Link to={"/profile"} className="nav-link">
+                    {this.state.isLogin ? <Link to={"/profile"} className="nav-link">
                                 {this.props.infor.currentUser.username}
-                            </Link>
+                            </Link> : <Link to={""} className="nav-link">
+                                Branch
+                            </Link>}
                     </li>
                 </ul>
               </span>
@@ -174,16 +191,12 @@ class App extends Component {
                   checkLogin() ? <Profile /> : <Redirect to="/" />
                 }
            />
-            {/* <Route
-              path="/cooperative-management"
-              component={({ match }) =>
-                checkLogin(isLogin) ? (
-                  <CooperativeManagement match={match} />
-                ) : (
-                  <Redirect to="/" />
-                )
-              }
-            /> */}
+             <Route
+                path="/manager-order"
+                component={() =>
+                  checkLogin() ? <ManagerOrder /> : <Redirect to="/" />
+                }
+           />
           </Switch>
           <footer className="page-footer  dark">
             <div className="footer-copyright">

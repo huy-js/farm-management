@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from 'react-bootstrap-table2-paginator';
 import { connect } from "react-redux";
 import { showFarmerFetch,userCreateFarmerFetch } from "../../../trainRedux/action/user/actionManagement";
-
+import OrderCustomer from "../order/order_customer"
 class ManagerFarmer extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +14,7 @@ class ManagerFarmer extends Component {
       landArea: 0, // diện tích
       typeOfTree: " ", // giống cây
       totalTrees: 0, // tổng cấy
+      display: "block"
     };
   }
   componentDidMount = async () => {
@@ -49,12 +51,18 @@ class ManagerFarmer extends Component {
   };
   showTotalTrees = (event)=>{
     event.preventDefault();
-    console.log("alo")
+   // console.log("alo")
 
     let total = 0;
     this.state.landArea === 0 ? total = 0 : total = this.state.landArea/24 + 1;
     this.setState({
       totalTrees: parseInt(total)
+    });
+  }
+  hideComment = (event)=>{
+    event.preventDefault();
+    this.setState({
+      display: "none"
     });
   }
   render() {
@@ -117,6 +125,12 @@ class ManagerFarmer extends Component {
         headerStyle: styleHeader,
         style: styleRow,
       },
+      {
+        dataField: "passwordFarmer",
+        text: "PASSWORD",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
     ];
     const products = [];
     
@@ -136,21 +150,24 @@ class ManagerFarmer extends Component {
         // waterSource: element.waterSource,
         totalTrees:element.totalTrees,
         typeOfTree: element.typeOfTree,
+        passwordFarmer: <i>********</i>
       };
       return products.push(arr);
     });
 
     return (
       <div>
-         <main className="page contact-us-page" style={{ height: "90vh" }}>
+         <main className="page contact-us-page" style={{ height: "100%" }}>
         
           <section
             className="clean-block clean-form dark"
-            style={{ height: "100%" }}
+            style={{ height:"100vh" }}
           >
             
             <div className="container">
               <div className="block-heading " style={{ marginTop: "50px" }}>
+                <i className="fa fa-plus-circle" style={{fontSize:"25px",float:"left", paddingTop:"10px"}} data-toggle="modal"
+                    data-target="#showModalCreate" ></i>
                 <h2 className="text-info">Danh sách nông hộ </h2>
               </div>
               <div className="container-body">
@@ -159,17 +176,20 @@ class ManagerFarmer extends Component {
                   data={products}
                   columns={columns}
                   // loading={this.state.loading}
-                  striped
+                  pagination={paginationFactory({
+                    sizePerPage: 5,
+                    hideSizePerPage: true,
+                    // hidePageListOnlyOnePage: true
+                   
+                  })}
+                  // striped
                   hover
-                  condensed
+                  // condensed
                 />
-              <div className="d-flex justify-content-center" style={{paddingTop:"20px"}}> 
-               <i className="fa fa-plus-circle" style={{fontSize:"40px"}} data-toggle="modal"
-            data-target="#showModalCreate" ></i>
-               </div>
               </div>
             </div>
           </section>
+                  <OrderCustomer/>
         </main>
         <div
           className="modal fade"
@@ -233,13 +253,25 @@ class ManagerFarmer extends Component {
                   onMouseOut={this.showTotalTrees}
                 />
               </div>
-              <div className="form-group">
-                <label>tổng cây dự định : </label>
+              {/* <div className="form-group">
+                <label>tổng cây dự kiến : </label>
                 <span>{ " " + this.state.totalTrees} cây</span>
-              </div>
-
+              </div> */}
               <div className="form-group">
-                <button className="btn btn-primary btn-block" type="button" data-dismiss="modal" onMouseOver={this.showTotalTrees}  onClick={this.createFarmer} >
+                <label>Nhập số lượng cây: </label>
+                <input
+                  type="number"
+                  min="0"
+                  name="totalTrees"
+                  className="form-control "
+                  value={this.state.totalTrees}
+                  onChange={this.handleChange}
+                  onClick={this.hideComment}
+                />
+                 <i style={{display: this.state.display}}>số cây đề suất { " " + this.state.totalTrees} cây</i>
+              </div>
+              <div className="form-group">
+                <button className="btn btn-primary btn-block" type="button" data-dismiss="modal"   onClick={this.createFarmer} >
                   Tạo
                 </button>
               </div>

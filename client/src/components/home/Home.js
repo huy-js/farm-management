@@ -9,12 +9,13 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <main className="page landing-page">
+        <main className="page landing-page"  style={{height:"100%"}}>
           <section
             className="clean-block clean-hero"
             style={{
               backgroundImage: `url("assets/img/tech/image4.jpg")`,
               color: `rgba(9, 162, 255, 0.85)`,
+              height:"100vh"
             }}
           >
             <div className="text">

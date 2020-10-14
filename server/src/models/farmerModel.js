@@ -9,9 +9,9 @@ let farmerSchema = new Schema(
     landArea: {type:Number}, // diện tích
     typeOfTree: { type: String }, // giống cây
     // soilType: { type: String }, // loại đất
-    // waterSource: { type: String }, // nguồn nước
     totalTrees:{type:Number},
     CooperativeId:{ type: String },
+    password: { type: String,default: ""  }, 
     deletedAt: { type: Boolean, default: false },
   },
   {

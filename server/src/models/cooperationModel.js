@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 let cooperationSchema = new Schema(
   {
-    Owner: { type: String }, // chủ nông trại
-    phoneOwner: { type: String },
+    Owner: { type: String,default: "" }, // chủ nông trại
+    phoneOwner: { type: String,default: "" },
     nameOfCooperative: { type: String },
     technicalStaff: { type: String, default: null }, // cán bộ kỹ thuật
     address: { type: String },

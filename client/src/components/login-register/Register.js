@@ -11,9 +11,9 @@ class Register extends Component {
       nameOfCooperative: "", // ten htx
       address: "",
       taxCode: "", // ma thue
-      Owner: "", // nguoi dai dien
-      phoneOwner: "", //sdt nguoi dai dien
-      numberQR: "", // so QR du kien mua
+      // Owner: "", // nguoi dai dien
+      // phoneOwner: "", //sdt nguoi dai dien
+      numberQR: 0, // so QR du kien mua
       username: "", // ten can bo dang ky qr
       email: "", // mail can bo dk qr
       phonenumber: "", // sdt can bo dk qr
@@ -76,7 +76,7 @@ class Register extends Component {
                   required
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>Tên người đại diện</label>
                 <input
                   onChange={this.handleChange}
@@ -95,7 +95,7 @@ class Register extends Component {
                   name="phoneOwner"
                   value={this.state.phoneOwner}
                 />
-              </div>
+              </div> */}
               <div className="form-group">
                 <label>sô QR dụ kiến(tính theo cây)</label>
                 <input

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from 'react-bootstrap-table2-paginator';
 import { connect } from "react-redux";
 import {
   showListUserFetch,
@@ -164,9 +165,14 @@ class ListUser extends Component {
                   data={products}
                   columns={columns}
                   // loading={this.state.loading}
-                  striped
+                  pagination={paginationFactory({
+                    sizePerPage: 5,
+                    hideSizePerPage: true,
+                    // hidePageListOnlyOnePage: true
+                  })}
+                  // striped
                   hover
-                  condensed
+                  // condensed
                 />
               </div>
             </div>
