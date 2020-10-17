@@ -1,44 +1,234 @@
-import React, { Component } from 'react';
-
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import EditmailModelCustomer from "./editmail_model_customer";
+import EditQRModelCustomer from "./editQR_model_customer";
+import { showCoopareFetch } from "../../../trainRedux/action/order/actionShowData";
 class OrderCustomer extends Component {
-    render() {
-        return (
-            <section className="clean-block "  style={{ height:"100vh" }}>
-            <div className="container">
-                <div className="block-heading">
-                    <h2 className="text-info">Chót đơn</h2>
+  constructor(props) {
+    super(props);
+    this.state = {
+      resultData: "",
+      numberQR: 0,
+      email: "",
+    };
+  }
+  componentDidMount = async () => {
+    //console.log(this.props.infor.currentUser._id)
+    let result = await this.props.showCoopareFetch(
+      this.props.infor.currentUser._id
+    );
+    //console.log(result);
+    // thong tin htx
+    this.setState({
+      resultData: result,
+    });
+  };
+  // luu mail moi tui componet child
+  setNewEmail = (newEmail) => {
+    this.setState({
+      email: newEmail,
+    });
+  };
+  setNewnumberQR = (newnumberQR) => {
+    this.setState({
+      numberQR: newnumberQR,
+    });
+  };
+
+  completeTheTransaction = (event) => {
+    event.preventDefault();
+    console.log(this.state);
+  };
+  render() {
+    return (
+      // <div>
+      <main className="page landing-page" style={{ height: "100%" }}>
+        <section
+          className="clean-block  dark "
+          style={{ height: "100vh", paddingTop: "50px" }}
+        >
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-4">
+                <div className="card shadow">
+                  <div className="card-header ">
+                    <p className="text-primary m-0 font-weight-bold">
+                      Thông tin Hợp tác xã
+                    </p>
+                  </div>
+                  <div
+                    className="card-body clean-pricing-item"
+                    style={{ height: "289px", paddingTop: "0px" }}
+                  >
+                    <p>
+                      hợp tác xã {this.state.resultData.nameOfCooperative},
+                      {this.state.resultData.address}
+                    </p>
+                    <div className="features">
+                      <h4>
+                        <span className="feature">Diện tích:&nbsp;</span>
+                        <span>{this.state.resultData.landArea} M</span>
+                      </h4>
+                      <h4>
+                        <span className="feature">Số nông hộ:&nbsp;</span>
+                        <span>{this.state.resultData.memberfarmer} HỘ</span>
+                      </h4>
+                      <h4>
+                        <span className="feature">Tổng số cây:&nbsp;</span>
+                        <span>{this.state.resultData.totalTrees} CÂY</span>
+                      </h4>
+                      <h4>
+                        <span className="feature">Số QR dự kiến:&nbsp;</span>
+                        <span>{this.state.resultData.numberQR} QR</span>
+                      </h4>
+                    </div>
+                  </div>
                 </div>
-                <div className="row  ">
-                    <div className="col-md-3 feature-box"><i className="icon-star icon"></i>
-                        <h4>Thông tin thu thập </h4>
-                        <p>30 nông hộ, 5000 cây</p>
-                    </div>
-                    <div className="col-md-3 feature-box"><i className="icon-pencil icon"></i>
-                        <h4>QR bạn yêu cầu</h4>
-                        <p>4000QR = 4000 cây</p>
-                    </div>
-                    <div className="col-md-3 feature-box">
-                        <i className="icon-refresh icon"></i>
-                        <h4>đổi số lượng</h4>
-                    </div>
-                    <div className="col-md-3 feature-box"><i className="icon-screen-smartphone icon"></i>
-                        <h4>xác nhận mua QR</h4>
-                        <p> 5000 QR</p>
-                    </div>
-                    
+              </div>
+              <div className="col-sm-8">
+                <div className="card shadow">
+                  <div
+                    className="card-header"
+                    style={{ borderBottom: " 2px solid #5ea4f3" }}
+                  >
+                    <p className="text-primary m-0 font-weight-bold">Mua QR</p>
+                  </div>
+                  <div className="card-body ">
+                    <form>
+                      <div className="form-group ">
+                        <label>
+                          <strong>Xác nhận mail nhận file QR</strong>{" "}
+                          <button
+                            className="btn btn-outline-primary  btn-sm"
+                            type="button"
+                            data-toggle="modal"
+                            data-target="#showModelAtOrder"
+                          >
+                            EDIT
+                          </button>
+                        </label>
+
+                        <p>
+                          {this.state.email === ""
+                            ? this.props.infor.currentUser.email
+                            : this.state.email}
+                        </p>
+                      </div>
+                      <div className="form-row">
+                        <div className="col-6">
+                          <div className="form-group">
+                            <label>
+                              <strong>Xác nhận số lượng</strong>{" "}
+                              <button
+                                className="btn btn-outline-primary  btn-sm"
+                                type="button"
+                                data-toggle="modal"
+                                data-target="#showModelnumberQR"
+                              >
+                                EDIT
+                              </button>
+                            </label>
+
+                            <p>
+                              {this.state.numberQR === 0
+                                ? this.state.resultData.numberQR
+                                : this.state.numberQR}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="col-3">
+                          <div className="form-group">
+                            <label>
+                              <strong>Giá</strong>
+                            </label>
+                            {/* <input className="form-control" type="number" placeholder="USA" name="cost"/> */}
+                            <p>1000 </p>
+                          </div>
+                        </div>
+                        <div className="col-3">
+                          <div className="form-group">
+                            <label>
+                              <strong>Thành tiền</strong>
+                            </label>
+                            {/* <input className="form-control" type="number" placeholder="USA" name="cost"/> */}
+                            <p>***** </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <div className="col">
+                          <label>
+                            <strong>Hình thức thanh toán</strong>
+                          </label>
+                        </div>
+                        <div className="col">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name="radiopay"
+                            id="paydirectly"
+                          />
+                          <label className="form-check-label">TRỰC TIẾP</label>
+                        </div>
+
+                        <div className="col">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name="radiopay"
+                            id="paypal"
+                          />
+                          <label className="form-check-label">PAY-PAL</label>
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        {/* <button className="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button> */}
+                        <button
+                          className="btn btn-outline-primary  btn-sm"
+                          type="button"
+                          onClick={this.completeTheTransaction}
+                        >
+                          HOÀN TẤT GIAO DỊCH
+                        </button>
+                      </div>
+                    </form>
+                  </div>
                 </div>
-                <div className="row">
-                    <div className="col-md-10 box">
-                        <h4>Thông tin  </h4>
-                        <p>value</p>
-                    </div>
-                    
-                </div>
+              </div>
             </div>
+          </div>
         </section>
-       
-        );
-    }
+        <EditmailModelCustomer
+          email={
+            this.state.email === ""
+              ? this.props.infor.currentUser.email
+              : this.state.email
+          }
+          onReceiverEmail={this.setNewEmail}
+        />
+        <EditQRModelCustomer
+          numberQR={
+            this.state.numberQR === 0
+              ? this.state.resultData.numberQR
+              : this.state.numberQR
+          }
+          onReceivernumberQR={this.setNewnumberQR}
+        />
+      </main>
+
+      // </div>
+    );
+  }
 }
 
-export default OrderCustomer;
+// export default OrderCustomer;
+const mapStateToProps = (state) => {
+  return {
+    infor: state.login,
+  };
+};
+const mapDispatchToProps = (dispatch, props) => ({
+  showCoopareFetch: (idUser) => dispatch(showCoopareFetch(idUser)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderCustomer);

@@ -1,15 +1,13 @@
 const userModel = require("../models/userModel");
-const coopertationModel = require("../models/cooperationModel")
+const coopertationModel = require("../models/cooperationModel");
 const farmerModel = require("../models/farmerModel");
-const farmer = require("../models/farmerModel");
-const cooperation = require("../models/cooperationModel");
 
 const generator = require("generate-password");
 
 const bcrypt = require("bcrypt");
 const saltRounds = 7;
 
-const sendMail = require("../helpers/sendmail.helper")
+const sendMail = require("../helpers/sendmail.helper");
 // async await luon di voi nhau
 let showListUser = async (req, res) => {
   try {
@@ -44,29 +42,30 @@ let createPwAndSendMail = async (req, res) => {
 
     let ranDomPassWord = generator.generate({
       length: 5,
-      numbers: true, 
+      numbers: true,
     });
     //console.log(ranDomPassWord);
     let salt = bcrypt.genSaltSync(saltRounds); // tao muoi bam :))
     let password = bcrypt.hashSync(ranDomPassWord, salt);
     //console.log(password)
-       await userModel.createPassward(dataUser._id, password);
-     sendMail(dataUser.email,ranDomPassWord)
-     .then(success => {
-          
-          return success
-     })
-     .catch(async (error)=>{
-         // remove user
-         // xoa user dang ky
-         await userModel.removeById(dataUser._id);
-         // xoa htx 
-         await coopertationModel.removeById(dataUser._id);
-      
-       return error
-     })
+    await userModel.createPassward(dataUser._id, password);
+    sendMail(dataUser.email, ranDomPassWord)
+      .then((success) => {
+        return success;
+      })
+      .catch(async (error) => {
+        // remove user
+        // xoa user dang ky
+        await userModel.removeById(dataUser._id);
+        // xoa htx
+        await coopertationModel.removeById(dataUser._id);
 
-    return res.status(200).json({ message: "success update",passwork:ranDomPassWord });
+        return error;
+      });
+
+    return res
+      .status(200)
+      .json({ message: "success update", passwork: ranDomPassWord });
   } catch (error) {
     return res.status(500).json({ message: "update failed" });
   }
@@ -75,31 +74,38 @@ let createPwAndSendMail = async (req, res) => {
 let createFarmer = async (req, res) => {
   try {
     //console.log(req.body.data);
-    let data = req.body.data
+    let data = req.body.data;
     let ranDomPassWord = generator.generate({
       length: 5,
-      numbers: true, 
+      numbers: true,
     });
     //console.log(ranDomPassWord);
     let salt = bcrypt.genSaltSync(saltRounds); // tao muoi bam :))
     let password = bcrypt.hashSync(ranDomPassWord, salt);
 
     let idCoopera = await coopertationModel.findIdCoopera(data.idUser);
-    if(idCoopera)
-    {
-      delete data['idUser']
-      data.password = password
-      data.CooperativeId = idCoopera._id
+    //console.log(idCoopera);
+    if (idCoopera) {
+      delete data["idUser"];
+      data.password = password;
+      data.CooperativeId = idCoopera._id;
+    } else {
+      return res.status(500).json({ message: "khong tim thay htx lien quan" });
     }
-    else{
-      return res.status(500).json({ message: "khong tim thay htx lien quan" })
-    }
-  
-    console.log(data);
-    //console.log(req.body.data)
+
+    //console.log(data);
+    let totalarea = idCoopera.landArea + data.landArea;
+    let totaltree = idCoopera.totalTrees + data.totalTrees;
     // goi await tai vi tri can truy van data
     // bac cac tuyen trinh doi truyen trinh nay song moi dc lam tuyen trinh khac
-   await farmerModel.createNew(data); // createNew laf function dc tao trong file model
+    await farmerModel.createNew(data); // createNew laf function dc tao trong file model
+    // update data htx dien tich va so nong ho
+    await coopertationModel.updateLandAndTotalTree(
+      idCoopera._id,
+      totalarea,
+      totaltree,
+      idCoopera.memberfarmer + 1
+    );
     return res.status(200).json({ message: "create succession." });
   } catch (error) {
     return res.status(500).json({ message: "create failed" });
@@ -112,30 +118,20 @@ let showFarmer = async (req, res) => {
     let idCoopera = await coopertationModel.findIdCoopera(idUser);
 
     let getData = await farmerModel.showFarmer(idCoopera._id);
-      getData.map( async (e)=>{
-        let pw = await bcrypt.compareSync(e.password)
-        console.log(pw )
-      })
+    getData.map(async (e) => {
+      let pw = await bcrypt.compareSync(e.password);
+      console.log(pw);
+    });
     return res.status(200).json(getData);
   } catch (error) {
     return res.status(500).json({ message: "get data farmer" });
   }
 };
-// admin
-let createCooperation = async (req, res) => {
-  try {
-    console.log(req.body.datacreate);
-    await cooperation.createNew(req.body.datacreate);
-    return res.status(200).json({ message: "create succession." });
-  } catch (error) {
-    return res.status(500).json({ message: "create failed" });
-  }
-};
 let showCooperation = async (req, res) => {
   try {
-    console.log("tai controller");
-
-    let dataCooperation = await cooperation.showCooperation();
+    let idUser = req.params.id;
+    console.log(idUser);
+    let dataCooperation = await coopertationModel.showCooperation(idUser);
     return res.status(200).json(dataCooperation);
   } catch (error) {
     return res.status(500).json({ message: "create failed" });
@@ -147,7 +143,5 @@ module.exports = {
   createPwAndSendMail: createPwAndSendMail,
   createFarmer: createFarmer,
   showFarmer: showFarmer,
-
-  createCooperation: createCooperation,
   showCooperation: showCooperation,
 };

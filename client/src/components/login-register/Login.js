@@ -42,7 +42,7 @@ class Login extends Component {
     // }
     return (
       <main className="page contact-us-page">
-        <section className="clean-block clean-form dark">
+        <section className="clean-block clean-form dark"  style={{ height: "80vh" }}>
           <div className="container">
             <div className="block-heading" style={{ paddingTop: "30px" }}>
               <h2 className="text-info">Đăng nhập</h2>

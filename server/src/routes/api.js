@@ -21,12 +21,12 @@ let initAPIs = (app) => {
   //user
   router.post("/createfarmer", ManagementController.createFarmer);
   router.get("/showfarmer/:id", ManagementController.showFarmer);
+  
+  router.get("/showCoopare/:id", ManagementController.showCooperation);
   // admin
   router.get("/showlistuser", ManagementController.showListUser);
   router.put("/updateactive", ManagementController.updateActiveUser);
   router.put("/createPwandSendMail", ManagementController.createPwAndSendMail);
-  router.post("/createcooperation", ManagementController.createCooperation);
-  router.get("/showcooperation", ManagementController.showCooperation);
   return app.use("/", router);
 };
 module.exports = initAPIs;

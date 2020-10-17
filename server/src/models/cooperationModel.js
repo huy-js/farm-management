@@ -2,17 +2,15 @@ const mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 let cooperationSchema = new Schema(
   {
-    Owner: { type: String,default: "" }, // chủ nông trại
-    phoneOwner: { type: String,default: "" },
+    Owner: { type: String, default: "" }, // chủ nông trại
+    phoneOwner: { type: String, default: "" },
     nameOfCooperative: { type: String },
     technicalStaff: { type: String, default: null }, // cán bộ kỹ thuật
     address: { type: String },
-    numberQR: { type: Number },
-    taxCode: { type: Number },
-    // landArea: { type: String }, // diện tích
-    // specializedfarming: { type: String, default: "Xoai" }, // chuyên canh
-    // soilType: { type: String }, // loại đất
-    // waterSource: { type: String }, // nguồn nước
+    numberQR: { type: Number }, //so qr
+    taxCode: { type: Number }, //ma thue
+    landArea: { type: Number, default: 0 }, // diện tích
+    totalTrees: { type: Number, default: 0 }, // tông cay trong htx
     memberfarmer: { type: Number, default: 0 }, // sô lượng nông hộ
     deletedAt: { type: Boolean, default: false },
   },
@@ -27,17 +25,24 @@ cooperationSchema.statics = {
   createNew(item) {
     return this.create(item);
   },
-  removeById(iduser){
-    return this.findOneAndRemove({technicalStaff:iduser}).exec();
+  removeById(iduser) {
+    return this.findOneAndRemove({ technicalStaff: iduser }).exec();
   },
-  showCooperation() {
-    return this.find().exec();
+  showCooperation(idUser) {
+    return this.findOne({ technicalStaff: idUser }).exec();
   },
   findCooperative(tax) {
     return this.findOne({ taxCode: tax }).exec();
   },
   findIdCoopera(iduser) {
-    return this.findOne({ technicalStaff: iduser },{technicalStaff:1}).exec();
+    return this.findOne({ technicalStaff: iduser }).exec();
+  },
+  updateLandAndTotalTree(id, landarea, treetotal, farmermember) {
+    return this.findByIdAndUpdate(id, {
+      landArea: landarea,
+      totalTrees: treetotal,
+      memberfarmer: farmermember,
+    }).exec();
   },
 };
 module.exports = mongoose.model("cooperation", cooperationSchema);

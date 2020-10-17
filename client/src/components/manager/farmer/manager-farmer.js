@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import paginationFactory from "react-bootstrap-table2-paginator";
 import { connect } from "react-redux";
-import { showFarmerFetch,userCreateFarmerFetch } from "../../../trainRedux/action/user/actionManagement";
-import OrderCustomer from "../order/order_customer"
+import {
+  showFarmerFetch,
+  userCreateFarmerFetch,
+} from "../../../trainRedux/action/user/actionManagement";
+import BusinessCooperation from "../cooperative/business_cooperation";
 class ManagerFarmer extends Component {
   constructor(props) {
     super(props);
@@ -14,13 +17,15 @@ class ManagerFarmer extends Component {
       landArea: 0, // diện tích
       typeOfTree: " ", // giống cây
       totalTrees: 0, // tổng cấy
-      display: "block"
+      display: "block",
     };
   }
   componentDidMount = async () => {
     //console.log(this.props.infor.currentUser._id)
-    let result = await this.props.showFarmerFetch(this.props.infor.currentUser._id);
-   console.log(result);
+    let result = await this.props.showFarmerFetch(
+      this.props.infor.currentUser._id
+    );
+    console.log(result);
     result.forEach((e) => {
       this.setState({
         resArray: [...this.state.resArray, e],
@@ -37,34 +42,33 @@ class ManagerFarmer extends Component {
     event.preventDefault();
     console.log(this.state);
     let data = {
-      farmOwner:this.state.farmOwner,
+      farmOwner: this.state.farmOwner,
       address: this.state.address,
-      landArea: this.state.landArea,
-      typeOfTree:this.state.typeOfTree,
-      totalTrees:this.state.totalTrees,
-      idUser:this.props.infor.currentUser._id // id user login
-    }
-   await this.props.userCreateFarmerFetch(data);
-    
-   
-   
+      landArea: parseInt(this.state.landArea),
+      typeOfTree: this.state.typeOfTree,
+      totalTrees: this.state.totalTrees,
+      idUser: this.props.infor.currentUser._id, // id user login
+    };
+    await this.props.userCreateFarmerFetch(data);
   };
-  showTotalTrees = (event)=>{
+  showTotalTrees = (event) => {
     event.preventDefault();
-   // console.log("alo")
+    // console.log("alo")
 
     let total = 0;
-    this.state.landArea === 0 ? total = 0 : total = this.state.landArea/24 + 1;
+    this.state.landArea === 0
+      ? (total = 0)
+      : (total = this.state.landArea / 24 + 1);
     this.setState({
-      totalTrees: parseInt(total)
+      totalTrees: parseInt(total),
     });
-  }
-  hideComment = (event)=>{
+  };
+  hideComment = (event) => {
     event.preventDefault();
     this.setState({
-      display: "none"
+      display: "none",
     });
-  }
+  };
   render() {
     //let idUser = this.props.infor.currentUser._id
     const styleHeader = {
@@ -133,7 +137,7 @@ class ManagerFarmer extends Component {
       },
     ];
     const products = [];
-    
+
     this.state.resArray.map(async (element, index) => {
       let dates = (string) => {
         var options = { year: "numeric", month: "long", day: "numeric" };
@@ -148,48 +152,58 @@ class ManagerFarmer extends Component {
         landArea: element.landArea,
         // soilType: element.soilType,
         // waterSource: element.waterSource,
-        totalTrees:element.totalTrees,
+        totalTrees: element.totalTrees,
         typeOfTree: element.typeOfTree,
-        passwordFarmer: <i>********</i>
+        passwordFarmer: <i>********</i>,
       };
       return products.push(arr);
     });
 
     return (
       <div>
-         <main className="page contact-us-page" style={{ height: "100%" }}>
-        
+        <main className="page contact-us-page" style={{ height: "100%" }}>
           <section
-            className="clean-block clean-form dark"
-            style={{ height:"100vh" }}
+            className="clean-block clean-form "
+            style={{ height: "100vh" }}
           >
-            
             <div className="container">
               <div className="block-heading " style={{ marginTop: "50px" }}>
-                <i className="fa fa-plus-circle" style={{fontSize:"25px",float:"left", paddingTop:"10px"}} data-toggle="modal"
-                    data-target="#showModalCreate" ></i>
+                <i
+                  className="fa fa-plus-circle"
+                  style={{
+                    fontSize: "25px",
+                    float: "right",
+                    paddingTop: "10px",
+                  }}
+                  data-toggle="modal"
+                  data-target="#showModalCreate"
+                ></i>
                 <h2 className="text-info">Danh sách nông hộ </h2>
               </div>
               <div className="container-body">
-                <BootstrapTable
-                  keyField="stt"
-                  data={products}
-                  columns={columns}
-                  // loading={this.state.loading}
-                  pagination={paginationFactory({
-                    sizePerPage: 5,
-                    hideSizePerPage: true,
-                    // hidePageListOnlyOnePage: true
-                   
-                  })}
-                  // striped
-                  hover
-                  // condensed
-                />
+                {this.state.resArray.length === 0 ? (
+                  <div className="text-center">
+                    {" "}
+                    hien tai chua co thong tin moi ban them thong tin
+                  </div>
+                ) : (
+                  <BootstrapTable
+                    keyField="stt"
+                    data={products}
+                    columns={columns}
+                    // loading={this.state.loading}
+                    pagination={paginationFactory({
+                      sizePerPage: 5,
+                      hideSizePerPage: true,
+                      // hidePageListOnlyOnePage: true
+                    })}
+                    hover
+                  />
+                )}
               </div>
             </div>
           </section>
-                  <OrderCustomer/>
+          <BusinessCooperation />
         </main>
         <div
           className="modal fade"
@@ -201,81 +215,88 @@ class ManagerFarmer extends Component {
         >
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
-              <div className="modal-header" >
+              <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLongTitle">
                   Tạo nông hộ
                 </h5>
               </div>
               <div className="modal-body">
-              <form
-              onSubmit={this.handleSubmit}
-              style={{ paddingBottom: "60px" }}
-            >
-              <div className="form-group">
-                <label>Chủ Nông</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="farmOwner"
-                  value={this.state.farmOwner}
-                  onChange={this.handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Địa chỉ</label>
-                <input
-                  type="text"
-                  name="address"
-                  className="form-control "
-                  value={this.state.address}
-                  onChange={this.handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Giống cây</label>
-                <input
-                  type="text"
-                  name="typeOfTree"
-                  className="form-control "
-                  value={this.state.typeOfTree}
-                  onChange={this.handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Diện tích đất</label>
-                <input
-                  type="number"
-                  min="0"
-                  name="landArea"
-                  className="form-control "
-                  value={this.state.landArea}
-                  onChange={this.handleChange}
-                  onMouseOut={this.showTotalTrees}
-                />
-              </div>
-              {/* <div className="form-group">
+                <form
+                  // onSubmit={this.handleSubmit}
+                  style={{ paddingBottom: "60px" }}
+                >
+                  <div className="form-group">
+                    <label>Chủ Nông</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      name="farmOwner"
+                      value={this.state.farmOwner}
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Địa chỉ</label>
+                    <input
+                      type="text"
+                      name="address"
+                      className="form-control "
+                      value={this.state.address}
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Giống cây</label>
+                    <input
+                      type="text"
+                      name="typeOfTree"
+                      className="form-control "
+                      value={this.state.typeOfTree}
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Diện tích đất</label>
+                    <input
+                      type="number"
+                      min="0"
+                      name="landArea"
+                      className="form-control "
+                      value={this.state.landArea}
+                      onChange={this.handleChange}
+                      onMouseOut={this.showTotalTrees}
+                    />
+                  </div>
+                  {/* <div className="form-group">
                 <label>tổng cây dự kiến : </label>
                 <span>{ " " + this.state.totalTrees} cây</span>
               </div> */}
-              <div className="form-group">
-                <label>Nhập số lượng cây: </label>
-                <input
-                  type="number"
-                  min="0"
-                  name="totalTrees"
-                  className="form-control "
-                  value={this.state.totalTrees}
-                  onChange={this.handleChange}
-                  onClick={this.hideComment}
-                />
-                 <i style={{display: this.state.display}}>số cây đề suất { " " + this.state.totalTrees} cây</i>
-              </div>
-              <div className="form-group">
-                <button className="btn btn-primary btn-block" type="button" data-dismiss="modal"   onClick={this.createFarmer} >
-                  Tạo
-                </button>
-              </div>
-            </form>
+                  <div className="form-group">
+                    <label>Nhập số lượng cây: </label>
+                    <input
+                      type="number"
+                      min="0"
+                      name="totalTrees"
+                      className="form-control "
+                      value={this.state.totalTrees}
+                      onChange={this.handleChange}
+                      onClick={this.hideComment}
+                    />
+                    <i style={{ display: this.state.display }}>
+                      số cây đề suất {" " + this.state.totalTrees} cây
+                    </i>
+                  </div>
+                  <div className="form-group">
+                    <button
+                      className="btn btn-primary btn-block"
+                      type="button"
+                      data-dismiss="modal"
+                      onClick={this.createFarmer}
+                    >
+                      Tạo
+                    </button>
+                  </div>
+                </form>
               </div>
               <div className="modal-footer">
                 <button
@@ -289,7 +310,6 @@ class ManagerFarmer extends Component {
             </div>
           </div>
         </div>
-     
       </div>
     );
   }
@@ -302,7 +322,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch, props) => ({
   showFarmerFetch: (dataCreate) => dispatch(showFarmerFetch(dataCreate)),
-  userCreateFarmerFetch: (dataCreate) => dispatch(userCreateFarmerFetch(dataCreate)),
+  userCreateFarmerFetch: (dataCreate) =>
+    dispatch(userCreateFarmerFetch(dataCreate)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManagerFarmer);
