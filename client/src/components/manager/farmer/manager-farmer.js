@@ -10,27 +10,9 @@ import BusinessCooperation from "../cooperative/business_cooperation";
 import * as actions from "../../../trainRedux/action/user/actionManagement";
 
 class ManagerFarmer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      resArray: [],
-      // farmOwner: " ", // chủ nông trại
-      //  address: " ",
-      //  landArea: 0, // diện tích
-      //  typeOfTree: " ", // giống cây
-      // totalTrees: 0, // tổng cấy
-      display: "block",
-    };
-  }
-  componentDidMount = async () => {
-    //console.log(this.props.currentUser._id);
-    let result = await this.props.showFarmerFetch(this.props.currentUser._id);
-    //console.log(result);
-    result.forEach((e) => {
-      this.setState({
-        resArray: [...this.state.resArray, e],
-      });
-    });
+
+  componentDidMount () {
+    this.props.showFarmerFetch(this.props.currentUser._id);
   };
 
   hideComment = (event) => {
@@ -107,7 +89,7 @@ class ManagerFarmer extends Component {
     ];
     const products = [];
 
-    this.state.resArray.map(async (element, index) => {
+    this.props.resArray.map(async (element, index) => {
       let dates = (string) => {
         var options = { year: "numeric", month: "long", day: "numeric" };
         return new Date(string).toLocaleDateString([], options);
@@ -150,7 +132,7 @@ class ManagerFarmer extends Component {
                 <h2 className="text-info">Danh sách nông hộ </h2>
               </div>
               <div className="container-body">
-                {this.state.resArray.length === 0 ? (
+                {this.props.resArray.length === 0 ? (
                   <div className="text-center">
                     {" "}
                     hien tai chua co thong tin moi ban them thong tin
@@ -183,7 +165,7 @@ class ManagerFarmer extends Component {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.authReducer.currentUser,
-    //loading: state.authReducer.loading,
+    resArray: state.fmManagerReducer.resArray
   };
 };
 const mapDispatchToProps = (dispatch, props) => ({

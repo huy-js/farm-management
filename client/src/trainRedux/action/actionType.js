@@ -9,3 +9,6 @@ export const AUTH_CHECK_TRUE = "AUTH_CHECK_TRUE";
 export const AUTH_CHECK_FALSE = "AUTH_CHECK_FALSE";
 // ko dung
 export const SET_AUTH_REDIRECT_PATH = "SET_AUTH_REDIRECT_PATH";
+
+
+export const FETCH_FARMER_DATA = "FETCH_FARMER_DATA";
