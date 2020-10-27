@@ -20,9 +20,9 @@ import { authLogout } from "./trainRedux/action/actionAuth";
 //import { authCheckState } from "./trainRedux/action/auth";
 
 class App extends Component {
-  componentDidMount() {
-    this.props.checkUserLogin();
-  }
+  // componentDidMount() {
+  //   this.props.checkUserLogin();
+  // }
   render() {
     let isLogin = this.props.isLogin;
     let role = this.props.role;
