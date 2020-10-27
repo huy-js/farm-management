@@ -256,7 +256,7 @@ class CreateFarmer extends Component {
                 data-dismiss="modal"
                 ref={(button) => (this.buttonElement = button)}
               >
-                đóng
+                Đóng
               </button>
             </div>
           </div>
