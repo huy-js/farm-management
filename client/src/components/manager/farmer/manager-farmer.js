@@ -19,7 +19,7 @@ class ManagerFarmer extends Component {
       //  landArea: 0, // diện tích
       //  typeOfTree: " ", // giống cây
       // totalTrees: 0, // tổng cấy
-      display: "block",
+      // display: "block",
     };
   }
   componentDidMount = async () => {
