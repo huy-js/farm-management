@@ -100,7 +100,6 @@ export const checkUserLogin = () => {
       if (expirationDate <= new Date()) {
         dispatch(authLogout());
       } else {
-        //  const userId = localStorage.getItem("userId");
         // dispatch(authSuccess(token, userId));
         dispatch(
           checkAuthTimeout(
@@ -115,7 +114,7 @@ export const checkUserLogin = () => {
             const decodedToken = jwt_decode(accessToken);
             dispatch(login(decodedToken.data));
             dispatch(authCheckTrue());
-            // dispatch(checkUserLoginGetData());
+            dispatch(checkUserLoginGetData());
           })
           .catch((error) => {
             dispatch(authCheckFalse());
