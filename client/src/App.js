@@ -7,6 +7,7 @@ import {
   Redirect,
   withRouter,
 } from "react-router-dom";
+import { connect } from "react-redux";
 
 import Home from "./components/home/Home";
 import Register from "./components/login-register/Register";
@@ -14,9 +15,7 @@ import Login from "./components/login-register/Login";
 import ManagerFarmer from "./components/manager/farmer/manager-farmer";
 import Footer from "./components/navigation/footer/Footer";
 import NotFound from "./components/NotFound";
-import { connect } from "react-redux";
-import { checkUserLogin } from "./trainRedux/action/actionAuth"; // kiem tra dau vao ra result
-import { authLogout } from "./trainRedux/action/actionAuth";
+import * as actions from './trainRedux/action/actionAuth';
 
 class App extends Component {
   componentDidMount() {
@@ -24,26 +23,28 @@ class App extends Component {
   }
   render() {
     let isLogin = this.props.isLogin;
+    console.log(isLogin);
     let role = this.props.role;
     let logButton;
     let showManage;
     let routes = (
       <Switch>
-        <Route path="/login" component={Login} />
+        <Route path="/login" component={() => ( isLogin ? <Redirect to="/" /> : <Login />)} />
         <Route path="/register" component={Register} />
         <Route path="/" exact component={Home} />
         <Route component={NotFound} />
-        {/* <Redirect to="/" /> */}
+        <Redirect to="/" />
       </Switch>
     );
 
-    if (this.props.isLogin === true) {
+    if (isLogin === true) {
       routes = (
         <Switch>
-          <Route path="/manager-farmer" exact component={ManagerFarmer} />
-          <Route path="/" component={Home} />
+          <Route path="/login" component={() => ( isLogin ? <Redirect to="/" /> : <Login />)} />
+          <Route path="/manager-farmer" component={ManagerFarmer} />
+          <Route path="/" exact component={Home} />
           <Route component={NotFound} />
-          {/* <Redirect to="/" /> */}
+          <Redirect to="/"/>
         </Switch>
       );
     }
@@ -166,8 +167,8 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  checkUserLogin: () => dispatch(checkUserLogin()),
-  authLogout: () => dispatch(authLogout()),
+  checkUserLogin: () => dispatch(actions.checkUserLogin()),
+  authLogout: () => dispatch(actions.authLogout()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

@@ -18,8 +18,6 @@ export const userRegisterFetch = (data, checkVali) => {
     // check validator ko can vao server
     if (check) {
       dispatch(authStart());
-      //  console.log(check);
-      dispatch(authFail(""));
       return axios
         .post("http://localhost:3456/register", {
           data,
@@ -72,6 +70,7 @@ export const userLoginFetch = (dataLogin, checkVali) => {
               (expirationDate.getTime() - new Date().getTime()) / 1000
             )
           );
+          dispatch(setAuthRedirectPath("/"));
         })
         .catch((error) => {
           dispatch(authFail(error.response.data.message));
@@ -115,6 +114,7 @@ export const checkUserLogin = () => {
             dispatch(login(decodedToken.data));
             dispatch(authCheckTrue());
             dispatch(checkUserLoginGetData());
+            dispatch(setAuthRedirectPath("/"));
           })
           .catch((error) => {
             dispatch(authCheckFalse());
