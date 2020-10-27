@@ -3,9 +3,6 @@ import CreateFarmer from "./create-farmer";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import { connect } from "react-redux";
-// import {
-//   showFarmerFetch,
-// } from "../../../trainRedux/action/user/actionManagement";
 import BusinessCooperation from "../cooperative/business_cooperation";
 import * as actions from "../../../trainRedux/action/user/actionManagement";
 

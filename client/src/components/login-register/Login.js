@@ -40,11 +40,13 @@ class Login extends Component {
     },
     isSignup: true,
   };
-  // componentDidMount() {
-  //   if (this.props.authRedirectPath !== "/") {
-  //     this.props.onSetAuthRedirectPath();
-  //   }
-  // }
+
+  componentDidMount() {
+    console.log(this.props.isLogin);
+    if (this.props.authRedirectPath !== "/") {
+      this.props.onSetAuthRedirectPath();
+    }
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -106,6 +108,7 @@ class Login extends Component {
   };
 
   render() {
+    console.log(this.props.isLogin);
     const formElementsArray = [];
     for (let key in this.state.controls) {
       formElementsArray.push({
@@ -137,10 +140,10 @@ class Login extends Component {
       errorMessage = <p className={classes.error}>{this.props.error}</p>;
     }
 
-    let authRedirect = null;
-    // if (this.props.isLogin) {
-    //   authRedirect = <Redirect to={this.props.authRedirectPath} />;
-    // }
+    let authRedirect;
+    if (this.props.isLogin === true) {
+      authRedirect = <Redirect to={this.props.authRedirectPath} />;
+    }
 
     return (
       <main className="page contact-us-page" style={{ paddingTop: "60px" }}>
@@ -173,15 +176,15 @@ const mapStateToProps = (state) => {
   return {
     loading: state.authReducer.loading,
     error: state.authReducer.error,
-    //    authRedirectPath: state.authReducer.authRedirectPath,
-    isLogin: state.authReducer.isLogin !== false,
+    authRedirectPath: state.authReducer.authRedirectPath,
+    isLogin: state.authReducer.isLogin,
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => ({
   userLoginFetch: (dataLogin, checkVali) =>
     dispatch(actions.userLoginFetch(dataLogin, checkVali)),
-  //onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath("/")),
+  onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath("/")),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

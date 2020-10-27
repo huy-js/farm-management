@@ -7,17 +7,15 @@ import {
   Redirect,
   withRouter,
 } from "react-router-dom";
+import { connect } from "react-redux";
 
 import Home from "./components/home/Home";
 import Register from "./components/login-register/Register";
 import Login from "./components/login-register/Login";
 import ManagerFarmer from "./components/manager/farmer/manager-farmer";
 import Footer from "./components/navigation/footer/Footer";
-import { connect } from "react-redux";
-import { checkUserLogin } from "./trainRedux/action/actionAuth"; // kiem tra dau vao ra result
-//import { checkLogin } from "./components/helpers/checkLogin"; // lay data checkUserLogin thuc thi chuyen nhanh'
-import { authLogout } from "./trainRedux/action/actionAuth";
-//import { authCheckState } from "./trainRedux/action/auth";
+import NotFound from "./components/NotFound";
+import * as actions from './trainRedux/action/actionAuth';
 
 class App extends Component {
   // componentDidMount() {
@@ -25,10 +23,32 @@ class App extends Component {
   // }
   render() {
     let isLogin = this.props.isLogin;
+    console.log(isLogin);
     let role = this.props.role;
-    console.log(this.props.displayRegister);
     let logButton;
     let showManage;
+    let routes = (
+      <Switch>
+        <Route path="/login" component={() => ( isLogin ? <Redirect to="/" /> : <Login />)} />
+        <Route path="/register" component={Register} />
+        <Route path="/" exact component={Home} />
+        <Route component={NotFound} />
+        <Redirect to="/" />
+      </Switch>
+    );
+
+    if (isLogin === true) {
+      routes = (
+        <Switch>
+          <Route path="/login" component={() => ( isLogin ? <Redirect to="/" /> : <Login />)} />
+          <Route path="/manager-farmer" component={ManagerFarmer} />
+          <Route path="/" exact component={Home} />
+          <Route component={NotFound} />
+          <Redirect to="/"/>
+        </Switch>
+      );
+    }
+
     if (isLogin) {
       logButton = (
         <li className="nav-item" role="presentation">
@@ -131,27 +151,7 @@ class App extends Component {
             </div>
           </div>
         </nav>
-        <Switch>
-          <Route
-            path="/login"
-            component={() =>
-              this.props.isLogin ? <Redirect to="/" /> : <Login />
-            }
-          />
-          <Route
-            path="/register"
-            component={() =>
-              this.props.isLogin ? <Redirect to="/" /> : <Register />
-            }
-          />
-          <Route
-            path="/manager-farmer"
-            component={() =>
-              this.props.isLogin ? <ManagerFarmer /> : <Redirect to="/" />
-            }
-          />
-          <Route exact path="/" component={() => <Home />} />
-        </Switch>
+        {routes}
         <Footer />
       </div>
     );
@@ -167,9 +167,8 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  checkUserLogin: () => dispatch(checkUserLogin()),
-  authLogout: () => dispatch(authLogout()),
-  // authCheckState: () => dispatch(authCheckState())
+  checkUserLogin: () => dispatch(actions.checkUserLogin()),
+  authLogout: () => dispatch(actions.authLogout()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
