@@ -1,162 +1,244 @@
 import React, { Component } from "react";
-// import { createHashHistory } from "history";
-import {history} from "../helpers/history"
 import { connect } from "react-redux";
-import { userRegisterFetch } from "../../trainRedux/action/actionAuth";
-//import "./login-register.css";
+import { Redirect } from "react-router-dom";
+import Input from "../UI/Input/Input";
+import Button from "../UI/Button/Button";
+import Spinner from "../UI/Spinner/Spinner";
+import classes from "./Auth.module.css";
+import * as actions from "../../trainRedux/action/actionAuth";
+//import { history } from "../helpers/history";
+import { checkValidity } from "../helpers/validation/checkValidation";
 class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      nameOfCooperative: "", // ten htx
-      address: "",
-      taxCode: "", // ma thue
-      // Owner: "", // nguoi dai dien
-      // phoneOwner: "", //sdt nguoi dai dien
-      numberQR: 0, // so QR du kien mua
-      username: "", // ten can bo dang ky qr
-      email: "", // mail can bo dk qr
-      phonenumber: "", // sdt can bo dk qr
-    };
-  }
-
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+  state = {
+    controls: {
+      nameOfCooperative: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Nhập tên htx",
+        },
+        value: "",
+        validation: {
+          required: true,
+          isCharacter: true,
+        },
+        valid: false,
+        touched: false,
+      },
+      address: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Nhập địa chỉ",
+        },
+        value: "",
+        validation: {
+          required: false,
+          isCharacter: true,
+        },
+        valid: false,
+        touched: false,
+      },
+      taxCode: {
+        elementType: "input",
+        elementConfig: {
+          type: "number",
+          placeholder: "Mã số thuế",
+          min: "0",
+        },
+        value: "",
+        validation: {
+          required: true,
+          minLength: 5,
+        },
+        valid: false,
+        touched: false,
+      },
+      numberQR: {
+        elementType: "input",
+        elementConfig: {
+          type: "number",
+          placeholder: "Qr định đăng ký",
+          min: "0",
+        },
+        value: "",
+        validation: {
+          required: false,
+          minLength: 3,
+        },
+        valid: false,
+        touched: false,
+      },
+      username: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Tên người đăng ký",
+        },
+        value: "",
+        validation: {
+          required: true,
+          isCharacter: true,
+        },
+        valid: false,
+        touched: false,
+      },
+      email: {
+        elementType: "input",
+        elementConfig: {
+          type: "email",
+          placeholder: "Nhập mail người đăng ký",
+        },
+        value: "",
+        validation: {
+          required: true,
+          isEmail: true,
+        },
+        valid: false,
+        touched: false,
+      },
+      phonenumber: {
+        elementType: "input",
+        elementConfig: {
+          type: "number",
+          placeholder: "số điện thoại người đăng ký",
+          min: "0",
+        },
+        value: "",
+        validation: {
+          required: false,
+          minLength: 3,
+        },
+        valid: false,
+        touched: false,
+      },
+    },
+    // isSignup: true,
   };
+  // componentDidMount() {
+  //   if (this.props.authRedirectPath !== "/") {
+  //     this.props.onSetAuthRedirectPath();
+  //   }
+  // }
 
-  handleSubmit = async (event) => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    //const history = createHashHistory();
-    console.log(this.state);
-    await this.props.userRegisterFetch(this.state);
-    return history.goBack();
+    let data = {
+      nameOfCooperative: this.state.controls.nameOfCooperative.value,
+      address: this.state.controls.address.value,
+      taxCode: this.state.controls.taxCode.value,
+      numberQR: this.state.controls.numberQR.value,
+      username: this.state.controls.username.value,
+      email: this.state.controls.email.value,
+      phonenumber: this.state.controls.phonenumber.value,
+    };
+    let checkVali = [
+      this.state.controls.nameOfCooperative.valid,
+      this.state.controls.address.valid,
+      this.state.controls.taxCode.valid,
+      this.state.controls.numberQR.valid,
+      this.state.controls.username.valid,
+      this.state.controls.email.valid,
+      this.state.controls.phonenumber.valid,
+    ];
+    this.props.userRegisterFetch(data, checkVali);
+    //return history.goBack();
   };
+
+  inputChangedHandler = (event, controlName) => {
+    const updatedControls = {
+      ...this.state.controls,
+      [controlName]: {
+        ...this.state.controls[controlName],
+        value: event.target.value,
+        valid: checkValidity(
+          event.target.value,
+          this.state.controls[controlName].validation
+        ),
+        touched: true,
+      },
+    };
+    this.setState({ controls: updatedControls });
+  };
+
   render() {
+    const formElementsArray = [];
+    for (let key in this.state.controls) {
+      formElementsArray.push({
+        id: key,
+        config: this.state.controls[key],
+      });
+    }
+
+    let form = formElementsArray.map((formElement) => (
+      <Input
+        key={formElement.id}
+        elementType={formElement.config.elementType}
+        elementConfig={formElement.config.elementConfig}
+        value={formElement.config.value}
+        invalid={!formElement.config.valid}
+        shouldValidate={formElement.config.validation}
+        touched={formElement.config.touched}
+        changed={(event) => this.inputChangedHandler(event, formElement.id)}
+      />
+    ));
+
+    if (this.props.loading) {
+      form = <Spinner />;
+    }
+
+    let errorMessage = null;
+
+    if (this.props.error) {
+      errorMessage = <p className={classes.error}>{this.props.error}</p>;
+    }
+
+    let authRedirect = null;
+    if (this.props.error === "") {
+      alert("thong tin dang ki da duoc gui di hay doi nhan mail tu chung toi");
+      authRedirect = <Redirect to="/" />;
+    }
+
     return (
-      <main className="page contact-us-page">
-        <section className="clean-block clean-form dark">
+      <main className="page contact-us-page" style={{ paddingTop: "60px" }}>
+        <section
+          className="clean-block clean-form dark"
+          style={{ height: "120vh" }}
+        >
           <div className="container">
             <div className="block-heading" style={{ paddingTop: "30px" }}>
-              <h2 className="text-info">Đăng ký QR</h2>
+              <h2 className="text-info">Đăng ký tài khoản giao dịch</h2>
             </div>
-            <form
-              style={{ paddingBottom: "50px" }}
-              onSubmit={this.handleSubmit}
-            >
-              <div className="form-group">
-                <label>Tên HTX</label>
-                <input
-                  onChange={this.handleChange}
-                  className="form-control"
-                  type="text"
-                  name="nameOfCooperative"
-                  value={this.state.nameOfCooperative}
-                />
-              </div>
-              <div className="form-group">
-                <label>Địa chỉ HTX</label>
-                <input
-                  onChange={this.handleChange}
-                  className="form-control"
-                  type="text"
-                  name="address"
-                  value={this.state.address}
-                />
-              </div>
-              <div className="form-group">
-                <label>Mã số HTX(mã thuế)</label>
-                <input
-                  onChange={this.handleChange}
-                  className="form-control"
-                  type="text"
-                  name="taxCode"
-                  value={this.state.taxCode}
-                  required
-                />
-              </div>
-              {/* <div className="form-group">
-                <label>Tên người đại diện</label>
-                <input
-                  onChange={this.handleChange}
-                  className="form-control"
-                  type="text"
-                  name="Owner"
-                  value={this.state.Owner}
-                />
-              </div>
-              <div className="form-group">
-                <label>Điện thoại liên lạc</label>
-                <input
-                  onChange={this.handleChange}
-                  className="form-control"
-                  type="text"
-                  name="phoneOwner"
-                  value={this.state.phoneOwner}
-                />
-              </div> */}
-              <div className="form-group">
-                <label>sô QR dụ kiến(tính theo cây)</label>
-                <input
-                  onChange={this.handleChange}
-                  className="form-control"
-                  type="number"
-                  min="0"
-                  name="numberQR"
-                  value={this.state.numberQR}
-                />
-              </div>
-              <div className="form-group">
-                <label>Tên cán bộ đăng ký</label>
-                <input
-                  onChange={this.handleChange}
-                  className="form-control"
-                  type="text"
-                  name="username"
-                  value={this.state.username}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Email liên hệ</label>
-                <input
-                  onChange={this.handleChange}
-                  className="form-control"
-                  type="email"
-                  name="email"
-                  value={this.state.email}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Điện thoại cần liên hệ</label>
-                <input
-                  onChange={this.handleChange}
-                  className="form-control"
-                  type="text"
-                  name="phonenumber"
-                  value={this.state.phonenumber}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <button className="btn btn-primary btn-block" type="submit">
-                  Gửi
-                </button>
-              </div>
-            </form>
+            <div>
+              {authRedirect}
+              {errorMessage}
+              <form
+                onSubmit={this.handleSubmit}
+                style={{ paddingBottom: "60px" }}
+              >
+                {form}
+                <Button btnType="Success">Register</Button>
+              </form>
+            </div>
           </div>
         </section>
       </main>
     );
   }
 }
-
-// export default Register;
+const mapStateToProps = (state) => {
+  return {
+    loading: state.authReducer.loading,
+    error: state.authReducer.error,
+    //  authRedirectPath: state.authReducer.authRedirectPath,
+    //isLogin: state.authReducer.isLogin !== false,
+  };
+};
 
 const mapDispatchToProps = (dispatch, props) => ({
-  userRegisterFetch: (datacreate) => dispatch(userRegisterFetch(datacreate)),
+  userRegisterFetch: (data, checkVali) =>
+    dispatch(actions.userRegisterFetch(data, checkVali)),
+  // onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath("/")),
 });
 
-export default connect(null, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

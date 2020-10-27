@@ -1,227 +1,175 @@
 import React, { Component } from "react";
-//import "./App.css";
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   Link,
+  NavLink,
   Redirect,
+  withRouter,
 } from "react-router-dom";
 
 import Home from "./components/home/Home";
 import Register from "./components/login-register/Register";
 import Login from "./components/login-register/Login";
 import ManagerFarmer from "./components/manager/farmer/manager-farmer";
-import Profile from "./components/profile/Profile";
-import ManagerOrder from "./components/manager/order/manager_order";
-import ListUser from "./components/manager/user/list_user";
+import Footer from "./components/navigation/footer/Footer";
 import { connect } from "react-redux";
-
 import { checkUserLogin } from "./trainRedux/action/actionAuth"; // kiem tra dau vao ra result
-import { checkLogin } from "./components/helpers/checkLogin"; // lay data checkUserLogin thuc thi chuyen nhanh'
-import OrderCustomer from "./components/manager/order/order_customer";
+//import { checkLogin } from "./components/helpers/checkLogin"; // lay data checkUserLogin thuc thi chuyen nhanh'
+import { authLogout } from "./trainRedux/action/actionAuth";
+//import { authCheckState } from "./trainRedux/action/auth";
 
-// đăng xuất
-let Logout = () => {
-  localStorage.removeItem("userToken");
-  return window.location.reload();
-};
-// show display navbar
-let Show = ({ resultLogin }) => {
-  //console.log(resultLogin.isLogin);
-  return resultLogin.isLogin ? (
-    <li className="nav-item" role="presentation">
-      <Link to={"/"} className="nav-link" onClick={Logout}>
-        Logout
-      </Link>
-    </li>
-  ) : (
-    <li className="nav-item" role="presentation">
-      <Link to={"/login"} className="nav-link">
-        Login
-      </Link>
-    </li>
-  );
-};
-let ShowManage = ({ role }) => {
-  // console.log(role);
-  return role === "admin" ? (
-    <ul className="nav navbar-nav ml-auto">
-      <li className="nav-item" role="presentation">
-        <Link to={"/list-user"} className="nav-link">
-          LIST-USER
-        </Link>
-      </li>
-      <li className="nav-item" role="presentation">
-        <Link to={"/manager-order"} className="nav-link">
-          MANAGER-ORDER
-        </Link>
-      </li>
-    </ul>
-  ) : (
-    <ul className="nav navbar-nav ml-auto">
-      <li className="nav-item" role="presentation">
-        <Link to={"/manager-farmer"} className="nav-link">
-          MANAGER-FARMER
-        </Link>
-      </li>
-      <li className="nav-item" role="presentation">
-        <Link to={"/order-customer"} className="nav-link">
-          Order
-        </Link>
-      </li>
-    </ul>
-  );
-};
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLogin: false,
-      display: "none",
-      displayRegister: "block",
-    };
+  componentDidMount() {
+    this.props.checkUserLogin();
   }
-
-  componentDidMount = async () => {
-    // let result = false;
-    //console.log("reload");
-    let result = await this.props.checkUserLogin();
-    console.log("check login " + result);
-    if (result) {
-      this.setState({
-        isLogin: true,
-        display: "block",
-        displayRegister: "none",
-      });
-    } else {
-      this.setState({
-        isLogin: false,
-        display: "none",
-        displayRegister: "block",
-      });
-    }
-  };
-
   render() {
-    let isLogin = this.state;
-    //console.log(this.props.infor.currentUser)
+    let isLogin = this.props.isLogin;
+    let role = this.props.role;
+    console.log(this.props.displayRegister);
+    let logButton;
+    let showManage;
+    if (isLogin) {
+      logButton = (
+        <li className="nav-item" role="presentation">
+          <NavLink
+            to={"/"}
+            className="nav-link"
+            onClick={this.props.authLogout}
+          >
+            Logout
+          </NavLink>
+        </li>
+      );
+    } else {
+      logButton = (
+        <li className="nav-item" role="presentation">
+          <NavLink to={"/login"} className="nav-link">
+            Login
+          </NavLink>
+        </li>
+      );
+    }
+
+    switch (role) {
+      case "admin":
+        showManage = (
+          <ul className="nav navbar-nav ml-auto">
+            <li className="nav-item" role="presentation">
+              <Link to={"/list-user"} className="nav-link">
+                LIST-USER
+              </Link>
+            </li>
+            <li className="nav-item" role="presentation">
+              <Link to={"/manager-order"} className="nav-link">
+                MANAGER-ORDER
+              </Link>
+            </li>
+          </ul>
+        );
+        break;
+      case "customer":
+        showManage = (
+          <ul className="nav navbar-nav ml-auto">
+            <li className="nav-item" role="presentation">
+              <Link to={"/manager-farmer"} className="nav-link">
+                MANAGER-FARMER
+              </Link>
+            </li>
+            <li className="nav-item" role="presentation">
+              <Link to={"/order-customer"} className="nav-link">
+                Order
+              </Link>
+            </li>
+          </ul>
+        );
+        break;
+      default:
+        showManage = "";
+    }
+
     return (
-      <Router>
-        <div>
-          <nav className="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
-            <div className="container">
-              <span className="navbar-brand logo">
-                <ul className="nav navbar-nav ml-auto">
-                  <li className="nav-item" role="presentation">
-                    {this.state.isLogin ? (
-                      <Link to={"/profile"} className="nav-link">
-                        {this.props.infor.currentUser.username}
-                      </Link>
-                    ) : (
-                      <Link to={""} className="nav-link">
-                        Branch
-                      </Link>
-                    )}
-                  </li>
-                </ul>
-              </span>
-              <button
-                data-toggle="collapse"
-                className="navbar-toggler"
-                data-target="#navcol-1"
-              >
-                <span className="sr-only">Toggle navigation</span>
-                <span className="navbar-toggler-icon"></span>
-              </button>
-              <div className="collapse navbar-collapse" id="navcol-1">
-                <ul className="nav navbar-nav ml-auto">
-                  <li className="nav-item" role="presentation">
-                    <Link to={"/"} className="nav-link">
-                      Home
-                    </Link>
-                  </li>
-                  <div style={{ display: this.state.display }}>
-                    <ShowManage role={this.props.infor.currentUser.role} />
-                  </div>
-                  <Show
-                    resultLogin={isLogin}
-                    //name={this.props.infor.currentUser.email}
-                  />
-                  <li
-                    className="nav-item"
-                    role="presentation"
-                    style={{ display: this.state.displayRegister }}
-                  >
-                    <Link to={"/register"} className="nav-link">
-                      Register
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+      <div>
+        <nav className="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
+          <div className="container">
+            <span className="navbar-brand logo">
+              <ul className="nav navbar-nav ml-auto">
+                <li className="nav-item" role="presentation">
+                  <Link to={"/profile"} className="nav-link">
+                    {this.props.currentUser.username}
+                  </Link>
+                </li>
+              </ul>
+            </span>
+            <button
+              data-toggle="collapse"
+              className="navbar-toggler"
+              data-target="#navcol-1"
+            >
+              <span className="sr-only">Toggle navigation</span>
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navcol-1">
+              <ul className="nav navbar-nav ml-auto">
+                <li className="nav-item" role="presentation">
+                  <Link to={"/"} className="nav-link">
+                    Home
+                  </Link>
+                </li>
+                <div style={{ display: this.props.display }}>{showManage}</div>
+                {logButton}
+                <li
+                  className="nav-item"
+                  role="presentation"
+                  style={{ display: this.props.displayRegister }}
+                >
+                  <NavLink to={"/register"} className="nav-link">
+                    Register
+                  </NavLink>
+                </li>
+              </ul>
             </div>
-          </nav>
-          <Switch>
-            <Route exact path="/" component={() => <Home />} />
-            <Route
-              path="/login"
-              component={() => (checkLogin() ? <Redirect to="/" /> : <Login />)}
-            />
-            <Route
-              path="/register"
-              component={() =>
-                checkLogin() ? <Redirect to="/" /> : <Register />
-              }
-            />
-            <Route
-              path="/manager-farmer"
-              component={() =>
-                checkLogin() ? <ManagerFarmer /> : <Redirect to="/" />
-              }
-            />
-            <Route
-              path="/list-user"
-              component={() =>
-                checkLogin() ? <ListUser /> : <Redirect to="/" />
-              }
-            />
-            <Route
-              path="/order-customer"
-              component={() =>
-                checkLogin() ? <OrderCustomer /> : <Redirect to="/" />
-              }
-            />
-            <Route
-              path="/manager-order"
-              component={() =>
-                checkLogin() ? <ManagerOrder /> : <Redirect to="/" />
-              }
-            />
-            <Route
-              path="/profile"
-              component={() =>
-                checkLogin() ? <Profile /> : <Redirect to="/" />
-              }
-            />
-          </Switch>
-          <footer className="page-footer  dark">
-            <div className="footer-copyright">
-              <p>© 2020 Copyright here</p>
-            </div>
-          </footer>
-        </div>
-      </Router>
+          </div>
+        </nav>
+        <Switch>
+          <Route
+            path="/login"
+            component={() =>
+              this.props.isLogin ? <Redirect to="/" /> : <Login />
+            }
+          />
+          <Route
+            path="/register"
+            component={() =>
+              this.props.isLogin ? <Redirect to="/" /> : <Register />
+            }
+          />
+          <Route
+            path="/manager-farmer"
+            component={() =>
+              this.props.isLogin ? <ManagerFarmer /> : <Redirect to="/" />
+            }
+          />
+          <Route exact path="/" component={() => <Home />} />
+        </Switch>
+        <Footer />
+      </div>
     );
   }
 }
 const mapStateToProps = (state) => {
   return {
-    infor: state.login,
+    currentUser: state.authReducer.currentUser,
+    isLogin: state.authReducer.isLogin,
+    display: state.authReducer.display,
+    displayRegister: state.authReducer.displayRegister,
+    role: state.authReducer.currentUser.role,
   };
 };
 const mapDispatchToProps = (dispatch) => ({
   checkUserLogin: () => dispatch(checkUserLogin()),
+  authLogout: () => dispatch(authLogout()),
+  // authCheckState: () => dispatch(authCheckState())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
-// export default App;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

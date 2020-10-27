@@ -1,13 +1,16 @@
 const userModel = require("../models/userModel");
 const coopertationModel = require("../models/cooperationModel");
 const farmerModel = require("../models/farmerModel");
-
+const orderModel = require("../models/orderModel");
+const qrCodeModel = require("../models/qrCodeModel");
+const qrcode = require("qrcode");
 const generator = require("generate-password");
 
 const bcrypt = require("bcrypt");
 const saltRounds = 7;
 
 const sendMail = require("../helpers/sendmail.helper");
+//const cooperationModel = require("../models/cooperationModel");
 // async await luon di voi nhau
 let showListUser = async (req, res) => {
   try {
@@ -73,8 +76,8 @@ let createPwAndSendMail = async (req, res) => {
 
 let createFarmer = async (req, res) => {
   try {
-    //console.log(req.body.data);
-    let data = req.body.data;
+    console.log(req.body.dataFamer);
+    let data = req.body.dataFamer;
     let ranDomPassWord = generator.generate({
       length: 5,
       numbers: true,
@@ -114,7 +117,7 @@ let createFarmer = async (req, res) => {
 let showFarmer = async (req, res) => {
   try {
     let idUser = req.params.id;
-
+    console.log(idUser);
     let idCoopera = await coopertationModel.findIdCoopera(idUser);
 
     let getData = await farmerModel.showFarmer(idCoopera._id);
@@ -137,6 +140,79 @@ let showCooperation = async (req, res) => {
     return res.status(500).json({ message: "create failed" });
   }
 };
+let createDataOrder = async (req, res) => {
+  try {
+    console.log(req.body.dataOrder);
+    await orderModel.createNew(req.body.dataOrder);
+    return res.status(200).json({ message: "create succession." });
+  } catch (error) {
+    return res.status(500).json({ message: "create failed" });
+  }
+};
+let showListOrder = async (req, res) => {
+  try {
+    let dataListOrder = await orderModel.showListOrder();
+    return res.status(200).json(dataListOrder);
+  } catch (error) {
+    return res.status(500).json({ message: "create failed" });
+  }
+};
+let createListQR = async (req, res) => {
+  try {
+    //console.log(req.body.dataQR);
+    let idCoopare = await coopertationModel.findIdCoopera(
+      req.body.dataQR.idcustomer
+    );
+    if (idCoopare) {
+      let listFarmer = await farmerModel.showFarmer(idCoopare._id); //result array
+      // console.log(listFarmer);
+      let arrayQR = listFarmer.map(async (e) => {
+        let beforeConverQR = idCoopare._id + "/" + e._id;
+        return beforeConverQR;
+      });
+      let convertArrayQR = await Promise.all(arrayQR);
+      let afterArrayQR = convertArrayQR.map(async (e) => {
+        let qrCode = { qrId: await qrcode.toDataURL(e) };
+        return qrCode;
+      });
+      let doneArrayQR = await Promise.all(afterArrayQR); // array buffer
+      // console.log(doneArrayQR);
+      let dataDone = {
+        idOrder: req.body.dataQR.idOrder,
+        arrayQR: doneArrayQR,
+      };
+      await qrCodeModel.createNew(dataDone);
+      return res.status(200).json({ message: "success" });
+    } else {
+      return res.status(500).json({ message: "khong tim thay htx" });
+    }
+    //return res.status(200).json({ message: "create succession." });
+  } catch (error) {
+    return res.status(500).json({ message: "create failed" });
+  }
+};
+let findInforProduct = async (req, res) => {
+  try {
+    // console.log("dsadadsa");
+    //chua ra
+    let idCoopare = req.params.idcoopare;
+    let idFarmer = req.params.idfarmer;
+    console.log(idCoopare + idFarmer);
+    return res.status(200).json(idCoopare);
+  } catch (error) {
+    return res.status(500).json({ message: "create failed" });
+  }
+};
+let searchProduct = async (req, res) => {
+  try {
+    let data = await orderModel.showListOrder();
+    let dataresult = data[0];
+    console.log(data);
+    return res.status(200).json(dataresult.email);
+  } catch (error) {
+    return res.status(500).json({ message: "create failed" });
+  }
+};
 module.exports = {
   showListUser: showListUser,
   updateActiveUser: updateActiveUser,
@@ -144,4 +220,9 @@ module.exports = {
   createFarmer: createFarmer,
   showFarmer: showFarmer,
   showCooperation: showCooperation,
+  createDataOrder: createDataOrder,
+  showListOrder: showListOrder,
+  createListQR: createListQR,
+  findInforProduct: findInforProduct,
+  searchProduct: searchProduct,
 };

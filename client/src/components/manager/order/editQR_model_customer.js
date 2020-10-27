@@ -4,7 +4,8 @@ class EditQRModelCustomer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      numberQR: "",
+      // numberQR: 0,
+      totalTrees: 0,
     };
   }
 
@@ -15,7 +16,8 @@ class EditQRModelCustomer extends Component {
   };
   setEditnumberQR = (event) => {
     event.preventDefault();
-    this.props.onReceivernumberQR(this.state.numberQR);
+    // this.props.onReceivernumberQR(this.state.numberQR);
+    this.props.onReceivernumberQR(this.state.totalTrees);
   };
   render() {
     return (
@@ -45,8 +47,9 @@ class EditQRModelCustomer extends Component {
                     type="number"
                     min="0"
                     placeholder="nhap thong tin moi"
-                    name="numberQR"
-                    defaultValue={this.props.numberQR}
+                    // name="numberQR"
+                    name="totalTrees"
+                    defaultValue={this.props.totalTrees}
                     onChange={this.handleChange}
                   />
                 </div>

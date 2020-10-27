@@ -11,15 +11,15 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
 let login = async (req, res) => {
   try {
-    //console.log(req.body)
+    //console.log(req.body);
     let user = await userModel.findByEmail(req.body.email);
-   // console.log(user);
-    if(!user ){
-        return res
+    //console.log(user);
+    if (!user) {
+      return res
         .status(500)
         .json({ message: "thông tin đăng nhập không chính xác" });
     }
-    if( !await user.comparePassword(req.body.password)){
+    if (!(await user.comparePassword(req.body.password))) {
       return res
         .status(500)
         .json({ message: "thông tin đăng nhập không chính xác" });
@@ -31,13 +31,12 @@ let login = async (req, res) => {
       accessTokenLife
     );
     //tokenList[refreshToken] = { accessToken };
- 
+
     return res.status(200).json({ accessToken });
   } catch (error) {
     return res.status(500).json(error);
   }
 };
-
 
 let register = async (req, res) => {
   try {

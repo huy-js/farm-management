@@ -1,19 +1,18 @@
 import jwt_decode from "jwt-decode";
 import * as types from "./actionType";
 
-
- const tokenJSON = JSON.parse(localStorage.getItem("userToken"));
+const tokenJSON = JSON.parse(localStorage.getItem("userToken"));
 // // const accessToken = tokenJSON.accessToken;
 // // const decoded = jwt_decode(accessToken);
 // // console.log(decoded)
 
-let userData = ()=>{
+let userData = () => {
   const accessToken = tokenJSON.accessToken;
   const decoded = jwt_decode(accessToken);
-  return decoded.data
-}
+  return decoded.data;
+};
 const initialState = {
-  currentUser: tokenJSON ? userData() : {} 
+  currentUser: tokenJSON ? userData() : {},
 };
 // const initialState = {
 //   currentUser: {}
@@ -29,4 +28,4 @@ var myReducer = (state = initialState, action) => {
   }
 };
 
-export default myReducer;
+//export default myReducer; bo?

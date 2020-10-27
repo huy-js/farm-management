@@ -1,7 +1,7 @@
 //import * as types from "../actionType";
 import axios from "axios";
 //import jwt_decode from "jwt-decode";
-import {token} from "../../../components/helpers/checkLogin"
+import { token } from "../../../components/helpers/checkLogin";
 export const showListUserFetch = () => {
   return (dispatch) => {
     //const token = localStorage.userToken;
@@ -33,7 +33,7 @@ export const showListUserFetch = () => {
 export const updateActiveUserFetch = (id) => {
   //console.log(id);
   return (dispatch) => {
-   // const token = localStorage.userToken;
+    // const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
@@ -64,7 +64,7 @@ export const updateActiveUserFetch = (id) => {
 export const createPwAndSendFetch = (id) => {
   console.log(id);
   return (dispatch) => {
-   // const token = localStorage.userToken;
+    // const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
@@ -104,6 +104,39 @@ export const showCooperationFetch = (datacreate) => {
         .get("http://localhost:3456/showcooperation", {
           headers: { Authorization: `${accessToken}` },
         })
+        .then((res) => {
+          // console.log(res);
+          return res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+          localStorage.clear();
+        });
+    } else {
+      console.log("ko token");
+      localStorage.removeItem("userToken");
+    }
+  };
+};
+
+// qr
+export const createListQrFetch = (dataQR) => {
+  console.log(dataQR);
+  return (dispatch) => {
+    // const token = localStorage.userToken;
+    // console.log(datacreate);
+    // console.log(token);
+    if (token) {
+      const accessToken = JSON.parse(token).accessToken;
+      // console.log(accessToken);
+      return axios
+        .post(
+          "http://localhost:3456/createlistqr",
+          { dataQR },
+          {
+            headers: { Authorization: `${accessToken}` },
+          }
+        )
         .then((res) => {
           // console.log(res);
           return res.data;

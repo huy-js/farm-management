@@ -2,14 +2,19 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import EditmailModelCustomer from "./editmail_model_customer";
 import EditQRModelCustomer from "./editQR_model_customer";
-import { showCoopareFetch } from "../../../trainRedux/action/order/actionShowData";
+import {
+  showCoopareFetch,
+  saveDataOrderFetch,
+} from "../../../trainRedux/action/order/actionOrder";
 class OrderCustomer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       resultData: "",
-      numberQR: 0,
+      //numberQR: 0,
+      totalTrees: 0,
       email: "",
+      // totalpay: 0,
     };
   }
   componentDidMount = async () => {
@@ -17,8 +22,6 @@ class OrderCustomer extends Component {
     let result = await this.props.showCoopareFetch(
       this.props.infor.currentUser._id
     );
-    //console.log(result);
-    // thong tin htx
     this.setState({
       resultData: result,
     });
@@ -31,17 +34,37 @@ class OrderCustomer extends Component {
   };
   setNewnumberQR = (newnumberQR) => {
     this.setState({
-      numberQR: newnumberQR,
+      // numberQR: newnumberQR,
+      totalTrees: newnumberQR,
     });
   };
 
-  completeTheTransaction = (event) => {
+  completeTheTransaction = async (event) => {
     event.preventDefault();
     console.log(this.state);
+    let dataOrder = {
+      idcustomer: this.props.infor.currentUser._id,
+      numberQR:
+        this.state.totalTrees === 0
+          ? this.state.resultData.totalTrees
+          : this.state.totalTrees,
+      memberfarmer: this.state.resultData.memberfarmer,
+      totalTrees: this.state.resultData.totalTrees, // tông cay trong htx
+      landArea: this.state.resultData.landArea, // diện tích
+      email:
+        this.state.email === ""
+          ? this.props.infor.currentUser.email
+          : this.state.email,
+      totalpay:
+        this.state.totalTrees === 0
+          ? this.state.resultData.totalTrees * 1000
+          : this.state.totalTrees * 1000,
+      payments: "",
+    };
+    await this.props.saveDataOrderFetch(dataOrder);
   };
   render() {
     return (
-      // <div>
       <main className="page landing-page" style={{ height: "100%" }}>
         <section
           className="clean-block  dark "
@@ -129,10 +152,15 @@ class OrderCustomer extends Component {
                               </button>
                             </label>
 
-                            <p>
+                            {/* <p>
                               {this.state.numberQR === 0
                                 ? this.state.resultData.numberQR
                                 : this.state.numberQR}
+                            </p> */}
+                            <p>
+                              {this.state.totalTrees === 0
+                                ? this.state.resultData.totalTrees
+                                : this.state.totalTrees}
                             </p>
                           </div>
                         </div>
@@ -151,7 +179,11 @@ class OrderCustomer extends Component {
                               <strong>Thành tiền</strong>
                             </label>
                             {/* <input className="form-control" type="number" placeholder="USA" name="cost"/> */}
-                            <p>***** </p>
+                            <p>
+                              {this.state.totalTrees === 0
+                                ? this.state.resultData.totalTrees * 1000
+                                : this.state.totalTrees * 1000}{" "}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -207,16 +239,19 @@ class OrderCustomer extends Component {
           onReceiverEmail={this.setNewEmail}
         />
         <EditQRModelCustomer
-          numberQR={
-            this.state.numberQR === 0
-              ? this.state.resultData.numberQR
-              : this.state.numberQR
+          // numberQR={
+          //   this.state.numberQR === 0
+          //     ? this.state.resultData.numberQR
+          //     : this.state.numberQR
+          // }
+          totalTrees={
+            this.state.totalTrees === 0
+              ? this.state.resultData.totalTrees
+              : this.state.totalTrees
           }
           onReceivernumberQR={this.setNewnumberQR}
         />
       </main>
-
-      // </div>
     );
   }
 }
@@ -229,6 +264,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch, props) => ({
   showCoopareFetch: (idUser) => dispatch(showCoopareFetch(idUser)),
+  saveDataOrderFetch: (dataOrder) => dispatch(saveDataOrderFetch(dataOrder)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderCustomer);

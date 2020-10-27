@@ -1,44 +1,229 @@
-import React, { Component } from 'react';
-
+import React, { Component } from "react";
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import { connect } from "react-redux";
+import { showListOrderFetch } from "../../../trainRedux/action/order/actionOrder";
+import { createListQrFetch } from "../../../trainRedux/action/admin/actionManagement";
 class ManagerOrder extends Component {
-    render() {
-        return (
-            <main className="page contact-us-page">
-            {/* <section className="clean-block clean-form dark">
-              <div className="container">
-                <div className="block-heading" style={{ paddingTop: "30px" }}>
-                  <h2 className="text-info">Danh sách đơn hàng</h2>
-                </div>
-                </div>
-            </section> */}
-            <section className="clean-block ">
+  constructor(props) {
+    super(props);
+    this.state = {
+      resArray: [],
+      idModal: "",
+      dataQR: "",
+    };
+  }
+  componentDidMount = async () => {
+    let result = await this.props.showListOrderFetch();
+    //console.log(result);
+    result.forEach((e) => {
+      this.setState({
+        resArray: [...this.state.resArray, e],
+      });
+    });
+  };
+  createListQR = async (event) => {
+    event.preventDefault();
+    // console.log(this.state.dataQR);
+    let resule = await this.props.createListQrFetch(this.state.dataQR);
+    console.log(resule);
+  };
+
+  render() {
+    const styleHeader = {
+      fontSize: "18px",
+      height: "50px",
+      padding: "11px",
+      backgroundColor: "#343a40",
+      color: "white",
+      textAlign: "center",
+    };
+    const styleRow = {
+      fontSize: "15px",
+      color: "#78788c",
+      textAlign: "center",
+      borderBottom: "2px solid #78788c",
+      cursor: "pointer",
+    };
+    const columns = [
+      {
+        dataField: "stt",
+        text: "STT",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "createAt",
+        text: "NGÀY TẠO",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "idcustomer",
+        text: "TÊN",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "numberQR",
+        text: "NUMBERQR",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "memberfarmer",
+        text: "SỐ NÔNG HỘ",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "totalTrees",
+        text: "TỔNG CÂY",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "landArea",
+        text: "DIỆN TÍCH",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "totalpay",
+        text: "TỔNG TIỀN",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "createQR",
+        text: "TẠO QRCODE",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+    ];
+    const products = [];
+
+    this.state.resArray.map(async (element, index) => {
+      let dates = (string) => {
+        var options = { year: "numeric", month: "long", day: "numeric" };
+        return new Date(string).toLocaleDateString([], options);
+      };
+
+      let arr = {
+        stt: index + 1,
+        createAt: dates(element.createAt),
+        idcustomer: element.idcustomer,
+        numberQR: element.numberQR,
+        memberfarmer: element.memberfarmer,
+        totalTrees: element.totalTrees, // tông cay trong htx
+        landArea: element.landArea, // diện tích
+        // email: element.email,
+        totalpay: element.totalpay,
+        // payments: element.payments,
+        createQR: element.createQR ? (
+          <i>done</i>
+        ) : (
+          <i
+            data-toggle="modal"
+            data-target="#showModalCreate"
+            key={element._id}
+          >
+            create
+          </i>
+        ),
+      };
+      return products.push(arr);
+    });
+
+    const rowEvents = {
+      onClick: (e, row, rowIndex) => {
+        // console.log(row);
+        // console.log(row.createQR.key);
+        this.setState({
+          dataQR: {
+            idcustomer: row.idcustomer,
+            landArea: row.landArea,
+            memberfarmer: row.memberfarmer,
+            numberQR: row.numberQR,
+            totalTrees: row.totalTrees,
+            idOrder: row.createQR.key,
+          },
+        });
+      },
+    };
+    return (
+      <div>
+        <main className="page contact-us-page" style={{ height: "90vh" }}>
+          <section
+            className="clean-block clean-form dark"
+            style={{ height: "100%" }}
+          >
             <div className="container">
-                <div className="block-heading">
-                    <h2 className="text-info">Danh sách đơn hàng</h2>
-                </div>
-                <div className="row justify-content-center">
-                    <div className="col-md-5 feature-box"><i className="icon-star icon"></i>
-                        <h4>Bootstrap 4</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
-                    </div>
-                    <div className="col-md-5 feature-box"><i className="icon-pencil icon"></i>
-                        <h4>Customizable</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
-                    </div>
-                    <div className="col-md-5 feature-box"><i className="icon-screen-smartphone icon"></i>
-                        <h4>Responsive</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
-                    </div>
-                    <div className="col-md-5 feature-box"><i className="icon-refresh icon"></i>
-                        <h4>All Browser Compatibility</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
-                    </div>
-                </div>
+              <div className="block-heading" style={{ marginTop: "50px" }}>
+                <h2 className="text-info">Danh sach người dùng mua hàng </h2>
+              </div>
+              <div className="container-body">
+                <BootstrapTable
+                  keyField="stt"
+                  data={products}
+                  columns={columns}
+                  rowEvents={rowEvents}
+                  pagination={paginationFactory({
+                    sizePerPage: 5,
+                    hideSizePerPage: true,
+                  })}
+                  hover
+                />
+              </div>
             </div>
-        </section>
-          </main>
-        );
-    }
+          </section>
+        </main>
+        <div
+          className="modal fade"
+          //id="exampleModalCenter"
+          id="showModalCreate"
+          role="dialog"
+          aria-labelledby="exampleModalCenterTitle"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLongTitle">
+                  Bắc đầu tạo mã
+                </h5>
+              </div>
+              <div className="modal-body">
+                <button
+                  type="button"
+                  className="btn btn-primary "
+                  data-dismiss="modal"
+                  onClick={this.createListQR}
+                >
+                  Tạo mã và luu file gui khach hang
+                </button>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
-export default ManagerOrder;
+// export default ManagerOrder;
+const mapDispatchToProps = (dispatch, props) => ({
+  showListOrderFetch: (dataCreate) => dispatch(showListOrderFetch(dataCreate)),
+  createListQrFetch: (dataQR) => dispatch(createListQrFetch(dataQR)),
+});
+
+export default connect(null, mapDispatchToProps)(ManagerOrder);

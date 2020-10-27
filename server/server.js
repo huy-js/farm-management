@@ -4,7 +4,10 @@ const app = express();
 const initAPIs = require("./src/routes/api");
 const mongoose = require("mongoose");
 // connect mongodb
-mongoose.connect("mongodb://localhost:27017/farm-management", {
+// const uri = process.env.ATLAS_URI || process.env.MONGO_URI;
+const uri =
+  process.env.MONGO_URI || "mongodb://localhost:27017/farm-management";
+mongoose.connect(uri, {
   useNewUrlParser: true,
 });
 mongoose.connection.once("open", function () {

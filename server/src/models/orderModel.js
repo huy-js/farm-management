@@ -5,13 +5,14 @@ const Schema = mongoose.Schema;
 const orderSchema = new Schema(
   {
     idcustomer: { type: String },
-    totalOR: { type: Number },
+    numberQR: { type: Number },
     memberfarmer: { type: Number },
     totalTrees: { type: Number }, // tông cay trong htx
     landArea: { type: Number }, // diện tích
     email: { type: String },
     totalpay: { type: Number },
     payments: { type: String },
+    createQR: { type: Boolean, default: false },
     deletedAt: { type: Boolean, default: false },
   },
   {
@@ -25,15 +26,9 @@ orderSchema.statics = {
   createNew(item) {
     return this.create(item);
   },
-  //   findByEmail(email) {
-  //     return this.findOne({ email: email }).exec();
-  //   },
-  //   showListUser() {
-  //     return this.find().exec();
-  //   },
-  //   findActiveById(id) {
-  //     return this.findById(id, { isActive: 1, email: 1 }).exec();
-  //   },
+  showListOrder() {
+    return this.find().exec();
+  },
 };
 
 module.exports = mongoose.model("order", orderSchema);

@@ -26,7 +26,7 @@ farmerSchema.statics = {
     return this.create(item);
   },
   showFarmer(id) {
-    return this.find({ CooperativeId: id }).exec();
+    return this.find({ CooperativeId: id }, { password: 0 }).exec();
   },
 };
 
