@@ -10,7 +10,7 @@ class OrderCustomer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      resultData: "",
+      // resultData: this.props.resArray[1],
       //numberQR: 0,
       totalTrees: 0,
       email: "",
@@ -19,10 +19,7 @@ class OrderCustomer extends Component {
   }
   componentDidMount = async () => {
     //console.log(this.props.infor.currentUser._id)
-    let result = await this.props.showCoopareFetch(this.props.currentUser._id);
-    this.setState({
-      resultData: result,
-    });
+    await this.props.showCoopareFetch(this.props.currentUser._id);
   };
   // luu mail moi tui componet child
   setNewEmail = (newEmail) => {
@@ -44,18 +41,18 @@ class OrderCustomer extends Component {
       idcustomer: this.props.currentUser._id,
       numberQR:
         this.state.totalTrees === 0
-          ? this.state.resultData.totalTrees
+          ? this.props.dataCooper.totalTrees
           : this.state.totalTrees,
-      memberfarmer: this.state.resultData.memberfarmer,
-      totalTrees: this.state.resultData.totalTrees, // tông cay trong htx
-      landArea: this.state.resultData.landArea, // diện tích
+      memberfarmer: this.props.dataCooper.memberfarmer,
+      totalTrees: this.props.dataCooper.totalTrees, // tông cay trong htx
+      landArea: this.props.dataCooper.landArea, // diện tích
       email:
         this.state.email === ""
           ? this.props.currentUser.email
           : this.state.email,
       totalpay:
         this.state.totalTrees === 0
-          ? this.state.resultData.totalTrees * 1000
+          ? this.props.dataCooper.totalTrees * 1000
           : this.state.totalTrees * 1000,
       payments: "",
     };
@@ -82,25 +79,25 @@ class OrderCustomer extends Component {
                     style={{ height: "289px", paddingTop: "0px" }}
                   >
                     <p>
-                      hợp tác xã {this.state.resultData.nameOfCooperative},
-                      {this.state.resultData.address}
+                      hợp tác xã {this.props.dataCooper.nameOfCooperative},
+                      {this.props.dataCooper.address}
                     </p>
                     <div className="features">
                       <h4>
                         <span className="feature">Diện tích:&nbsp;</span>
-                        <span>{this.state.resultData.landArea} M</span>
+                        <span>{this.props.dataCooper.landArea} M</span>
                       </h4>
                       <h4>
                         <span className="feature">Số nông hộ:&nbsp;</span>
-                        <span>{this.state.resultData.memberfarmer} HỘ</span>
+                        <span>{this.props.dataCooper.memberfarmer} HỘ</span>
                       </h4>
                       <h4>
                         <span className="feature">Tổng số cây:&nbsp;</span>
-                        <span>{this.state.resultData.totalTrees} CÂY</span>
+                        <span>{this.props.dataCooper.totalTrees} CÂY</span>
                       </h4>
                       <h4>
                         <span className="feature">Số QR dự kiến:&nbsp;</span>
-                        <span>{this.state.resultData.numberQR} QR</span>
+                        <span>{this.props.dataCooper.numberQR} QR</span>
                       </h4>
                     </div>
                   </div>
@@ -152,12 +149,12 @@ class OrderCustomer extends Component {
 
                             {/* <p>
                               {this.state.numberQR === 0
-                                ? this.state.resultData.numberQR
+                                ? this.props.dataCooper.numberQR
                                 : this.state.numberQR}
                             </p> */}
                             <p>
                               {this.state.totalTrees === 0
-                                ? this.state.resultData.totalTrees
+                                ? this.props.dataCooper.totalTrees
                                 : this.state.totalTrees}
                             </p>
                           </div>
@@ -179,7 +176,7 @@ class OrderCustomer extends Component {
                             {/* <input className="form-control" type="number" placeholder="USA" name="cost"/> */}
                             <p>
                               {this.state.totalTrees === 0
-                                ? this.state.resultData.totalTrees * 1000
+                                ? this.props.dataCooper.totalTrees * 1000
                                 : this.state.totalTrees * 1000}{" "}
                             </p>
                           </div>
@@ -239,12 +236,12 @@ class OrderCustomer extends Component {
         <EditQRModelCustomer
           // numberQR={
           //   this.state.numberQR === 0
-          //     ? this.state.resultData.numberQR
+          //     ? this.props.dataCooper.numberQR
           //     : this.state.numberQR
           // }
           totalTrees={
             this.state.totalTrees === 0
-              ? this.state.resultData.totalTrees
+              ? this.props.dataCooper.totalTrees
               : this.state.totalTrees
           }
           onReceivernumberQR={this.setNewnumberQR}
@@ -258,6 +255,7 @@ class OrderCustomer extends Component {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.authReducer.currentUser,
+    dataCooper: state.fmManagerReducer.dataCooper,
   };
 };
 const mapDispatchToProps = (dispatch, props) => ({

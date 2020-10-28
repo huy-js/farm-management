@@ -7,6 +7,10 @@ export const fetchOrderData = (orderData) => ({
   type: actionTypes.FETCH_ORDER_DATA,
   payload: orderData,
 });
+export const fetchCoopareData = (orderData) => ({
+  type: actionTypes.FETCH_COOPARE_DATA,
+  payload: orderData,
+});
 
 export const showCoopareFetch = (id) => {
   console.log(id);
@@ -23,7 +27,8 @@ export const showCoopareFetch = (id) => {
         })
         .then((res) => {
           // console.log(res);
-          return res.data;
+          // return res.data;
+          dispatch(fetchCoopareData(res.data));
         })
         .catch((error) => {
           console.log(error);
