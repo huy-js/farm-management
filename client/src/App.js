@@ -19,8 +19,8 @@ import ListUser from "./components/manager/user/list_user";
 import BusinessCooperation from "./components/manager/cooperative/business_cooperation";
 import Footer from "./components/navigation/footer/Footer";
 import NotFound from "./components/NotFound";
-import Logout from './components/login-register/Logout';
-import * as actions from './trainRedux/action/actionAuth';
+import Logout from "./components/login-register/Logout";
+import * as actions from "./trainRedux/action/actionAuth";
 
 class App extends Component {
   componentDidMount() {
@@ -45,7 +45,7 @@ class App extends Component {
       </Switch>
     );
 
-    if (isLogin === true && role === "customer" ) {
+    if (isLogin === true && role === "customer") {
       routes = (
         <Switch>
           <Route
@@ -56,12 +56,13 @@ class App extends Component {
           <Route path="/order-customer" component={OrderCustomer} />
           {/* <Route path="/business-cooparetion" component={BusinessCooperation} /> */}
           <Route path="/" exact component={Home} />
-          <Route path="/logout" component={Logout}/>
+          <Route path="/logout" component={Logout} />
           <Route component={NotFound} />
           <Redirect to="/" />
         </Switch>
       );
-    }else{
+    }
+    if (isLogin === true && role === "admin") {
       routes = (
         <Switch>
           <Route
@@ -71,7 +72,7 @@ class App extends Component {
           <Route path="/manager-order" component={ManagerOrder} />
           <Route path="/list-user" component={ListUser} />
           <Route path="/" exact component={Home} />
-          <Route path="/logout" component={Logout}/>
+          <Route path="/logout" component={Logout} />
           <Route component={NotFound} />
           <Redirect to="/" />
         </Switch>
@@ -81,10 +82,7 @@ class App extends Component {
     if (isLogin) {
       logButton = (
         <li className="nav-item" role="presentation">
-          <Link
-            to="/logout"
-            className="nav-link"
-          >
+          <Link to="/logout" className="nav-link">
             Logout
           </Link>
         </li>
@@ -200,7 +198,7 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  checkUserLogin: () => dispatch(actions.checkUserLogin())
+  checkUserLogin: () => dispatch(actions.checkUserLogin()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
