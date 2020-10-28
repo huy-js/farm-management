@@ -7,10 +7,21 @@ import BusinessCooperation from "../cooperative/business_cooperation";
 import * as actions from "../../../trainRedux/action/user/actionManagement";
 
 class ManagerFarmer extends Component {
+  state = {
+    dataFarmer: "",
+    display: "none",
+  };
   componentDidMount() {
     this.props.showFarmerFetch(this.props.currentUser._id);
   }
-
+  ViewDiary = (id, event) => {
+    event.preventDefault();
+    //console.log(id);
+    this.setState({
+      dataFarmer: id,
+      display: "block",
+    });
+  };
   hideComment = (event) => {
     event.preventDefault();
     this.setState({
@@ -77,8 +88,8 @@ class ManagerFarmer extends Component {
         style: styleRow,
       },
       {
-        dataField: "passwordFarmer",
-        text: "PASSWORD",
+        dataField: "ViewDiary",
+        text: "XEM NHẬT KÝ",
         headerStyle: styleHeader,
         style: styleRow,
       },
@@ -101,7 +112,7 @@ class ManagerFarmer extends Component {
         // waterSource: element.waterSource,
         totalTrees: element.totalTrees,
         typeOfTree: element.typeOfTree,
-        passwordFarmer: <i>********</i>,
+        ViewDiary: <i onClick={(e) => this.ViewDiary(element._id, e)}>VIEW</i>,
       };
       return products.push(arr);
     });
@@ -149,8 +160,10 @@ class ManagerFarmer extends Component {
                 )}
               </div>
             </div>
+            <div className="container" style={{ display: this.state.display }}>
+              day la noi hien thi nhat ky : {this.state.dataFarmer}
+            </div>
           </section>
-          <BusinessCooperation />
         </main>
         <CreateFarmer />
       </div>

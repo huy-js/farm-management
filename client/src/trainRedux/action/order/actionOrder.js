@@ -1,6 +1,12 @@
 import axios from "axios";
 
 import { token } from "../../../components/helpers/checkLogin";
+import * as actionTypes from "../actionType";
+
+export const fetchOrderData = (orderData) => ({
+  type: actionTypes.FETCH_ORDER_DATA,
+  payload: orderData,
+});
 
 export const showCoopareFetch = (id) => {
   console.log(id);
@@ -21,11 +27,11 @@ export const showCoopareFetch = (id) => {
         })
         .catch((error) => {
           console.log(error);
-          localStorage.clear();
+          // localStorage.clear();
         });
     } else {
       console.log("ko token");
-      localStorage.removeItem("userToken");
+      // localStorage.removeItem("userToken");
     }
   };
 };
@@ -33,7 +39,7 @@ export const showCoopareFetch = (id) => {
 export const saveDataOrderFetch = (dataOrder) => {
   //console.log(dataOrder);
   return (dispatch) => {
-    //const token = localStorage.userToken;
+    const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
@@ -49,21 +55,22 @@ export const saveDataOrderFetch = (dataOrder) => {
         )
         .then((res) => {
           // console.log(res);
-          return res.data;
+          //return res.data;
+          // dispatch(showListOrderFetch());
         })
         .catch((error) => {
           console.log(error);
-          localStorage.clear();
+          // localStorage.clear();
         });
     } else {
       console.log("ko token");
-      localStorage.removeItem("userToken");
+      //  localStorage.removeItem("userToken");
     }
   };
 };
 export const showListOrderFetch = () => {
   return (dispatch) => {
-    //const token = localStorage.userToken;
+    const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
@@ -74,7 +81,8 @@ export const showListOrderFetch = () => {
           headers: { Authorization: `${accessToken}` },
         })
         .then((res) => {
-          return res.data;
+          // return res.data;
+          dispatch(fetchOrderData(res.data));
         })
         .catch((error) => {
           // console.log(error);
@@ -83,7 +91,7 @@ export const showListOrderFetch = () => {
         });
     } else {
       console.log("ko token");
-      localStorage.removeItem("userToken");
+      // localStorage.removeItem("userToken");
       return false;
     }
   };

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import paginationFactory from "react-bootstrap-table2-paginator";
 import { connect } from "react-redux";
 import {
   showListUserFetch,
@@ -8,31 +8,25 @@ import {
   createPwAndSendFetch,
 } from "../../../trainRedux/action/admin/actionManagement";
 class ListUser extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      resArray: [],
-      idModal: "",
-    };
-  }
-  componentDidMount = async () => {
-    let result = await this.props.showListUserFetch();
-    //console.log(result);
-    result.forEach((e) => {
-      this.setState({
-        resArray: [...this.state.resArray, e],
-      });
-    });
+  state = {
+    // resArray: [],
+    idModal: "",
   };
-  upDateActive = async (id, event) => {
+
+  componentDidMount() {
+    this.props.showListUserFetch(this.props.currentUser._id);
+  }
+
+  upDateActive = async (iduser, id, event) => {
     event.preventDefault();
     // console.log(id);
+    let data = {
+      iduser: iduser,
+      id: id,
+    };
     if (window.confirm("xác nhận cập nhật Active")) {
-      await this.props.updateActiveUserFetch(id);
+      await this.props.updateActiveUserFetch(data);
     }
-    // this.setState({
-    //   loading: false,
-    // });
   };
   // tao pass word
   createPwUser = async (id, event) => {
@@ -46,7 +40,11 @@ class ListUser extends Component {
   createPwAndSendMail = async (event) => {
     event.preventDefault();
     console.log(this.state.idModal);
-    await this.props.createPwAndSendFetch(this.state.idModal);
+    let data = {
+      iduser: this.props.currentUser._id,
+      id: this.state.idModal,
+    };
+    await this.props.createPwAndSendFetch(data);
   };
   render() {
     const styleHeader = {
@@ -110,7 +108,7 @@ class ListUser extends Component {
     ];
     const products = [];
 
-    this.state.resArray.map(async (element, index) => {
+    this.props.resArray.map(async (element, index) => {
       let dates = (string) => {
         var options = { year: "numeric", month: "long", day: "numeric" };
         return new Date(string).toLocaleDateString([], options);
@@ -136,12 +134,16 @@ class ListUser extends Component {
           <i
             className="fa fa-check"
             // name={element._id}
-            onClick={(e) => this.upDateActive(element._id, e)}
+            onClick={(e) =>
+              this.upDateActive(this.props.currentUser._id, element._id, e)
+            }
           ></i>
         ) : (
           <i
             className="fa fa-times"
-            onClick={(e) => this.upDateActive(element._id, e)}
+            onClick={(e) =>
+              this.upDateActive(this.props.currentUser._id, element._id, e)
+            }
           ></i>
         ),
       };
@@ -221,10 +223,16 @@ class ListUser extends Component {
 }
 
 // export default ListUser;
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.authReducer.currentUser,
+    resArray: state.fmManagerReducer.resArray,
+  };
+};
 const mapDispatchToProps = (dispatch, props) => ({
-  showListUserFetch: (dataCreate) => dispatch(showListUserFetch(dataCreate)),
-  updateActiveUserFetch: (id) => dispatch(updateActiveUserFetch(id)),
+  showListUserFetch: (iduser) => dispatch(showListUserFetch(iduser)),
+  updateActiveUserFetch: (data) => dispatch(updateActiveUserFetch(data)),
   createPwAndSendFetch: (id) => dispatch(createPwAndSendFetch(id)),
 });
 
-export default connect(null, mapDispatchToProps)(ListUser);
+export default connect(mapStateToProps, mapDispatchToProps)(ListUser);

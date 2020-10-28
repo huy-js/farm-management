@@ -133,8 +133,9 @@ let showFarmer = async (req, res) => {
 let showCooperation = async (req, res) => {
   try {
     let idUser = req.params.id;
-    console.log(idUser);
+    // console.log(idUser);
     let dataCooperation = await coopertationModel.showCooperation(idUser);
+    //console.log(dataCooperation);
     return res.status(200).json(dataCooperation);
   } catch (error) {
     return res.status(500).json({ message: "create failed" });
@@ -182,6 +183,7 @@ let createListQR = async (req, res) => {
         arrayQR: doneArrayQR,
       };
       await qrCodeModel.createNew(dataDone);
+      await orderModel.updateDefaulQR(req.body.dataQR.idOrder);
       return res.status(200).json({ message: "success" });
     } else {
       return res.status(500).json({ message: "khong tim thay htx" });

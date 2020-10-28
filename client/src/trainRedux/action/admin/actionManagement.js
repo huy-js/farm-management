@@ -2,9 +2,16 @@
 import axios from "axios";
 //import jwt_decode from "jwt-decode";
 import { token } from "../../../components/helpers/checkLogin";
-export const showListUserFetch = () => {
+import * as actionTypes from "../actionType";
+import { showListOrderFetch } from "../order/actionOrder";
+export const fetchListUserData = (ListUserdata) => ({
+  type: actionTypes.FETCH_LIST_USER_DATA,
+  payload: ListUserdata,
+});
+
+export const showListUserFetch = (iduser) => {
   return (dispatch) => {
-    //const token = localStorage.userToken;
+    const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
@@ -15,30 +22,32 @@ export const showListUserFetch = () => {
           headers: { Authorization: `${accessToken}` },
         })
         .then((res) => {
-          return res.data;
+          // return res.data;
+          dispatch(fetchListUserData(res.data));
         })
         .catch((error) => {
-          // console.log(error);
+          console.log(error);
           // localStorage.clear();
-          return false;
+          // return false;
         });
     } else {
       console.log("ko token");
-      localStorage.removeItem("userToken");
-      return false;
+      //  localStorage.removeItem("userToken");
+      // return false;
     }
   };
 };
 
-export const updateActiveUserFetch = (id) => {
-  //console.log(id);
+export const updateActiveUserFetch = (data) => {
+  //console.log(data);
+  let id = data.id;
   return (dispatch) => {
-    // const token = localStorage.userToken;
+    const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
       const accessToken = JSON.parse(token).accessToken;
-      // console.log(accessToken);
+      //console.log(accessToken);
       return axios
         .put(
           "http://localhost:3456/updateactive",
@@ -49,20 +58,22 @@ export const updateActiveUserFetch = (id) => {
         )
         .then((res) => {
           // console.log(res);
-          return res.data;
+          // return res.data;
+          dispatch(showListUserFetch(data.iduser));
         })
         .catch((error) => {
           console.log(error);
-          localStorage.clear();
+          // localStorage.clear();
         });
     } else {
       console.log("ko token");
-      localStorage.removeItem("userToken");
+      //localStorage.removeItem("userToken");
     }
   };
 };
-export const createPwAndSendFetch = (id) => {
-  console.log(id);
+export const createPwAndSendFetch = (data) => {
+  //console.log(data);
+  let id = data.id;
   return (dispatch) => {
     // const token = localStorage.userToken;
     // console.log(datacreate);
@@ -80,15 +91,16 @@ export const createPwAndSendFetch = (id) => {
         )
         .then((res) => {
           // console.log(res);
-          return res.data;
+          //return res.data;
+          dispatch(showListUserFetch(data.iduser));
         })
         .catch((error) => {
           console.log(error);
-          localStorage.clear();
+          //localStorage.clear();
         });
     } else {
       console.log("ko token");
-      localStorage.removeItem("userToken");
+      //localStorage.removeItem("userToken");
     }
   };
 };
@@ -139,15 +151,16 @@ export const createListQrFetch = (dataQR) => {
         )
         .then((res) => {
           // console.log(res);
-          return res.data;
+          //  return res.data;
+          dispatch(showListOrderFetch());
         })
         .catch((error) => {
           console.log(error);
-          localStorage.clear();
+          // localStorage.clear();
         });
     } else {
       console.log("ko token");
-      localStorage.removeItem("userToken");
+      //localStorage.removeItem("userToken");
     }
   };
 };

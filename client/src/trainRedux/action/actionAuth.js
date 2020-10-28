@@ -113,7 +113,7 @@ export const checkUserLogin = () => {
             const decodedToken = jwt_decode(accessToken);
             dispatch(login(decodedToken.data));
             dispatch(authCheckTrue());
-            dispatch(checkUserLoginGetData());
+            // dispatch(checkUserLoginGetData());
             dispatch(setAuthRedirectPath("/"));
           })
           .catch((error) => {
