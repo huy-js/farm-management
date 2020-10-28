@@ -2,14 +2,13 @@
 import axios from "axios";
 //import jwt_decode from "jwt-decode";
 import { token } from "../../../components/helpers/checkLogin";
-import * as actionTypes from '../actionType';
+import * as actionTypes from "../actionType";
 // import * as actions from "../../action/actionAuth";
 
 export const fetchFarmerData = (farmerData) => ({
   type: actionTypes.FETCH_FARMER_DATA,
-  payload: farmerData
-})
-
+  payload: farmerData,
+});
 export const showFarmerFetch = (id) => {
   //console.log(id);
   return (dispatch) => {
@@ -26,7 +25,7 @@ export const showFarmerFetch = (id) => {
         .then((res) => {
           // console.log(res);
           console.log(res.data);
-          dispatch(fetchFarmerData(res.data))
+          dispatch(fetchFarmerData(res.data));
         })
         .catch((error) => {
           console.log(error);

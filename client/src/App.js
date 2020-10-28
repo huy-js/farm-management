@@ -13,6 +13,10 @@ import Home from "./components/home/Home";
 import Register from "./components/login-register/Register";
 import Login from "./components/login-register/Login";
 import ManagerFarmer from "./components/manager/farmer/manager-farmer";
+import OrderCustomer from "./components/manager/order/order_customer";
+import ManagerOrder from "./components/manager/order/manager_order";
+import ListUser from "./components/manager/user/list_user";
+import BusinessCooperation from "./components/manager/cooperative/business_cooperation";
 import Footer from "./components/navigation/footer/Footer";
 import NotFound from "./components/NotFound";
 import Logout from './components/login-register/Logout';
@@ -30,7 +34,10 @@ class App extends Component {
     let showManage;
     let routes = (
       <Switch>
-        <Route path="/login" component={() => ( isLogin ? <Redirect to="/" /> : <Login />)} />
+        <Route
+          path="/login"
+          component={() => (isLogin ? <Redirect to="/" /> : <Login />)}
+        />
         <Route path="/register" component={Register} />
         <Route path="/" exact component={Home} />
         <Route component={NotFound} />
@@ -41,12 +48,18 @@ class App extends Component {
     if (isLogin === true) {
       routes = (
         <Switch>
-          <Route path="/login" component={() => ( isLogin ? <Redirect to="/" /> : <Login />)} />
+          <Route
+            path="/login"
+            component={() => (isLogin ? <Redirect to="/" /> : <Login />)}
+          />
           <Route path="/manager-farmer" component={ManagerFarmer} />
-          <Route path="/logout" component={Logout}/>
+          <Route path="/order-customer" component={OrderCustomer} />
+          <Route path="/manager-order" component={ManagerOrder} />
+          <Route path="/list-user" component={ListUser} />
+          {/* <Route path="/business-cooparetion" component={BusinessCooperation} /> */}
           <Route path="/" exact component={Home} />
-          <Redirect to="/"/>
           <Route component={NotFound} />
+          <Redirect to="/" />
         </Switch>
       );
     }
@@ -102,6 +115,11 @@ class App extends Component {
                 Order
               </Link>
             </li>
+            {/* <li className="nav-item" role="presentation">
+              <Link to={"/business-cooparetion"} className="nav-link">
+                Business-Cooperation
+              </Link>
+            </li> */}
           </ul>
         );
         break;

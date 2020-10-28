@@ -29,6 +29,9 @@ orderSchema.statics = {
   showListOrder() {
     return this.find().exec();
   },
+  updateDefaulQR(id) {
+    return this.findByIdAndUpdate(id, { createQR: true }).exec();
+  },
 };
 
 module.exports = mongoose.model("order", orderSchema);

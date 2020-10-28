@@ -4,29 +4,32 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import { connect } from "react-redux";
 import { showListOrderFetch } from "../../../trainRedux/action/order/actionOrder";
 import { createListQrFetch } from "../../../trainRedux/action/admin/actionManagement";
+
 class ManagerOrder extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      resArray: [],
-      idModal: "",
-      dataQR: "",
-    };
-  }
-  componentDidMount = async () => {
-    let result = await this.props.showListOrderFetch();
-    //console.log(result);
-    result.forEach((e) => {
-      this.setState({
-        resArray: [...this.state.resArray, e],
-      });
-    });
+  state = {
+    // resArray: [],
+    idModal: "",
+    dataQR: "",
   };
+
+  // componentDidMount = async () => {
+  //   let result = await this.props.showListOrderFetch();
+  //   //console.log(result);
+  //   result.forEach((e) => {
+  //     this.setState({
+  //       resArray: [...this.state.resArray, e],
+  //     });
+  //   });
+  // };
+  componentDidMount() {
+    this.props.showListOrderFetch();
+  }
+
   createListQR = async (event) => {
     event.preventDefault();
     // console.log(this.state.dataQR);
-    let resule = await this.props.createListQrFetch(this.state.dataQR);
-    console.log(resule);
+    await this.props.createListQrFetch(this.state.dataQR);
+    //console.log(resule);
   };
 
   render() {
@@ -103,7 +106,7 @@ class ManagerOrder extends Component {
     ];
     const products = [];
 
-    this.state.resArray.map(async (element, index) => {
+    this.props.resArray.map(async (element, index) => {
       let dates = (string) => {
         var options = { year: "numeric", month: "long", day: "numeric" };
         return new Date(string).toLocaleDateString([], options);
@@ -219,11 +222,16 @@ class ManagerOrder extends Component {
     );
   }
 }
-
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.authReducer.currentUser,
+    resArray: state.fmManagerReducer.resArray,
+  };
+};
 // export default ManagerOrder;
 const mapDispatchToProps = (dispatch, props) => ({
-  showListOrderFetch: (dataCreate) => dispatch(showListOrderFetch(dataCreate)),
+  showListOrderFetch: () => dispatch(showListOrderFetch()),
   createListQrFetch: (dataQR) => dispatch(createListQrFetch(dataQR)),
 });
 
-export default connect(null, mapDispatchToProps)(ManagerOrder);
+export default connect(mapStateToProps, mapDispatchToProps)(ManagerOrder);

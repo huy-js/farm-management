@@ -19,9 +19,7 @@ class OrderCustomer extends Component {
   }
   componentDidMount = async () => {
     //console.log(this.props.infor.currentUser._id)
-    let result = await this.props.showCoopareFetch(
-      this.props.infor.currentUser._id
-    );
+    let result = await this.props.showCoopareFetch(this.props.currentUser._id);
     this.setState({
       resultData: result,
     });
@@ -43,7 +41,7 @@ class OrderCustomer extends Component {
     event.preventDefault();
     console.log(this.state);
     let dataOrder = {
-      idcustomer: this.props.infor.currentUser._id,
+      idcustomer: this.props.currentUser._id,
       numberQR:
         this.state.totalTrees === 0
           ? this.state.resultData.totalTrees
@@ -53,7 +51,7 @@ class OrderCustomer extends Component {
       landArea: this.state.resultData.landArea, // diện tích
       email:
         this.state.email === ""
-          ? this.props.infor.currentUser.email
+          ? this.props.currentUser.email
           : this.state.email,
       totalpay:
         this.state.totalTrees === 0
@@ -133,7 +131,7 @@ class OrderCustomer extends Component {
 
                         <p>
                           {this.state.email === ""
-                            ? this.props.infor.currentUser.email
+                            ? this.props.currentUser.email
                             : this.state.email}
                         </p>
                       </div>
@@ -233,7 +231,7 @@ class OrderCustomer extends Component {
         <EditmailModelCustomer
           email={
             this.state.email === ""
-              ? this.props.infor.currentUser.email
+              ? this.props.currentUser.email
               : this.state.email
           }
           onReceiverEmail={this.setNewEmail}
@@ -259,7 +257,7 @@ class OrderCustomer extends Component {
 // export default OrderCustomer;
 const mapStateToProps = (state) => {
   return {
-    infor: state.login,
+    currentUser: state.authReducer.currentUser,
   };
 };
 const mapDispatchToProps = (dispatch, props) => ({
