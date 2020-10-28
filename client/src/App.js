@@ -15,6 +15,7 @@ import Login from "./components/login-register/Login";
 import ManagerFarmer from "./components/manager/farmer/manager-farmer";
 import Footer from "./components/navigation/footer/Footer";
 import NotFound from "./components/NotFound";
+import Logout from './components/login-register/Logout';
 import * as actions from './trainRedux/action/actionAuth';
 
 class App extends Component {
@@ -42,9 +43,10 @@ class App extends Component {
         <Switch>
           <Route path="/login" component={() => ( isLogin ? <Redirect to="/" /> : <Login />)} />
           <Route path="/manager-farmer" component={ManagerFarmer} />
+          <Route path="/logout" component={Logout}/>
           <Route path="/" exact component={Home} />
-          <Route component={NotFound} />
           <Redirect to="/"/>
+          <Route component={NotFound} />
         </Switch>
       );
     }
@@ -52,13 +54,12 @@ class App extends Component {
     if (isLogin) {
       logButton = (
         <li className="nav-item" role="presentation">
-          <NavLink
-            to={"/"}
+          <Link
+            to="/logout"
             className="nav-link"
-            onClick={this.props.authLogout}
           >
             Logout
-          </NavLink>
+          </Link>
         </li>
       );
     } else {
@@ -167,8 +168,7 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  checkUserLogin: () => dispatch(actions.checkUserLogin()),
-  authLogout: () => dispatch(actions.authLogout()),
+  checkUserLogin: () => dispatch(actions.checkUserLogin())
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
