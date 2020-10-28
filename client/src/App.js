@@ -45,7 +45,7 @@ class App extends Component {
       </Switch>
     );
 
-    if (isLogin === true) {
+    if (isLogin === true && role === "customer" ) {
       routes = (
         <Switch>
           <Route
@@ -54,10 +54,24 @@ class App extends Component {
           />
           <Route path="/manager-farmer" component={ManagerFarmer} />
           <Route path="/order-customer" component={OrderCustomer} />
-          <Route path="/manager-order" component={ManagerOrder} />
-          <Route path="/list-user" component={ListUser} />
           {/* <Route path="/business-cooparetion" component={BusinessCooperation} /> */}
           <Route path="/" exact component={Home} />
+          <Route path="/logout" component={Logout}/>
+          <Route component={NotFound} />
+          <Redirect to="/" />
+        </Switch>
+      );
+    }else{
+      routes = (
+        <Switch>
+          <Route
+            path="/login"
+            component={() => (isLogin ? <Redirect to="/" /> : <Login />)}
+          />
+          <Route path="/manager-order" component={ManagerOrder} />
+          <Route path="/list-user" component={ListUser} />
+          <Route path="/" exact component={Home} />
+          <Route path="/logout" component={Logout}/>
           <Route component={NotFound} />
           <Redirect to="/" />
         </Switch>
