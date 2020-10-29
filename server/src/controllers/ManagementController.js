@@ -85,7 +85,6 @@ let createFarmer = async (req, res) => {
     //console.log(ranDomPassWord);
     let salt = bcrypt.genSaltSync(saltRounds); // tao muoi bam :))
     let password = bcrypt.hashSync(ranDomPassWord, salt);
-
     let idCoopera = await coopertationModel.findIdCoopera(data.idUser);
     //console.log(idCoopera);
     if (idCoopera) {
