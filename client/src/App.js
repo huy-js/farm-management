@@ -28,7 +28,6 @@ class App extends Component {
   }
   render() {
     let isLogin = this.props.isLogin;
-    console.log(isLogin);
     let role = this.props.role;
     let logButton;
     let showManage;
@@ -45,39 +44,38 @@ class App extends Component {
       </Switch>
     );
 
-    if (isLogin === true) {
-      if (role === "customer ") {
-        routes = (
-          <Switch>
-            <Route
-              path="/login"
-              component={() => (isLogin ? <Redirect to="/" /> : <Login />)}
-            />
-            <Route path="/manager-farmer" component={ManagerFarmer} />
-            <Route path="/order-customer" component={OrderCustomer} />
-            {/* <Route path="/business-cooparetion" component={BusinessCooperation} /> */}
-            <Route path="/" exact component={Home} />
-            <Route path="/logout" component={Logout} />
-            <Route component={NotFound} />
-            <Redirect to="/" />
-          </Switch>
-        );
-      } else {
-        routes = (
-          <Switch>
-            <Route
-              path="/login"
-              component={() => (isLogin ? <Redirect to="/" /> : <Login />)}
-            />
-            <Route path="/manager-order" component={ManagerOrder} />
-            <Route path="/list-user" component={ListUser} />
-            <Route path="/" exact component={Home} />
-            <Route path="/logout" component={Logout} />
-            <Route component={NotFound} />
-            <Redirect to="/" />
-          </Switch>
-        );
-      }
+    if (isLogin === true && role === "customer") {
+      routes = (
+        <Switch>
+          <Route
+            path="/login"
+            component={() => (isLogin ? <Redirect to="/" /> : <Login />)}
+          />
+          <Route path="/manager-farmer" component={ManagerFarmer} />
+          <Route path="/order-customer" component={OrderCustomer} />
+          <Route path="/business-cooperation" component={BusinessCooperation} />
+          <Route path="/" exact component={Home} />
+          <Route path="/logout" component={Logout} />
+          <Route component={NotFound} />
+          <Redirect to="/" />
+        </Switch>
+      );
+    }
+    if (isLogin === true && role === "admin") {
+      routes = (
+        <Switch>
+          <Route
+            path="/login"
+            component={() => (isLogin ? <Redirect to="/" /> : <Login />)}
+          />
+          <Route path="/manager-order" component={ManagerOrder} />
+          <Route path="/list-user" component={ListUser} />
+          <Route path="/" exact component={Home} />
+          <Route path="/logout" component={Logout} />
+          <Route component={NotFound} />
+          <Redirect to="/" />
+        </Switch>
+      );
     }
 
     if (isLogin) {
@@ -128,11 +126,11 @@ class App extends Component {
                 Order
               </Link>
             </li>
-            {/* <li className="nav-item" role="presentation">
-              <Link to={"/business-cooparetion"} className="nav-link">
+            <li className="nav-item" role="presentation">
+              <Link to={"/business-cooperation"} className="nav-link">
                 Business-Cooperation
               </Link>
-            </li> */}
+            </li>
           </ul>
         );
         break;
