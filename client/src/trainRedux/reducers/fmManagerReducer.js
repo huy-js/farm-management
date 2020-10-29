@@ -3,6 +3,7 @@ import { updateObject } from "../utility";
 
 const initialState = {
   resArray: [],
+  dataCooper: "",
 };
 // ARRAY FARMER
 const fetchFarmerData = (state, action) => {
@@ -22,6 +23,12 @@ const fetchListUserData = (state, action) => {
     resArray: action.payload,
   });
 };
+// COOPER ORDER
+const fetchCoopareData = (state, action) => {
+  return updateObject(state, {
+    dataCooper: action.payload,
+  });
+};
 var reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.FETCH_FARMER_DATA:
@@ -30,6 +37,8 @@ var reducer = (state = initialState, action) => {
       return fetchOrderData(state, action);
     case actionTypes.FETCH_LIST_USER_DATA:
       return fetchListUserData(state, action);
+    case actionTypes.FETCH_COOPARE_DATA:
+      return fetchCoopareData(state, action);
     default:
       return state;
   }
