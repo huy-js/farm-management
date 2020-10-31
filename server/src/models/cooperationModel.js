@@ -44,5 +44,8 @@ cooperationSchema.statics = {
       memberfarmer: farmermember,
     }).exec();
   },
+  findCoopare(idCoopare) {
+    return this.findById(idCoopare).exec();
+  },
 };
 module.exports = mongoose.model("cooperation", cooperationSchema);

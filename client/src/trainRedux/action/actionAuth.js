@@ -35,6 +35,10 @@ export const userRegisterFetch = (data, checkVali) => {
     }
   };
 };
+export const resultSearchFetch = (resData) => ({
+  type: actionTypes.SEARCH_GUEST,
+  payload: resData,
+});
 //ko dung ??
 export const setAuthRedirectPath = (path) => {
   return {
@@ -127,14 +131,16 @@ export const checkUserLogin = () => {
   };
 };
 // ko dung'
-export const checkUserLoginGetData = () => {
+export const searchGuestFetch = (idcoopera, idfarmer) => {
   return (dispatch) => {
-    const newId = localStorage.getItem("userId");
-    console.log(newId);
+    // const newId = localStorage.getItem("userId");
+    console.log(idfarmer);
     return axios
-      .get(`http://localhost:3456/getById/${newId}`)
+      .get(`http://192.168.1.5:3456/search/${idcoopera}/${idfarmer}`)
       .then((res) => {
-        dispatch(login(res.data.user));
+        //console.log(res.data);
+        //  console.log(res.data.dataCoopare)
+        dispatch(resultSearchFetch(res.data));
       })
       .catch((error) => {
         // dispatch(authCheckFalse());

@@ -9,6 +9,13 @@ const initialState = {
   displayRegister: null,
   loading: false,
   authRedirectPath: "/",
+  search_guest: [],
+};
+
+const resultSearchFetch = (state, action) => {
+  return updateObject(state, {
+    search_guest: action.payload,
+  });
 };
 
 const login = (state, action) => {
@@ -92,6 +99,8 @@ var reducer = (state = initialState, action) => {
       return authCheckFalse(state, action);
     case actionTypes.SET_AUTH_REDIRECT_PATH:
       return setAuthRedirectPath(state, action);
+    case actionTypes.SEARCH_GUEST:
+      return resultSearchFetch(state, action);
     default:
       return state;
   }

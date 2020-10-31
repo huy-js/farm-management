@@ -1,5 +1,7 @@
 export const LOGIN = "LOGIN";
 export const REGISTER = "REGISTER";
+//search app react native
+export const SEARCH_GUEST = "SEARCH_GUEST";
 
 export const AUTH_START = "AUTH_START";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";

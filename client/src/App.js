@@ -17,6 +17,7 @@ import OrderCustomer from "./components/manager/order/order_customer";
 import ManagerOrder from "./components/manager/order/manager_order";
 import ListUser from "./components/manager/user/list_user";
 import BusinessCooperation from "./components/manager/cooperative/business_cooperation";
+import Search from "./components/profile/search_infor";
 import Footer from "./components/navigation/footer/Footer";
 import NotFound from "./components/NotFound";
 import Logout from "./components/login-register/Logout";
@@ -40,6 +41,7 @@ class App extends Component {
         />
         <Route path="/register" component={Register} />
         <Route path="/" exact component={Home} />
+        <Route path="/search/:idcoopare/:idfarmer" component={Search} />
         <Route component={NotFound} />
         <Redirect to="/" />
       </Switch>

@@ -9,10 +9,10 @@ let initAPIs = (app) => {
   router.post("/login", AuthController.login);
   router.post("/register", AuthController.register);
   // api find infor product continue :))
-  router.get("/search", ManagementController.searchProduct);
+  //router.get("/search", ManagementController.searchProduct);
   router.get(
-    "/findinforproduct/:idcoopare/:idfarmer",
-    ManagementController.findInforProduct
+    "/search/:idcoopare/:idfarmer",
+    ManagementController.searchProduct
   );
   //goi isAuthcheck sau moi lan vao 1 duong dan trong react
   router.get("/checklogin", AuthMiddleWare.isAuthCheck);

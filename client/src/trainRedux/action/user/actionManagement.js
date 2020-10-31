@@ -44,7 +44,7 @@ export const userCreateFarmerFetch = (dataFamer, checkVali) => {
   });
   return (dispatch) => {
     //dispatch(actions.authStart());
-    // const token = localStorage.userToken;
+    const token = localStorage.userToken;
     // console.log(datacreate);
     console.log(dataFamer);
     if (token && check) {

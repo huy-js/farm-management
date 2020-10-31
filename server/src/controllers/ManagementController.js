@@ -10,7 +10,7 @@ const bcrypt = require("bcrypt");
 const saltRounds = 7;
 
 const sendMail = require("../helpers/sendmail.helper");
-//const cooperationModel = require("../models/cooperationModel");
+
 // async await luon di voi nhau
 let showListUser = async (req, res) => {
   try {
@@ -207,10 +207,24 @@ let findInforProduct = async (req, res) => {
 };
 let searchProduct = async (req, res) => {
   try {
-    let data = await orderModel.showListOrder();
-    let dataresult = data[0];
-    console.log(data);
-    return res.status(200).json(dataresult.email);
+    let idCoopare = req.params.idcoopare;
+    console.log(idCoopare);
+    let idFarmer = req.params.idfarmer;
+    console.log(idFarmer);
+    // let idCoopare = req.query.idcoopare;
+    // let idFarmer = req.query.idfarmer;
+    console.log(idCoopare);
+    console.log(idFarmer);
+    let dataCoopare = await coopertationModel.findCoopare(idCoopare);
+    console.log(dataCoopare);
+    let dataFarmer = await farmerModel.findFarmer(idFarmer);
+    console.log(dataFarmer);
+    let data = {
+      dataCoopare: dataCoopare,
+      dataFarmer: dataFarmer,
+    };
+    const arrayData = Object.values(data);
+    return res.status(200).json(arrayData);
   } catch (error) {
     return res.status(500).json({ message: "create failed" });
   }
