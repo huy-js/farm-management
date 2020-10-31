@@ -29,7 +29,6 @@ class App extends Component {
   }
   render() {
     let isLogin = this.props.isLogin;
-    console.log(isLogin);
     let role = this.props.role;
     let logButton;
     let showManage;
@@ -56,7 +55,7 @@ class App extends Component {
           />
           <Route path="/manager-farmer" component={ManagerFarmer} />
           <Route path="/order-customer" component={OrderCustomer} />
-          {/* <Route path="/business-cooparetion" component={BusinessCooperation} /> */}
+          <Route path="/business-cooperation" component={BusinessCooperation} />
           <Route path="/" exact component={Home} />
           <Route path="/logout" component={Logout} />
           <Route component={NotFound} />
@@ -129,11 +128,11 @@ class App extends Component {
                 Order
               </Link>
             </li>
-            {/* <li className="nav-item" role="presentation">
-              <Link to={"/business-cooparetion"} className="nav-link">
+            <li className="nav-item" role="presentation">
+              <Link to={"/business-cooperation"} className="nav-link">
                 Business-Cooperation
               </Link>
-            </li> */}
+            </li>
           </ul>
         );
         break;

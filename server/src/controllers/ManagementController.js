@@ -85,7 +85,6 @@ let createFarmer = async (req, res) => {
     //console.log(ranDomPassWord);
     let salt = bcrypt.genSaltSync(saltRounds); // tao muoi bam :))
     let password = bcrypt.hashSync(ranDomPassWord, salt);
-
     let idCoopera = await coopertationModel.findIdCoopera(data.idUser);
     //console.log(idCoopera);
     if (idCoopera) {
@@ -121,10 +120,14 @@ let showFarmer = async (req, res) => {
     let idCoopera = await coopertationModel.findIdCoopera(idUser);
 
     let getData = await farmerModel.showFarmer(idCoopera._id);
-    getData.map(async (e) => {
-      let pw = await bcrypt.compareSync(e.password);
-      console.log(pw);
-    });
+    let salt = bcrypt.genSaltSync(saltRounds);
+    console.log(salt);
+    console.log(getData);
+    //Không cần chỗ này
+    // getData.map(async (e) => {
+    //   let pw = await bcrypt.compareSync(e.password);
+    //   console.log(pw);
+    // });
     return res.status(200).json(getData);
   } catch (error) {
     return res.status(500).json({ message: "get data farmer" });
