@@ -136,7 +136,7 @@ export const searchGuestFetch = (idcoopera, idfarmer) => {
     // const newId = localStorage.getItem("userId");
     console.log(idfarmer);
     return axios
-      .get(`http://192.168.1.5:3456/search/${idcoopera}/${idfarmer}`)
+      .get(`http://192.168.1.193:3456/search/${idcoopera}/${idfarmer}`)
       .then((res) => {
         //console.log(res.data);
         //  console.log(res.data.dataCoopare)
