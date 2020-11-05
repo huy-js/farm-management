@@ -40,8 +40,42 @@ let verifyToken = (token, secretKey) => {
     });
   });
 };
+let generateTokenQR = (data, secretSignature, tokenLife) => {
+  return new Promise((resolve, reject) => {
+    // Định nghĩa những thông tin của user mà bạn muốn lưu vào token ở đây
+    //console.log(data);
+    // console.log(tokenLife);
+    // const tokenQR = {
+    //   dataQR: data.dataQR,
+    //   code: data.code,
+    // };
+    const tokenQR = {
+      idCoopare: data.idCoopare,
+      idFarmer: data.idFarmer,
+      code: data.code,
+    };
+
+    // Thực hiện ký và tạo token
+    jwt.sign(
+      { data: tokenQR },
+      secretSignature,
+      {
+        algorithm: "HS256",
+        expiresIn: tokenLife,
+      },
+      (error, token) => {
+        if (error) {
+          return reject(error);
+        }
+        // console.log(token);
+        resolve(token);
+      }
+    );
+  });
+};
 
 module.exports = {
   generateToken: generateToken,
   verifyToken: verifyToken,
+  generateTokenQR: generateTokenQR,
 };

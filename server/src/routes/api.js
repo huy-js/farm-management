@@ -9,11 +9,11 @@ let initAPIs = (app) => {
   router.post("/login", AuthController.login);
   router.post("/register", AuthController.register);
   // api find infor product continue :))
-  //router.get("/search", ManagementController.searchProduct);
-  router.get(
-    "/search/:idcoopare/:idfarmer",
-    ManagementController.searchProduct
-  );
+  router.get("/search/:dataQR", ManagementController.searchProductQR);
+  // router.get(
+  //   "/search/:idcoopare/:idfarmer",
+  //   ManagementController.searchProduct
+  // );
   //goi isAuthcheck sau moi lan vao 1 duong dan trong react
   router.get("/checklogin", AuthMiddleWare.isAuthCheck);
   // kiem tra trang thai dang nhap tai server
@@ -34,7 +34,8 @@ let initAPIs = (app) => {
   router.put("/updateactive", ManagementController.updateActiveUser);
   router.put("/createPwandSendMail", ManagementController.createPwAndSendMail);
   router.get("/showlistorder", ManagementController.showListOrder);
-  router.post("/createlistqr", ManagementController.createListQR);
+  //router.post("/createlistqr", ManagementController.createListQR);
+  router.post("/createlistqr", ManagementController.newCreateQR);
   return app.use("/", router);
 };
 module.exports = initAPIs;

@@ -4,12 +4,18 @@ const farmerModel = require("../models/farmerModel");
 const orderModel = require("../models/orderModel");
 const qrCodeModel = require("../models/qrCodeModel");
 const qrcode = require("qrcode");
+require("dotenv").config();
+const jwtHelper = require("../helpers/jwt.helper");
+
 const generator = require("generate-password");
 
 const bcrypt = require("bcrypt");
 const saltRounds = 7;
 
 const sendMail = require("../helpers/sendmail.helper");
+const accessTokenLifeQr = process.env.ACCESS_TOKEN_LIFE_QR;
+
+const accessTokenSecretQr = process.env.ACCESS_TOKEN_SECRET_QR;
 
 // async await luon di voi nhau
 let showListUser = async (req, res) => {
@@ -196,6 +202,83 @@ let createListQR = async (req, res) => {
     return res.status(500).json({ message: "create failed" });
   }
 };
+let newCreateQR = async (req, res) => {
+  try {
+    console.log("createQR");
+    //tim  htx
+    let idCoopare = await coopertationModel.findIdCoopera(
+      req.body.dataQR.idcustomer
+    );
+    if (idCoopare) {
+      let listFarmer = await farmerModel.showFarmer(idCoopare._id); //result array
+      // chay data nong ho
+      let arrayFarmer = listFarmer.map(async (e) => {
+        //console.log(e.totalNumberQR);
+        // let arrayQR = await setDataQR(e.totalNumberQR, idCoopare._id, e._id);
+        // console.log(arrayQR);
+        let arrayQR = [];
+        for (let i = 1; i <= e.totalNumberQR; i++) {
+          let ranDomPassWord = generator.generate({
+            length: 5,
+            numbers: true,
+          });
+          // let data = {
+          //   dataQR: idCoopare._id + "." + e._id,
+          //   code: ranDomPassWord,
+          // };
+          let data = {
+            idCoopare: idCoopare._id,
+            idFarmer: e._id,
+            code: ranDomPassWord,
+          };
+          arrayQR.push(data);
+        }
+        // console.log(arrayQR);
+        let dataDone = {
+          idFarmer: e._id,
+          arrayQR: arrayQR,
+        };
+        return dataDone;
+      });
+      //chuyen doi data thanh ma qr
+      let convertArrayQR = await Promise.all(arrayFarmer);
+      //  console.log(convertArrayQR);
+      let converData = convertArrayQR.map(async (e) => {
+        let arrayConvet = await e.arrayQR.map(async (ele) => {
+          // console.log(ele);
+          // gan token
+          let tokenQR = await jwtHelper.generateTokenQR(
+            ele,
+            accessTokenSecretQr,
+            accessTokenLifeQr
+          );
+          // chuyen thanh QR
+          let convetQR = { qrId: await qrcode.toDataURL(tokenQR) };
+          return convetQR;
+        });
+        let array = await Promise.all(arrayConvet);
+        e.arrayQR = array;
+        return e;
+      });
+      let converDataArray = await Promise.all(converData);
+      // console.log(converDataArray);
+
+      let dataDone = {
+        idOrder: req.body.dataQR.idOrder,
+        idCoopare: idCoopare._id,
+        ListFarmerQR: converDataArray,
+      };
+      await qrCodeModel.createNew(dataDone);
+      //  await orderModel.updateDefaulQR(req.body.dataQR.idOrder);
+      return res.status(200).json({ message: "success" });
+    } else {
+      return res.status(500).json({ message: "khong tim thay htx" });
+    }
+    //return res.status(200).json({ message: "create succession." });
+  } catch (error) {
+    return res.status(500).json({ message: "create QR failed" });
+  }
+};
 let findInforProduct = async (req, res) => {
   try {
     // console.log("dsadadsa");
@@ -211,7 +294,7 @@ let findInforProduct = async (req, res) => {
 let searchProduct = async (req, res) => {
   try {
     let idCoopare = req.params.idcoopare;
-    console.log(idCoopare);
+    // console.log(idCoopare);
     let idFarmer = req.params.idfarmer;
     console.log(idFarmer);
     // let idCoopare = req.query.idcoopare;
@@ -232,6 +315,32 @@ let searchProduct = async (req, res) => {
     return res.status(500).json({ message: "create failed" });
   }
 };
+let searchProductQR = async (req, res) => {
+  try {
+    let dataQR = req.params.dataQR;
+    const decoded = await jwtHelper.verifyToken(dataQR, accessTokenSecretQr);
+    console.log(decoded);
+    if (decoded) {
+      let dataCoopare = await coopertationModel.findCoopare(
+        decoded.data.idCoopare
+      );
+      // console.log(dataCoopare);
+      let dataFarmer = await farmerModel.findFarmer(decoded.data.idFarmer);
+      //console.log(dataFarmer);
+      let data = {
+        dataCoopare: dataCoopare,
+        dataFarmer: dataFarmer,
+      };
+      const arrayData = Object.values(data);
+      return res.status(200).json(arrayData);
+    } else {
+      return res.status(500).json({ message: "create failed" });
+    }
+    //return res.status(200).json(decoded);
+  } catch (error) {
+    return res.status(500).json({ message: "create failed" });
+  }
+};
 module.exports = {
   showListUser: showListUser,
   updateActiveUser: updateActiveUser,
@@ -242,6 +351,8 @@ module.exports = {
   createDataOrder: createDataOrder,
   showListOrder: showListOrder,
   createListQR: createListQR,
+  newCreateQR: newCreateQR,
   findInforProduct: findInforProduct,
   searchProduct: searchProduct,
+  searchProductQR: searchProductQR,
 };
