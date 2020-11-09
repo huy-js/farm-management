@@ -75,7 +75,7 @@ export const createPwAndSendFetch = (data) => {
   //console.log(data);
   let id = data.id;
   return (dispatch) => {
-    // const token = localStorage.userToken;
+    const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
