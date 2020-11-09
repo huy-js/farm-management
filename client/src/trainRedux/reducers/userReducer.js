@@ -5,8 +5,9 @@ const initialState = {
   resArray: [],
   dataCooper: "",
 };
-// ARRAY FARMER
-const fetchFarmerData = (state, action) => {
+
+//ARRAY LIST USER
+const fetchListUserData = (state, action) => {
   return updateObject(state, {
     resArray: action.payload,
   });
@@ -14,8 +15,8 @@ const fetchFarmerData = (state, action) => {
 
 var reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.FETCH_FARMER_DATA:
-      return fetchFarmerData(state, action);
+    case actionTypes.FETCH_LIST_USER_DATA:
+      return fetchListUserData(state, action);
     default:
       return state;
   }

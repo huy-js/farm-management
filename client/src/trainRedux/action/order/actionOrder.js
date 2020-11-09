@@ -7,6 +7,21 @@ export const fetchOrderData = (orderData) => ({
   type: actionTypes.FETCH_ORDER_DATA,
   payload: orderData,
 });
+
+export const purchaseStart = () => ({
+  type: actionTypes.PURCHASE_START,
+});
+
+export const purchaseSuccess = () => ({
+  type: actionTypes.PURCHASE_SUCCESS,
+  purchase : true
+});
+
+export const purchaseFail = (error) => ({
+  type: actionTypes.PURCHASE_FAIL,
+  error: error,
+});
+
 export const fetchCoopareData = (orderData) => ({
   type: actionTypes.FETCH_COOPARE_DATA,
   payload: orderData,
@@ -15,7 +30,7 @@ export const fetchCoopareData = (orderData) => ({
 export const showCoopareFetch = (id) => {
   console.log(id);
   return (dispatch) => {
-    //const token = localStorage.userToken;
+    const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
@@ -42,14 +57,11 @@ export const showCoopareFetch = (id) => {
 };
 
 export const saveDataOrderFetch = (dataOrder) => {
-  //console.log(dataOrder);
   return (dispatch) => {
     const token = localStorage.userToken;
-    // console.log(datacreate);
-    // console.log(token);
     if (token) {
+      dispatch(purchaseStart());
       const accessToken = JSON.parse(token).accessToken;
-      // console.log(accessToken);
       return axios
         .post(
           `http://localhost:3456/createdataorder`,
@@ -59,20 +71,48 @@ export const saveDataOrderFetch = (dataOrder) => {
           }
         )
         .then((res) => {
-          // console.log(res);
-          //return res.data;
-          // dispatch(showListOrderFetch());
+          console.log(res);
+          dispatch(purchaseSuccess())
         })
         .catch((error) => {
           console.log(error);
-          // localStorage.clear();
+          dispatch(purchaseFail(error.response.data.message));
         });
     } else {
       console.log("ko token");
-      //  localStorage.removeItem("userToken");
     }
   };
 };
+
+export const submitPurchase = (token, product) => {
+  return (dispatch) => {
+    const userToken = localStorage.userToken;
+    if (userToken) {
+      // const accessToken = JSON.parse(userToken).accessToken;
+      console.log(token, product);
+      return axios
+        .post(
+          `http://localhost:3456/checkout`,
+          { token, product }
+          // ,
+          // {
+          //   headers: { Authorization: `${accessToken}` },
+          // }
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      console.log("ko token");
+      // localStorage.removeItem("userToken");
+      return false;
+    }
+  }
+}
+
 export const showListOrderFetch = () => {
   return (dispatch) => {
     const token = localStorage.userToken;

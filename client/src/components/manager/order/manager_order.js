@@ -12,24 +12,15 @@ class ManagerOrder extends Component {
     dataQR: "",
   };
 
-  // componentDidMount = async () => {
-  //   let result = await this.props.showListOrderFetch();
-  //   //console.log(result);
-  //   result.forEach((e) => {
-  //     this.setState({
-  //       resArray: [...this.state.resArray, e],
-  //     });
-  //   });
-  // };
   componentDidMount() {
     this.props.showListOrderFetch();
   }
 
-  createListQR = async (event) => {
+  createListQR = (event) => {
     event.preventDefault();
     // console.log(this.state.dataQR);
-    await this.props.createListQrFetch(this.state.dataQR);
-    //console.log(resule);
+    this.props.createListQrFetch(this.state.dataQR);
+    this.props.showListOrderFetch();
   };
 
   render() {
@@ -163,7 +154,7 @@ class ManagerOrder extends Component {
           >
             <div className="container">
               <div className="block-heading" style={{ marginTop: "50px" }}>
-                <h2 className="text-info">Danh sach người dùng mua hàng </h2>
+                <h2 className="text-info">Danh sách người dùng mua hàng </h2>
               </div>
               <div className="container-body">
                 <BootstrapTable
@@ -193,7 +184,7 @@ class ManagerOrder extends Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLongTitle">
-                  Bắc đầu tạo mã
+                  Bắt đầu tạo mã
                 </h5>
               </div>
               <div className="modal-body">
@@ -203,7 +194,7 @@ class ManagerOrder extends Component {
                   data-dismiss="modal"
                   onClick={this.createListQR}
                 >
-                  Tạo mã và luu file gui khach hang
+                  Tạo mã và lưu file gửi khách hàng
                 </button>
               </div>
               <div className="modal-footer">
@@ -225,7 +216,7 @@ class ManagerOrder extends Component {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.authReducer.currentUser,
-    resArray: state.fmManagerReducer.resArray,
+    resArray: state.orderReducer.resArray,
   };
 };
 // export default ManagerOrder;

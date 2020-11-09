@@ -1,7 +1,7 @@
-import * as actionTypes from "./actionType";
+import * as actionTypes from "../actionType";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { token } from "../../components/helpers/checkLogin";
+import { token } from "../../../components/helpers/checkLogin";
 
 export const login = (userObj) => ({
   type: actionTypes.LOGIN,

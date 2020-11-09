@@ -5,8 +5,7 @@ import Input from "../UI/Input/Input";
 import Button from "../UI/Button/Button";
 import Spinner from "../UI/Spinner/Spinner";
 import classes from "./Auth.module.css";
-import * as actions from "../../trainRedux/action/actionAuth";
-//import { history } from "../helpers/history";
+import * as actions from "../../trainRedux/action/authentication/actionAuth";
 import { checkValidity } from "../helpers/validation/checkValidation";
 class Register extends Component {
   state = {

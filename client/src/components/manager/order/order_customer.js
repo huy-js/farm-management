@@ -2,24 +2,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import EditmailModelCustomer from "./editmail_model_customer";
 import EditQRModelCustomer from "./editQR_model_customer";
-import {
-  showCoopareFetch,
-  saveDataOrderFetch,
-} from "../../../trainRedux/action/order/actionOrder";
+import StripeCheckout from "react-stripe-checkout";
+import * as actions from "../../../trainRedux/action/order/actionOrder";
+
 class OrderCustomer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // resultData: this.props.resArray[1],
-      //numberQR: 0,
-      totalTrees: 0,
-      email: "",
-      // totalpay: 0,
-    };
-  }
-  componentDidMount = async () => {
-    //console.log(this.props.infor.currentUser._id)
-    await this.props.showCoopareFetch(this.props.currentUser._id);
+  state = {
+    // resultData: this.props.resArray[1],
+    numberQR: 0,
+    totalTrees: 0,
+    email: "",
+    // totalpay: 0,;
   };
   // luu mail moi tui componet child
   setNewEmail = (newEmail) => {
@@ -34,7 +26,7 @@ class OrderCustomer extends Component {
     });
   };
 
-  completeTheTransaction = async (event) => {
+  completeTheTransaction = (event) => {
     event.preventDefault();
     console.log(this.state);
     let dataOrder = {
@@ -56,9 +48,40 @@ class OrderCustomer extends Component {
           : this.state.totalTrees * 1000,
       payments: "",
     };
-    await this.props.saveDataOrderFetch(dataOrder);
+    this.props.saveDataOrderFetch(dataOrder);
   };
+
+  componentDidMount() {
+    this.props.showCoopareFetch(this.props.currentUser._id);
+  }
+
   render() {
+    const stripe_publickey = "pk_test_EyJcf5TSESBQZ30D0DK9flId008rgcNspJ";
+    const onToken = (token) => {
+      const product = this.props.dataCooper;
+      // console.log(product, token);
+      // const body = {
+      //   token,
+      //   product,
+      // };
+      // const headers = {
+      //   "Content-Type": "application/json",
+      // };
+
+      // return fetch(`http://localhost:3456/checkout`, {
+      //   method: "POST",
+      //   headers,
+      //   body: JSON.stringify(body),
+      // })
+      //   .then((response) => {
+      //     console.log("RESPONSE", response);
+      //     const { status } = response;
+      //     console.log("STATUS", status);
+      //     toast("Success! Check emails for details", { type: "success" });
+      //   })
+      //   .catch((error) => console.log(error));
+      this.props.submitPurchase(token, product);
+    };
     return (
       <main className="page landing-page" style={{ height: "100%" }}>
         <section
@@ -219,6 +242,16 @@ class OrderCustomer extends Component {
                         </button>
                       </div>
                     </form>
+                    <StripeCheckout
+                          name={this.props.dataCooper.nameOfCooperative}
+                          description="Purchase for QR code"
+                          token={onToken}
+                          amount={this.props.dataCooper.totalTrees * 1000}
+                          currency="VND"
+                          stripeKey={stripe_publickey}
+                          shippingAddress
+                          billingAddress
+                        ></StripeCheckout>
                   </div>
                 </div>
               </div>
@@ -255,12 +288,16 @@ class OrderCustomer extends Component {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.authReducer.currentUser,
-    dataCooper: state.fmManagerReducer.dataCooper,
+    dataCooper: state.orderReducer.dataCooper,
+    purchased: state.orderReducer.purchase !== null,
+    loading: state.orderReducer.loading,
   };
 };
 const mapDispatchToProps = (dispatch, props) => ({
-  showCoopareFetch: (idUser) => dispatch(showCoopareFetch(idUser)),
-  saveDataOrderFetch: (dataOrder) => dispatch(saveDataOrderFetch(dataOrder)),
+  showCoopareFetch: (idUser) => dispatch(actions.showCoopareFetch(idUser)),
+  saveDataOrderFetch: (dataOrder) =>
+    dispatch(actions.saveDataOrderFetch(dataOrder)),
+    submitPurchase: (token, product) => dispatch(actions.submitPurchase(token, product))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderCustomer);

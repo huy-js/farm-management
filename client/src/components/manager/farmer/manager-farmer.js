@@ -11,23 +11,26 @@ class ManagerFarmer extends Component {
     dataFarmer: "",
     display: "none",
   };
+  
   componentDidMount() {
     this.props.showFarmerFetch(this.props.currentUser._id);
   }
+
   ViewDiary = (id, event) => {
     event.preventDefault();
-    //console.log(id);
     this.setState({
       dataFarmer: id,
       display: "block",
     });
   };
+
   hideComment = (event) => {
     event.preventDefault();
     this.setState({
       display: "none",
     });
   };
+
   render() {
     const styleHeader = {
       fontSize: "18px",

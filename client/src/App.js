@@ -8,19 +8,22 @@ import {
   withRouter,
 } from "react-router-dom";
 import { connect } from "react-redux";
-
+//Authentication
 import Home from "./components/home/Home";
 import Register from "./components/login-register/Register";
 import Login from "./components/login-register/Login";
+import Logout from "./components/login-register/Logout";
+//Manage Farmer
 import ManagerFarmer from "./components/manager/farmer/manager-farmer";
+//Order
 import OrderCustomer from "./components/manager/order/order_customer";
 import ManagerOrder from "./components/manager/order/manager_order";
+
 import ListUser from "./components/manager/user/list_user";
 import BusinessCooperation from "./components/manager/cooperative/business_cooperation";
 import Footer from "./components/navigation/footer/Footer";
 import NotFound from "./components/NotFound";
-import Logout from "./components/login-register/Logout";
-import * as actions from "./trainRedux/action/actionAuth";
+import * as actions from "./trainRedux/action/authentication/actionAuth";
 
 class App extends Component {
   componentDidMount() {
@@ -81,7 +84,7 @@ class App extends Component {
     if (isLogin) {
       logButton = (
         <li className="nav-item" role="presentation">
-          <Link to="/logout" className="nav-link">
+          <Link  to="/logout" className="nav-link">
             Logout
           </Link>
         </li>

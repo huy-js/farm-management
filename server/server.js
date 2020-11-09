@@ -5,6 +5,7 @@ const initAPIs = require("./src/routes/api");
 const mongoose = require("mongoose");
 // connect mongodb
 // const uri = process.env.ATLAS_URI || process.env.MONGO_URI;
+console.log(process.env.STRIPE_PUBLIC_KEY);
 const uri =
   process.env.MONGO_URI || "mongodb://localhost:27017/farm-management";
 mongoose.connect(uri, {
