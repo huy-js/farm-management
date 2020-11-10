@@ -2,7 +2,8 @@ const jwtHelper = require("../helpers/jwt.helper");
 const userModel = require("../models/userModel");
 const cooperaModel = require("../models/cooperationModel");
 require("dotenv").config();
-
+const bcrypt = require("bcrypt");
+let saltRounds = 7;
 let tokenList = {};
 
 const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
@@ -68,9 +69,29 @@ let register = async (req, res) => {
     return res.status(500).json(error);
   }
 };
-
+let updatePasswordUser = async (req, res) => {
+  try {
+    console.log(req.body.data);
+    let user = await userModel.findByEmail(req.body.data.email);
+    //console.log(user);
+    if (!user) {
+      return res.status(500).json({ message: "update faile" });
+    }
+    if (!(await user.comparePassword(req.body.data.repassword))) {
+      return res.status(500).json({ message: "update faile" });
+    }
+    let salt = bcrypt.genSaltSync(saltRounds); // tao muoi bam :))
+    await userModel.updatePassword(
+      user._id,
+      bcrypt.hashSync(req.body.data.newpassword, salt)
+    );
+    return res.status(200).json({ message: "success" });
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
 module.exports = {
   login: login,
-
   register: register,
+  updatePasswordUser: updatePasswordUser,
 };

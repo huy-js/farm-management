@@ -12,7 +12,7 @@ class Search extends Component {
     let { match } = this.props;
     console.log(match);
     //  console.log(match.params.idcoopare);
-    this.props.searchGuestFetch(match.params.idcoopare, match.params.idfarmer);
+    this.props.searchGuestFetch(match.params.dataQR);
   };
   render() {
     // let { match } = this.props;

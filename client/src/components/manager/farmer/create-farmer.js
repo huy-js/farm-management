@@ -82,6 +82,21 @@ class CreateFarmer extends Component {
         valid: false,
         touched: false,
       },
+      totalNumberQR: {
+        elementType: "input",
+        elementConfig: {
+          type: "number",
+          placeholder: "Tổng QR cho nông hộ",
+          min: 0,
+        },
+        value: "",
+        validation: {
+          required: true,
+          minLength: 3,
+        },
+        valid: false,
+        touched: false,
+      },
     },
     // isSignup: true,
     display: "block",
@@ -233,6 +248,15 @@ class CreateFarmer extends Component {
               <h5 className="modal-title" id="exampleModalLongTitle">
                 Tạo nông hộ
               </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                ref={(button) => (this.buttonElement = button)}
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
             <div className="modal-body" onMouseOver={this.showTotalTrees}>
               {/* {authRedirect} */}
@@ -249,7 +273,7 @@ class CreateFarmer extends Component {
                 <Button btnType="Success">Tạo</Button>
               </form>
             </div>
-            <div className="modal-footer">
+            {/* <div className="modal-footer">
               <button
                 type="button"
                 className="btn btn-secondary"
@@ -258,7 +282,7 @@ class CreateFarmer extends Component {
               >
                 Đóng
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

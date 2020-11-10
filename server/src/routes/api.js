@@ -26,16 +26,18 @@ let initAPIs = (app) => {
   //user
   router.post("/createfarmer", ManagementController.createFarmer);
   router.get("/showfarmer/:id", ManagementController.showFarmer);
+  router.put("/updatePassword", AuthController.updatePasswordUser);
   // order
   router.get("/showCoopare/:id", ManagementController.showCooperation);
   router.post("/createdataorder", ManagementController.createDataOrder);
   // admin
-  router.get("/showlistuser", ManagementController.showListUser);
+  router.get("/showlistuser/:iduser", ManagementController.showListUser);
   router.put("/updateactive", ManagementController.updateActiveUser);
   router.put("/createPwandSendMail", ManagementController.createPwAndSendMail);
   router.get("/showlistorder", ManagementController.showListOrder);
   //router.post("/createlistqr", ManagementController.createListQR);
   router.post("/createlistqr", ManagementController.newCreateQR);
+
   return app.use("/", router);
 };
 module.exports = initAPIs;

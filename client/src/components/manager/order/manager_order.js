@@ -28,7 +28,10 @@ class ManagerOrder extends Component {
   createListQR = async (event) => {
     event.preventDefault();
     // console.log(this.state.dataQR);
-    await this.props.createListQrFetch(this.state.dataQR);
+    await this.props.createListQrFetch(
+      this.state.dataQR,
+      this.props.currentUser._id
+    );
     //console.log(resule);
   };
 
@@ -231,7 +234,8 @@ const mapStateToProps = (state) => {
 // export default ManagerOrder;
 const mapDispatchToProps = (dispatch, props) => ({
   showListOrderFetch: () => dispatch(showListOrderFetch()),
-  createListQrFetch: (dataQR) => dispatch(createListQrFetch(dataQR)),
+  createListQrFetch: (dataQR, iduser) =>
+    dispatch(createListQrFetch(dataQR, iduser)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManagerOrder);

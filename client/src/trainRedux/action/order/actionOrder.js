@@ -11,11 +11,15 @@ export const fetchCoopareData = (orderData) => ({
   type: actionTypes.FETCH_COOPARE_DATA,
   payload: orderData,
 });
+export const fetchOrderUser = (orderData) => ({
+  type: actionTypes.FETCH__LIST_USER_ORDER,
+  payload: orderData,
+});
 
 export const showCoopareFetch = (id) => {
-  console.log(id);
+  //console.log(id);
   return (dispatch) => {
-    //const token = localStorage.userToken;
+    const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {
@@ -26,9 +30,10 @@ export const showCoopareFetch = (id) => {
           headers: { Authorization: `${accessToken}` },
         })
         .then((res) => {
-          // console.log(res);
+          //console.log(res.data.dataCoo);
           // return res.data;
-          dispatch(fetchCoopareData(res.data));
+          dispatch(fetchCoopareData(res.data.dataCoo));
+          dispatch(fetchOrderUser(res.data.dataListOrder));
         })
         .catch((error) => {
           console.log(error);

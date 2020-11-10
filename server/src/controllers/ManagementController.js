@@ -20,6 +20,11 @@ const accessTokenSecretQr = process.env.ACCESS_TOKEN_SECRET_QR;
 // async await luon di voi nhau
 let showListUser = async (req, res) => {
   try {
+    let id = req.params.iduser;
+    // console.log(id);
+    if (!(await userModel.checkAdmin(id)))
+      return res.status(500).json({ message: "ban khong phai admin" });
+
     let dataListUser = await userModel.showListUser();
     return res.status(200).json(dataListUser);
   } catch (error) {
@@ -28,13 +33,17 @@ let showListUser = async (req, res) => {
 };
 let updateActiveUser = async (req, res) => {
   try {
-    // console.log(req.body.id);
-    let oldActive = await userModel.findActiveById(req.body.id);
+    //  console.log(req.body.data);
+    //console.log(await userModel.checkAdmin(req.body.data.iduser));
+    if (!(await userModel.checkAdmin(req.body.data.iduser)))
+      return res.status(500).json({ message: "ban khong phai admin" });
+
+    let oldActive = await userModel.findActiveById(req.body.data.id);
     //  console.log(oldActive);
     if (oldActive === null)
       return res.status(500).json({ message: "user undefinded" });
 
-    await userModel.updateActiveUser(req.body.id, oldActive.isActive);
+    await userModel.updateActiveUser(req.body.data.id, oldActive.isActive);
     return res.status(200).json({ message: "success update" });
   } catch (error) {
     return res.status(500).json({ message: "update failed" });
@@ -43,8 +52,10 @@ let updateActiveUser = async (req, res) => {
 
 let createPwAndSendMail = async (req, res) => {
   try {
-    // console.log(req.body.id);
-    let dataUser = await userModel.findActiveById(req.body.id);
+    // console.log(req.body.data);
+    if (!(await userModel.checkAdmin(req.body.data.iduser)))
+      return res.status(500).json({ message: "ban khong phai admin" });
+    let dataUser = await userModel.findActiveById(req.body.data.id);
     //  console.log(dataUser);
     if (dataUser === null)
       return res.status(500).json({ message: "user undefinded" });
@@ -82,7 +93,7 @@ let createPwAndSendMail = async (req, res) => {
 
 let createFarmer = async (req, res) => {
   try {
-    console.log(req.body.dataFamer);
+    //console.log(req.body.dataFamer);
     let data = req.body.dataFamer;
     let ranDomPassWord = generator.generate({
       length: 5,
@@ -122,7 +133,7 @@ let createFarmer = async (req, res) => {
 let showFarmer = async (req, res) => {
   try {
     let idUser = req.params.id;
-    console.log(idUser);
+    //  console.log(idUser);
     let idCoopera = await coopertationModel.findIdCoopera(idUser);
 
     let getData = await farmerModel.showFarmer(idCoopera._id);
@@ -144,15 +155,18 @@ let showCooperation = async (req, res) => {
     let idUser = req.params.id;
     // console.log(idUser);
     let dataCooperation = await coopertationModel.showCooperation(idUser);
-    //console.log(dataCooperation);
-    return res.status(200).json(dataCooperation);
+    let dataOrder = await orderModel.showdataOrder(idUser);
+    console.log(dataOrder);
+    return res
+      .status(200)
+      .json({ dataCoo: dataCooperation, dataListOrder: dataOrder });
   } catch (error) {
-    return res.status(500).json({ message: "create failed" });
+    return res.status(500).json({ message: "show failed" });
   }
 };
 let createDataOrder = async (req, res) => {
   try {
-    console.log(req.body.dataOrder);
+    //console.log(req.body.dataOrder);
     await orderModel.createNew(req.body.dataOrder);
     return res.status(200).json({ message: "create succession." });
   } catch (error) {
@@ -167,6 +181,7 @@ let showListOrder = async (req, res) => {
     return res.status(500).json({ message: "create failed" });
   }
 };
+//ko dung'
 let createListQR = async (req, res) => {
   try {
     //console.log(req.body.dataQR);
@@ -202,9 +217,13 @@ let createListQR = async (req, res) => {
     return res.status(500).json({ message: "create failed" });
   }
 };
+
 let newCreateQR = async (req, res) => {
   try {
     console.log("createQR");
+    //console.log(req.body.dataQR);
+    if (!(await userModel.checkAdmin(req.body.dataQR.iduser)))
+      return res.status(500).json({ message: "ban khong phai admin" });
     //tim  htx
     let idCoopare = await coopertationModel.findIdCoopera(
       req.body.dataQR.idcustomer
@@ -318,6 +337,7 @@ let searchProduct = async (req, res) => {
 let searchProductQR = async (req, res) => {
   try {
     let dataQR = req.params.dataQR;
+    console.log("decodeqr");
     const decoded = await jwtHelper.verifyToken(dataQR, accessTokenSecretQr);
     console.log(decoded);
     if (decoded) {
@@ -334,7 +354,7 @@ let searchProductQR = async (req, res) => {
       const arrayData = Object.values(data);
       return res.status(200).json(arrayData);
     } else {
-      return res.status(500).json({ message: "create failed" });
+      return res.status(500).json({ message: "qr khong tồn tại" });
     }
     //return res.status(200).json(decoded);
   } catch (error) {

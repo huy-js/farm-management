@@ -29,6 +29,9 @@ orderSchema.statics = {
   showListOrder() {
     return this.find().exec();
   },
+  showdataOrder(id) {
+    return this.find({ idcustomer: id }).exec();
+  },
   updateDefaulQR(id) {
     return this.findByIdAndUpdate(id, { createQR: true }).exec();
   },

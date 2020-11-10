@@ -8,6 +8,42 @@ export const login = (userObj) => ({
   payload: userObj,
 });
 
+export const updataPassWordFetch = (data, checkVali) => {
+  let check = true;
+  checkVali.forEach((e) => {
+    if (!e) check = false;
+  });
+  const token = localStorage.userToken;
+  console.log(data);
+  if (token) {
+    const accessToken = JSON.parse(token).accessToken;
+    return (dispatch) => {
+      if (check) {
+        //dispatch(authStart());
+        return axios
+          .put(
+            "http://localhost:3456/updatePassword",
+            {
+              data,
+            },
+            {
+              headers: { Authorization: `${accessToken}` },
+            }
+          )
+          .then((res) => {
+            return true;
+          })
+          .catch((error) => {
+            return false;
+          });
+      } else {
+        return false;
+      }
+    };
+  } else {
+    console.log("ko Token");
+  }
+};
 export const userRegisterFetch = (data, checkVali) => {
   //console.log(data);
   let check = true;
@@ -96,7 +132,7 @@ export const checkAuthTimeout = (expirationTime) => {
 
 export const checkUserLogin = () => {
   return (dispatch) => {
-    //  const token = localStorage.userToken;
+    const token = localStorage.userToken;
     if (token) {
       const accessToken = JSON.parse(token).accessToken;
       const expirationDate = new Date(localStorage.getItem("expirationDate"));
@@ -130,13 +166,13 @@ export const checkUserLogin = () => {
     }
   };
 };
-// ko dung'
-export const searchGuestFetch = (idcoopera, idfarmer) => {
+
+export const searchGuestFetch = (dataQR) => {
   return (dispatch) => {
     // const newId = localStorage.getItem("userId");
-    console.log(idfarmer);
+    console.log(dataQR);
     return axios
-      .get(`http://192.168.1.193:3456/search/${idcoopera}/${idfarmer}`)
+      .get(`http://192.168.1.4:3456/search/${dataQR}`)
       .then((res) => {
         //console.log(res.data);
         //  console.log(res.data.dataCoopare)

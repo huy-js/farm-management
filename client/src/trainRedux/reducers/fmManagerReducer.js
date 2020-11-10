@@ -4,6 +4,7 @@ import { updateObject } from "../utility";
 const initialState = {
   resArray: [],
   dataCooper: "",
+  dataListOrderUser: [],
 };
 // ARRAY FARMER
 const fetchFarmerData = (state, action) => {
@@ -29,6 +30,12 @@ const fetchCoopareData = (state, action) => {
     dataCooper: action.payload,
   });
 };
+// LIST ORDER USER
+const fetchOrderUser = (state, action) => {
+  return updateObject(state, {
+    dataListOrderUser: action.payload,
+  });
+};
 var reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.FETCH_FARMER_DATA:
@@ -39,6 +46,8 @@ var reducer = (state = initialState, action) => {
       return fetchListUserData(state, action);
     case actionTypes.FETCH_COOPARE_DATA:
       return fetchCoopareData(state, action);
+    case actionTypes.FETCH__LIST_USER_ORDER:
+      return fetchOrderUser(state, action);
     default:
       return state;
   }

@@ -19,6 +19,7 @@ import ListUser from "./components/manager/user/list_user";
 import BusinessCooperation from "./components/manager/cooperative/business_cooperation";
 import Search from "./components/profile/search_infor";
 import Footer from "./components/navigation/footer/Footer";
+import Profile from "./components/profile/Profile";
 import NotFound from "./components/NotFound";
 import Logout from "./components/login-register/Logout";
 import * as actions from "./trainRedux/action/actionAuth";
@@ -40,7 +41,7 @@ class App extends Component {
         />
         <Route path="/register" component={Register} />
         <Route path="/" exact component={Home} />
-        <Route path="/search/:idcoopare/:idfarmer" component={Search} />
+        <Route path="/search/:dataQR" component={Search} />
         <Route component={NotFound} />
         <Redirect to="/" />
       </Switch>
@@ -58,6 +59,7 @@ class App extends Component {
           <Route path="/business-cooperation" component={BusinessCooperation} />
           <Route path="/" exact component={Home} />
           <Route path="/logout" component={Logout} />
+          <Route path="/profile" component={Profile} />
           <Route component={NotFound} />
           <Redirect to="/" />
         </Switch>

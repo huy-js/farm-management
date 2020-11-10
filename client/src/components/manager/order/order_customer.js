@@ -59,6 +59,24 @@ class OrderCustomer extends Component {
     await this.props.saveDataOrderFetch(dataOrder);
   };
   render() {
+    console.log(this.props.dataListOrderUser);
+    let showOrderList = this.props.dataListOrderUser.map((e, index) => {
+      let dates = (string) => {
+        var options = { year: "numeric", month: "long", day: "numeric" };
+        return new Date(string).toLocaleDateString([], options);
+      };
+      return (
+        <div key={index}>
+          <div className="row">
+            <div className="col-sm-2"></div>
+            <div className="col-sm-4">ngay đặt mua: {dates(e.createAt)}</div>
+            <div className="col-sm-4"> số lượng: {e.numberQR}</div>
+            <div className="col-sm-2"></div>
+          </div>
+          <hr />
+        </div>
+      );
+    });
     return (
       <main className="page landing-page" style={{ height: "100%" }}>
         <section
@@ -223,6 +241,28 @@ class OrderCustomer extends Component {
                 </div>
               </div>
             </div>
+            {/* danh sach da mua qr */}
+            <div className="row" style={{ marginTop: "30px" }}>
+              <div className="col-sm-12">
+                <div className="card shadow">
+                  <div className="card-header ">
+                    <p className="text-primary m-0 font-weight-bold">
+                      Danh sách giao dịch
+                    </p>
+                  </div>
+                  <div
+                    className="card-body clean-pricing-item"
+                    style={{ height: "289px", paddingTop: "0px" }}
+                  >
+                    <p>
+                      hợp tác xã {this.props.dataCooper.nameOfCooperative},
+                      {this.props.dataCooper.address}
+                    </p>
+                    {showOrderList}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
         <EditmailModelCustomer
@@ -256,6 +296,7 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.authReducer.currentUser,
     dataCooper: state.fmManagerReducer.dataCooper,
+    dataListOrderUser: state.fmManagerReducer.dataListOrderUser,
   };
 };
 const mapDispatchToProps = (dispatch, props) => ({

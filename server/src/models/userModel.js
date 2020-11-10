@@ -29,29 +29,35 @@ userSchema.statics = {
   createNew(item) {
     return this.create(item);
   },
-  removeById(id){
+  checkAdmin(id) {
+    return this.findOne({ $and: [{ _id: id }, { role: "admin" }] }).exec();
+  },
+  removeById(id) {
     return this.findByIdAndRemove(id).exec();
   },
-  findByEmail(email){
-    return this.findOne({email: email}).exec();
+  findByEmail(email) {
+    return this.findOne({ email: email }).exec();
   },
   showListUser() {
     return this.find().exec();
   },
   findActiveById(id) {
-    return this.findById(id, { isActive: 1,email:1 }).exec();
+    return this.findById(id, { isActive: 1, email: 1 }).exec();
   },
   updateActiveUser(id, defaultActive) {
     return this.findByIdAndUpdate(id, { isActive: !defaultActive }).exec();
   },
-  createPassward(id,pw){
-    return this.findByIdAndUpdate(id,{password:pw}).exec();
-  }
+  createPassward(id, pw) {
+    return this.findByIdAndUpdate(id, { password: pw }).exec();
+  },
+  updatePassword(id, hashedPassword) {
+    return this.findByIdAndUpdate(id, { password: hashedPassword }).exec();
+  },
 };
 userSchema.methods = {
-  comparePassword(password){
-      return bcrypt.compareSync(password,this.password); //compareSync là chức năng của gói bcrypt
-  }
+  comparePassword(password) {
+    return bcrypt.compareSync(password, this.password); //compareSync là chức năng của gói bcrypt
+  },
 };
 
 module.exports = mongoose.model("User", userSchema);

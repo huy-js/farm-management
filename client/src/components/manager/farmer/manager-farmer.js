@@ -64,6 +64,12 @@ class ManagerFarmer extends Component {
         style: styleRow,
       },
       {
+        dataField: "typeOfTree",
+        text: "GIỐNG CÂY",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
         dataField: "address",
         text: "ĐỊA CHỈ",
         headerStyle: styleHeader,
@@ -82,8 +88,8 @@ class ManagerFarmer extends Component {
         style: styleRow,
       },
       {
-        dataField: "typeOfTree",
-        text: "GIỐNG CÂY",
+        dataField: "totalNumberQR",
+        text: "SỐ QR CHO NÔNG HỘ",
         headerStyle: styleHeader,
         style: styleRow,
       },
@@ -106,12 +112,11 @@ class ManagerFarmer extends Component {
         stt: index + 1,
         createAt: dates(element.createAt),
         farmOwner: element.farmOwner,
+        typeOfTree: element.typeOfTree,
         address: element.address,
         landArea: element.landArea,
-        // soilType: element.soilType,
-        // waterSource: element.waterSource,
         totalTrees: element.totalTrees,
-        typeOfTree: element.typeOfTree,
+        totalNumberQR: element.totalNumberQR,
         ViewDiary: <i onClick={(e) => this.ViewDiary(element._id, e)}>VIEW</i>,
       };
       return products.push(arr);

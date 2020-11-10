@@ -10,6 +10,7 @@ export const fetchListUserData = (ListUserdata) => ({
 });
 
 export const showListUserFetch = (iduser) => {
+  console.log(iduser);
   return (dispatch) => {
     const token = localStorage.userToken;
     // console.log(datacreate);
@@ -18,7 +19,7 @@ export const showListUserFetch = (iduser) => {
       const accessToken = JSON.parse(token).accessToken;
       // console.log(accessToken);
       return axios
-        .get("http://localhost:3456/showlistuser", {
+        .get(`http://localhost:3456/showlistuser/${iduser}`, {
           headers: { Authorization: `${accessToken}` },
         })
         .then((res) => {
@@ -51,7 +52,7 @@ export const updateActiveUserFetch = (data) => {
       return axios
         .put(
           "http://localhost:3456/updateactive",
-          { id },
+          { data },
           {
             headers: { Authorization: `${accessToken}` },
           }
@@ -72,8 +73,8 @@ export const updateActiveUserFetch = (data) => {
   };
 };
 export const createPwAndSendFetch = (data) => {
-  //console.log(data);
-  let id = data.id;
+  console.log(data);
+  // let id = data.id;
   return (dispatch) => {
     const token = localStorage.userToken;
     // console.log(datacreate);
@@ -84,7 +85,7 @@ export const createPwAndSendFetch = (data) => {
       return axios
         .put(
           "http://localhost:3456/createPwandSendMail",
-          { id },
+          { data },
           {
             headers: { Authorization: `${accessToken}` },
           }
@@ -108,7 +109,7 @@ export const showCooperationFetch = (datacreate) => {
   return (dispatch) => {
     //const token = localStorage.userToken;
     // console.log(datacreate);
-    // console.log(token);
+    //console.log(datacreate);
     if (token) {
       const accessToken = JSON.parse(token).accessToken;
       // console.log(accessToken);
@@ -132,7 +133,8 @@ export const showCooperationFetch = (datacreate) => {
 };
 
 // qr
-export const createListQrFetch = (dataQR) => {
+export const createListQrFetch = (dataQR, iduser) => {
+  dataQR.iduser = iduser;
   console.log(dataQR);
   return (dispatch) => {
     // const token = localStorage.userToken;

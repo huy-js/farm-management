@@ -46,7 +46,7 @@ export const userCreateFarmerFetch = (dataFamer, checkVali) => {
     //dispatch(actions.authStart());
     const token = localStorage.userToken;
     // console.log(datacreate);
-    console.log(dataFamer);
+    // console.log(dataFamer);
     if (token && check) {
       //  console.log(check);
       // dispatch(actions.authFail(""));
