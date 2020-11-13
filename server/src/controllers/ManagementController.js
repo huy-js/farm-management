@@ -4,6 +4,7 @@ const farmerModel = require("../models/farmerModel");
 const orderModel = require("../models/orderModel");
 const qrCodeModel = require("../models/qrCodeModel");
 const qrcode = require("qrcode");
+const randomPW = require("../helpers/randomPW.helper");
 require("dotenv").config();
 const jwtHelper = require("../helpers/jwt.helper");
 
@@ -95,14 +96,12 @@ let createFarmer = async (req, res) => {
   try {
     //console.log(req.body.dataFamer);
     let data = req.body.dataFamer;
-    let ranDomPassWord = generator.generate({
-      length: 5,
-      numbers: true,
-    });
-    //console.log(ranDomPassWord);
-    let salt = bcrypt.genSaltSync(saltRounds); // tao muoi bam :))
-    let password = bcrypt.hashSync(ranDomPassWord, salt);
     let idCoopera = await coopertationModel.findIdCoopera(data.idUser);
+
+    let getPassWord = await randomPW.createPassWord(data);
+    let salt = bcrypt.genSaltSync(saltRounds); // tao muoi bam :))
+    let password = bcrypt.hashSync(getPassWord, salt);
+
     //console.log(idCoopera);
     if (idCoopera) {
       delete data["idUser"];

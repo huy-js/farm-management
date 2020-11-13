@@ -92,7 +92,7 @@ class CreateFarmer extends Component {
         value: "",
         validation: {
           required: true,
-          minLength: 3,
+          // minLength: 3,
         },
         valid: false,
         touched: false,
@@ -140,6 +140,7 @@ class CreateFarmer extends Component {
       landArea: parseInt(this.state.controls.landArea.value),
       typeOfTree: this.state.controls.typeOfTree.value,
       totalTrees: parseInt(this.state.controls.totalTrees.value),
+      totalNumberQR: parseInt(this.state.controls.totalNumberQR.value),
       idUser: this.props.currentUser._id,
     };
     let checkVali = [

@@ -1,10 +1,27 @@
 let generator = require("generate-password");
-
-let ranDomPassWord = generator.generate({
-  length: 10,
-  numbers: true,
-});
+const userModel = require("../models/userModel");
+let createPassWord = (data) => {
+  return new Promise(async (resolve, reject) => {
+    let ranDomPassWord = generator.generate({
+      length: 5,
+      numbers: true,
+    });
+    let createdata = {
+      idFarmer: data.idUser,
+      username: data.farmOwner,
+      password: ranDomPassWord,
+    };
+    let updateUser = await userModel.updateFarmerArrayPW(
+      data.idUser,
+      createdata
+    );
+    if (updateUser) {
+      return resolve(ranDomPassWord);
+    }
+    resolve("error");
+  });
+};
 
 module.exports = {
-  ranDomPassWord: ranDomPassWord,
+  createPassWord: createPassWord,
 };

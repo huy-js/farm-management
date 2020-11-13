@@ -14,6 +14,13 @@ const userSchema = new Schema(
       gender: { type: String, default: "" },
       address: { type: String, default: "" },
     },
+    dataFarmer: [
+      {
+        idFarmer: { type: String },
+        username: { type: String },
+        password: { type: String },
+      },
+    ],
     role: { type: String, default: "customer" },
     deletedAt: { type: Boolean, default: false },
     isActive: { type: Boolean, default: false },
@@ -52,6 +59,21 @@ userSchema.statics = {
   },
   updatePassword(id, hashedPassword) {
     return this.findByIdAndUpdate(id, { password: hashedPassword }).exec();
+  },
+  updateFarmerArrayPW(id, data) {
+    return this.findByIdAndUpdate(id, {
+      $push: {
+        dataFarmer: {
+          $each: [
+            {
+              idFarmer: data.idFarmer,
+              username: data.username,
+              password: data.password,
+            },
+          ],
+        },
+      },
+    }).exec();
   },
 };
 userSchema.methods = {
