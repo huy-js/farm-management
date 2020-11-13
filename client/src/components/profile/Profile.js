@@ -4,7 +4,7 @@ import classes from "../helpers/Auth.module.css";
 import Input from "../UI/Input/Input";
 import Button from "../UI/Button/Button";
 import { checkValidity } from "../helpers/validation/checkValidation";
-import { updataPassWordFetch } from "../../trainRedux/action/actionAuth";
+import { updataPassWordFetch } from "../../trainRedux/action/authentication/actionAuth";
 class Profile extends Component {
   state = {
     controls: {

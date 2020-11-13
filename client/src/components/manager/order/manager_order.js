@@ -26,7 +26,7 @@ class ManagerOrder extends Component {
     );
     //console.log(resule);
 
-    this.props.createListQrFetch(this.state.dataQR);
+    // this.props.createListQrFetch(this.state.dataQR);
     this.props.showListOrderFetch();
   };
 

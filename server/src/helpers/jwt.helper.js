@@ -43,8 +43,8 @@ let verifyToken = (token, secretKey) => {
 let generateTokenQR = (data, secretSignature, tokenLife) => {
   return new Promise((resolve, reject) => {
     // Định nghĩa những thông tin của user mà bạn muốn lưu vào token ở đây
-    //console.log(data);
-    // console.log(tokenLife);
+    // console.log("toekn qr " + data);
+    //console.log(tokenLife);
     // const tokenQR = {
     //   dataQR: data.dataQR,
     //   code: data.code,
@@ -67,7 +67,7 @@ let generateTokenQR = (data, secretSignature, tokenLife) => {
         if (error) {
           return reject(error);
         }
-        // console.log(token);
+        console.log("token say" + token);
         resolve(token);
       }
     );

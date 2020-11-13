@@ -182,46 +182,50 @@ let showListOrder = async (req, res) => {
   }
 };
 //ko dung'
-let createListQR = async (req, res) => {
-  try {
-    //console.log(req.body.dataQR);
-    let idCoopare = await coopertationModel.findIdCoopera(
-      req.body.dataQR.idcustomer
-    );
-    if (idCoopare) {
-      let listFarmer = await farmerModel.showFarmer(idCoopare._id); //result array
-      // console.log(listFarmer);
-      let arrayQR = listFarmer.map(async (e) => {
-        let beforeConverQR = idCoopare._id + "/" + e._id;
-        return beforeConverQR;
-      });
-      let convertArrayQR = await Promise.all(arrayQR);
-      let afterArrayQR = convertArrayQR.map(async (e) => {
-        let qrCode = { qrId: await qrcode.toDataURL(e) };
-        return qrCode;
-      });
-      let doneArrayQR = await Promise.all(afterArrayQR); // array buffer
-      // console.log(doneArrayQR);
-      let dataDone = {
-        idOrder: req.body.dataQR.idOrder,
-        arrayQR: doneArrayQR,
-      };
-      await qrCodeModel.createNew(dataDone);
-      await orderModel.updateDefaulQR(req.body.dataQR.idOrder);
-      return res.status(200).json({ message: "success" });
-    } else {
-      return res.status(500).json({ message: "khong tim thay htx" });
-    }
-    //return res.status(200).json({ message: "create succession." });
-  } catch (error) {
-    return res.status(500).json({ message: "create failed" });
-  }
-};
+// let createListQR = async (req, res) => {
+//   try {
+//     //console.log(req.body.dataQR);
+//     let idCoopare = await coopertationModel.findIdCoopera(
+//       req.body.dataQR.idcustomer
+//     );
+//     if (idCoopare) {
+//       let listFarmer = await farmerModel.showFarmer(idCoopare._id); //result array
+//       // console.log(listFarmer);
+//       let arrayQR = listFarmer.map(async (e) => {
+//         let beforeConverQR = idCoopare._id + "/" + e._id;
+//         return beforeConverQR;
+//       });
+//       let convertArrayQR = await Promise.all(arrayQR);
+//       let afterArrayQR = convertArrayQR.map(async (e) => {
+//         let qrCode = { qrId: await qrcode.toDataURL(e) };
+//         return qrCode;
+//       });
+//       let doneArrayQR = await Promise.all(afterArrayQR); // array buffer
+//       // console.log(doneArrayQR);
+//       let dataDone = {
+//         idOrder: req.body.dataQR.idOrder,
+//         arrayQR: doneArrayQR,
+//       };
+//       await qrCodeModel.createNew(dataDone);
+//       await orderModel.updateDefaulQR(req.body.dataQR.idOrder);
+//       return res.status(200).json({ message: "success" });
+//     } else {
+//       return res.status(500).json({ message: "khong tim thay htx" });
+//     }
+//     //return res.status(200).json({ message: "create succession." });
+//   } catch (error) {
+//     return res.status(500).json({ message: "create failed" });
+//   }
+// };
 
 let newCreateQR = async (req, res) => {
   try {
     console.log("createQR");
-    //console.log(req.body.dataQR);
+    console.log("admin " + req.body.dataQR.iduser);
+    console.log("data qr " + req.body.dataQR.idcustomer);
+
+    //console.log("life" + accessTokenLifeQr);
+    // console.log("secrec" + accessTokenSecretQr);
     if (!(await userModel.checkAdmin(req.body.dataQR.iduser)))
       return res.status(500).json({ message: "ban khong phai admin" });
     //tim  htx
@@ -229,6 +233,7 @@ let newCreateQR = async (req, res) => {
       req.body.dataQR.idcustomer
     );
     if (idCoopare) {
+      //console.log(idCoopare);
       let listFarmer = await farmerModel.showFarmer(idCoopare._id); //result array
       // chay data nong ho
       let arrayFarmer = listFarmer.map(async (e) => {
@@ -261,7 +266,7 @@ let newCreateQR = async (req, res) => {
       });
       //chuyen doi data thanh ma qr
       let convertArrayQR = await Promise.all(arrayFarmer);
-      //  console.log(convertArrayQR);
+      //console.log(convertArrayQR);
       let converData = convertArrayQR.map(async (e) => {
         let arrayConvet = await e.arrayQR.map(async (ele) => {
           // console.log(ele);
@@ -273,6 +278,7 @@ let newCreateQR = async (req, res) => {
           );
           // chuyen thanh QR
           let convetQR = { qrId: await qrcode.toDataURL(tokenQR) };
+          // console.log("qr" + tokenQR);
           return convetQR;
         });
         let array = await Promise.all(arrayConvet);
@@ -280,7 +286,7 @@ let newCreateQR = async (req, res) => {
         return e;
       });
       let converDataArray = await Promise.all(converData);
-      // console.log(converDataArray);
+      console.log("adadsad" + converDataArray);
 
       let dataDone = {
         idOrder: req.body.dataQR.idOrder,
@@ -288,7 +294,7 @@ let newCreateQR = async (req, res) => {
         ListFarmerQR: converDataArray,
       };
       await qrCodeModel.createNew(dataDone);
-      //  await orderModel.updateDefaulQR(req.body.dataQR.idOrder);
+      await orderModel.updateDefaulQR(req.body.dataQR.idOrder);
       return res.status(200).json({ message: "success" });
     } else {
       return res.status(500).json({ message: "khong tim thay htx" });
@@ -370,7 +376,7 @@ module.exports = {
   showCooperation: showCooperation,
   createDataOrder: createDataOrder,
   showListOrder: showListOrder,
-  createListQR: createListQR,
+  // createListQR: createListQR,
   newCreateQR: newCreateQR,
   findInforProduct: findInforProduct,
   searchProduct: searchProduct,
