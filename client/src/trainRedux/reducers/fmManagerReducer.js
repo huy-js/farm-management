@@ -12,6 +12,7 @@ const fetchFarmerData = (state, action) => {
     resArray: action.payload,
   });
 };
+
 // ARRAY ORDER
 const fetchOrderData = (state, action) => {
   return updateObject(state, {
@@ -36,6 +37,7 @@ const fetchOrderUser = (state, action) => {
     dataListOrderUser: action.payload,
   });
 };
+
 var reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.FETCH_FARMER_DATA:

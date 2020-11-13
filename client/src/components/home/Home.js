@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-//import { getProfileFetch } from "../trainRedux/action";
-//import "./home.css";
+
 class Home extends Component {
-  // componentDidMount = () => {
-  //   this.props.getProfileFetch();
-  // };
+
   render() {
     return (
       <div>

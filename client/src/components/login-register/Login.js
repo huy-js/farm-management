@@ -5,7 +5,7 @@ import Input from "../UI/Input/Input";
 import Button from "../UI/Button/Button";
 import Spinner from "../UI/Spinner/Spinner";
 import classes from "./Auth.module.css";
-import * as actions from "../../trainRedux/action/actionAuth";
+import * as actions from "../../trainRedux/action/authentication/actionAuth";
 class Login extends Component {
   state = {
     controls: {

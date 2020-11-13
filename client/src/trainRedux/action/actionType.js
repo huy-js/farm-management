@@ -1,3 +1,4 @@
+//AUTHENTICATION
 export const LOGIN = "LOGIN";
 export const REGISTER = "REGISTER";
 //search app react native
@@ -12,8 +13,18 @@ export const AUTH_CHECK_FALSE = "AUTH_CHECK_FALSE";
 // ko dung
 export const SET_AUTH_REDIRECT_PATH = "SET_AUTH_REDIRECT_PATH";
 
+//FARMER
 export const FETCH_FARMER_DATA = "FETCH_FARMER_DATA";
+
+//ORDER
 export const FETCH_ORDER_DATA = "FETCH_ORDER_DATA";
+export const PURCHASE_START = "PURCHASE_START";
+export const PURCHASE_SUCCESS = "PURCHASE_SUCCESS";
+export const PURCHASE_FAIL = "PURCHASE_FAIL";
+
+//USER
 export const FETCH_LIST_USER_DATA = "FETCH_LIST_USER_DATA";
+
+//COOPERATE
 export const FETCH_COOPARE_DATA = "FETCH_COOPARE_DATA";
 export const FETCH__LIST_USER_ORDER = "FETCH__LIST_USER_ORDER";

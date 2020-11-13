@@ -2,11 +2,7 @@ import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import { connect } from "react-redux";
-import {
-  showListUserFetch,
-  updateActiveUserFetch,
-  createPwAndSendFetch,
-} from "../../../trainRedux/action/admin/actionManagement";
+import * as actions from "../../../trainRedux/action/admin/actionManagement";
 class ListUser extends Component {
   state = {
     // resArray: [],
@@ -24,7 +20,7 @@ class ListUser extends Component {
       iduser: iduser,
       id: id,
     };
-    if (window.confirm("xác nhận cập nhật Active")) {
+    if (window.confirm("Xác nhận cập nhật Active")) {
       await this.props.updateActiveUserFetch(data);
     }
   };
@@ -226,13 +222,13 @@ class ListUser extends Component {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.authReducer.currentUser,
-    resArray: state.fmManagerReducer.resArray,
+    resArray: state.userReducer.resArray,
   };
 };
 const mapDispatchToProps = (dispatch, props) => ({
-  showListUserFetch: (iduser) => dispatch(showListUserFetch(iduser)),
-  updateActiveUserFetch: (data) => dispatch(updateActiveUserFetch(data)),
-  createPwAndSendFetch: (id) => dispatch(createPwAndSendFetch(id)),
+  showListUserFetch: (iduser) => dispatch(actions.showListUserFetch(iduser)),
+  updateActiveUserFetch: (data) => dispatch(actions.updateActiveUserFetch(data)),
+  createPwAndSendFetch: (id) => dispatch(actions.createPwAndSendFetch(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListUser);

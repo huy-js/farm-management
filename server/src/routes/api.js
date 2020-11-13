@@ -18,6 +18,7 @@ let initAPIs = (app) => {
   router.get("/checklogin", AuthMiddleWare.isAuthCheck);
   // kiem tra trang thai dang nhap tai server
   //cac duong dan nam sau router nay can dam bao da dang nhap
+  router.post("/checkout", AuthController.checkout)
   router.use(AuthMiddleWare.isAuth);
   // router test => api => controller => res.json cho client
   router.get("/friends", FriendController.friendLists);

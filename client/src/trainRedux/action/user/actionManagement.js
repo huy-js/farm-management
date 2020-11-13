@@ -9,6 +9,7 @@ export const fetchFarmerData = (farmerData) => ({
   type: actionTypes.FETCH_FARMER_DATA,
   payload: farmerData,
 });
+
 export const showFarmerFetch = (id) => {
   //console.log(id);
   return (dispatch) => {
