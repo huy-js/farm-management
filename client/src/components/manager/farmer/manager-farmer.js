@@ -11,7 +11,7 @@ class ManagerFarmer extends Component {
     dataFarmer: "",
     display: "none",
   };
-  
+
   componentDidMount() {
     this.props.showFarmerFetch(this.props.currentUser._id);
   }
@@ -92,7 +92,7 @@ class ManagerFarmer extends Component {
       },
       {
         dataField: "totalNumberQR",
-        text: "SỐ QR CHO NÔNG HỘ",
+        text: "SỐ QR ",
         headerStyle: styleHeader,
         style: styleRow,
       },

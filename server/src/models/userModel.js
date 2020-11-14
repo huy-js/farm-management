@@ -46,7 +46,7 @@ userSchema.statics = {
     return this.findOne({ email: email }).exec();
   },
   showListUser() {
-    return this.find().exec();
+    return this.find({ role: "customer" }).exec();
   },
   findActiveById(id) {
     return this.findById(id, { isActive: 1, email: 1 }).exec();

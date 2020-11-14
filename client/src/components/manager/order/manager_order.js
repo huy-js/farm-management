@@ -60,8 +60,8 @@ class ManagerOrder extends Component {
         style: styleRow,
       },
       {
-        dataField: "idcustomer",
-        text: "TÊN",
+        dataField: "nameCooperaTion",
+        text: "HTX",
         headerStyle: styleHeader,
         style: styleRow,
       },
@@ -113,7 +113,7 @@ class ManagerOrder extends Component {
       let arr = {
         stt: index + 1,
         createAt: dates(element.createAt),
-        idcustomer: element.idcustomer,
+        nameCooperaTion: element.nameCooperaTion,
         numberQR: element.numberQR,
         memberfarmer: element.memberfarmer,
         totalTrees: element.totalTrees, // tông cay trong htx
@@ -164,17 +164,24 @@ class ManagerOrder extends Component {
                 <h2 className="text-info">Danh sách người dùng mua hàng </h2>
               </div>
               <div className="container-body">
-                <BootstrapTable
-                  keyField="stt"
-                  data={products}
-                  columns={columns}
-                  rowEvents={rowEvents}
-                  pagination={paginationFactory({
-                    sizePerPage: 5,
-                    hideSizePerPage: true,
-                  })}
-                  hover
-                />
+                {this.props.resArray.length === 0 ? (
+                  <div className="text-center">
+                    {" "}
+                    hien tai chua co thong tin moi
+                  </div>
+                ) : (
+                  <BootstrapTable
+                    keyField="stt"
+                    data={products}
+                    columns={columns}
+                    rowEvents={rowEvents}
+                    pagination={paginationFactory({
+                      sizePerPage: 5,
+                      hideSizePerPage: true,
+                    })}
+                    hover
+                  />
+                )}
               </div>
             </div>
           </section>

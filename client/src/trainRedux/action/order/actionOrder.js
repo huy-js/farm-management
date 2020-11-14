@@ -14,7 +14,7 @@ export const purchaseStart = () => ({
 
 export const purchaseSuccess = () => ({
   type: actionTypes.PURCHASE_SUCCESS,
-  purchase : true
+  purchase: true,
 });
 
 export const purchaseFail = (error) => ({
@@ -77,7 +77,7 @@ export const saveDataOrderFetch = (dataOrder) => {
         )
         .then((res) => {
           console.log(res);
-          dispatch(purchaseSuccess())
+          dispatch(purchaseSuccess());
         })
         .catch((error) => {
           console.log(error);
@@ -115,8 +115,8 @@ export const submitPurchase = (token, product) => {
       // localStorage.removeItem("userToken");
       return false;
     }
-  }
-}
+  };
+};
 
 export const showListOrderFetch = () => {
   return (dispatch) => {
@@ -131,7 +131,10 @@ export const showListOrderFetch = () => {
           headers: { Authorization: `${accessToken}` },
         })
         .then((res) => {
-          // return res.data;
+          // console.log(res.data);
+          // res.data.forEach((e) => {
+          //   console.log(e.nameCooperaTion);
+          // });
           dispatch(fetchOrderData(res.data));
         })
         .catch((error) => {

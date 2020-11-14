@@ -8,6 +8,7 @@ let cooperationSchema = new Schema(
     technicalStaff: { type: String, default: null }, // cán bộ kỹ thuật
     address: { type: String },
     numberQR: { type: Number }, //so qr
+    totalNumberQR: { type: Number, default: 0 },
     taxCode: { type: Number }, //ma thue
     landArea: { type: Number, default: 0 }, // diện tích
     totalTrees: { type: Number, default: 0 }, // tông cay trong htx
@@ -37,15 +38,22 @@ cooperationSchema.statics = {
   findIdCoopera(iduser) {
     return this.findOne({ technicalStaff: iduser }).exec();
   },
-  updateLandAndTotalTree(id, landarea, treetotal, farmermember) {
+  updateLandAndTotalTree(id, landarea, treetotal, totalNumberQR, farmermember) {
     return this.findByIdAndUpdate(id, {
       landArea: landarea,
       totalTrees: treetotal,
+      totalNumberQR: totalNumberQR,
       memberfarmer: farmermember,
     }).exec();
   },
   findCoopare(idCoopare) {
     return this.findById(idCoopare).exec();
+  },
+  getNameCoopera(iduser) {
+    return this.findOne(
+      { technicalStaff: iduser },
+      { nameOfCooperative: 1 }
+    ).exec();
   },
 };
 module.exports = mongoose.model("cooperation", cooperationSchema);

@@ -31,10 +31,10 @@ class OrderCustomer extends Component {
     console.log(this.state);
     let dataOrder = {
       idcustomer: this.props.currentUser._id,
-      numberQR:
-        this.state.totalTrees === 0
-          ? this.props.dataCooper.totalTrees
-          : this.state.totalTrees,
+      numberQR: this.props.dataCooper.totalNumberQR,
+      // this.state.totalTrees === 0
+      //   ? this.props.dataCooper.totalNumberQR
+      //   : this.state.totalTrees,
       memberfarmer: this.props.dataCooper.memberfarmer,
       totalTrees: this.props.dataCooper.totalTrees, // tông cay trong htx
       landArea: this.props.dataCooper.landArea, // diện tích
@@ -119,7 +119,7 @@ class OrderCustomer extends Component {
                   </div>
                   <div
                     className="card-body clean-pricing-item"
-                    style={{ height: "289px", paddingTop: "0px" }}
+                    style={{ height: "284px", paddingTop: "0px" }}
                   >
                     <p>
                       hợp tác xã {this.props.dataCooper.nameOfCooperative},
@@ -141,6 +141,10 @@ class OrderCustomer extends Component {
                       <h4>
                         <span className="feature">Số QR dự kiến:&nbsp;</span>
                         <span>{this.props.dataCooper.numberQR} QR</span>
+                      </h4>
+                      <h4>
+                        <span className="feature">Số QR yêu cầu:&nbsp;</span>
+                        <span>{this.props.dataCooper.totalNumberQR} QR</span>
                       </h4>
                     </div>
                   </div>
@@ -179,27 +183,27 @@ class OrderCustomer extends Component {
                         <div className="col-6">
                           <div className="form-group">
                             <label>
-                              <strong>Xác nhận số lượng</strong>{" "}
-                              <button
+                              <strong>Số quy QR yêu cầu</strong>{" "}
+                              {/* <button
                                 className="btn btn-outline-primary  btn-sm"
                                 type="button"
                                 data-toggle="modal"
                                 data-target="#showModelnumberQR"
                               >
                                 EDIT
-                              </button>
+                              </button> */}
                             </label>
-
+                            <p>{this.props.dataCooper.totalNumberQR}</p>
                             {/* <p>
                               {this.state.numberQR === 0
                                 ? this.props.dataCooper.numberQR
                                 : this.state.numberQR}
                             </p> */}
-                            <p>
+                            {/* <p>
                               {this.state.totalTrees === 0
                                 ? this.props.dataCooper.totalTrees
                                 : this.state.totalTrees}
-                            </p>
+                            </p> */}
                           </div>
                         </div>
                         <div className="col-3">
@@ -216,12 +220,13 @@ class OrderCustomer extends Component {
                             <label>
                               <strong>Thành tiền</strong>
                             </label>
+                            <p>{this.props.dataCooper.totalNumberQR * 1000}</p>
                             {/* <input className="form-control" type="number" placeholder="USA" name="cost"/> */}
-                            <p>
+                            {/* <p>
                               {this.state.totalTrees === 0
                                 ? this.props.dataCooper.totalTrees * 1000
                                 : this.state.totalTrees * 1000}{" "}
-                            </p>
+                            </p> */}
                           </div>
                         </div>
                       </div>
@@ -253,16 +258,27 @@ class OrderCustomer extends Component {
                       </div>
                       <div className="form-group">
                         {/* <button className="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button> */}
-                        <button
+                        {/* <button
                           className="btn btn-outline-primary  btn-sm"
                           type="button"
                           onClick={this.completeTheTransaction}
                         >
                           HOÀN TẤT GIAO DỊCH
-                        </button>
+                        </button> */}
+                        <StripeCheckout
+                          name={this.props.dataCooper.nameOfCooperative}
+                          description="Purchase for QR code"
+                          token={onToken}
+                          amount={this.props.dataCooper.totalTrees * 1000}
+                          currency="VND"
+                          stripeKey={stripe_publickey}
+                          shippingAddress
+                          billingAddress
+                          onClick={this.completeTheTransaction}
+                        ></StripeCheckout>
                       </div>
                     </form>
-                    <StripeCheckout
+                    {/* <StripeCheckout
                       name={this.props.dataCooper.nameOfCooperative}
                       description="Purchase for QR code"
                       token={onToken}
@@ -271,7 +287,7 @@ class OrderCustomer extends Component {
                       stripeKey={stripe_publickey}
                       shippingAddress
                       billingAddress
-                    ></StripeCheckout>
+                    ></StripeCheckout> */}
                   </div>
                 </div>
               </div>
@@ -332,7 +348,7 @@ const mapStateToProps = (state) => {
     currentUser: state.authReducer.currentUser,
     dataCooper: state.fmManagerReducer.dataCooper,
     dataListOrderUser: state.fmManagerReducer.dataListOrderUser,
-    dataCooper: state.orderReducer.dataCooper,
+    //dataCooper: state.orderReducer.dataCooper,
     purchased: state.orderReducer.purchase !== null,
     loading: state.orderReducer.loading,
   };
