@@ -119,7 +119,7 @@ class OrderCustomer extends Component {
                   </div>
                   <div
                     className="card-body clean-pricing-item"
-                    style={{ height: "284px", paddingTop: "0px" }}
+                    style={{ height: "268px", paddingTop: "0px" }}
                   >
                     <p>
                       hợp tác xã {this.props.dataCooper.nameOfCooperative},
@@ -265,7 +265,7 @@ class OrderCustomer extends Component {
                         >
                           HOÀN TẤT GIAO DỊCH
                         </button> */}
-                        <StripeCheckout
+                        {/* <StripeCheckout
                           name={this.props.dataCooper.nameOfCooperative}
                           description="Purchase for QR code"
                           token={onToken}
@@ -274,11 +274,12 @@ class OrderCustomer extends Component {
                           stripeKey={stripe_publickey}
                           shippingAddress
                           billingAddress
-                          onClick={this.completeTheTransaction}
-                        ></StripeCheckout>
+                         
+                        ></StripeCheckout> */}
                       </div>
                     </form>
-                    {/* <StripeCheckout
+                    <StripeCheckout
+                      onClick={this.completeTheTransaction}
                       name={this.props.dataCooper.nameOfCooperative}
                       description="Purchase for QR code"
                       token={onToken}
@@ -287,7 +288,7 @@ class OrderCustomer extends Component {
                       stripeKey={stripe_publickey}
                       shippingAddress
                       billingAddress
-                    ></StripeCheckout> */}
+                    ></StripeCheckout>
                   </div>
                 </div>
               </div>

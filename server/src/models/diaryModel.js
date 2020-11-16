@@ -3,9 +3,14 @@ let Schema = mongoose.Schema;
 let diarySchema = new Schema(
   {
     title: { type: String }, //công việc
-    content: { type: String }, // nôi dung công việc
-    forTheTree: { type: String, default: "all" }, // cây được áp dụng
-    createdAt: { type: Number, default: Date.now }, // ngày tạo
+    detail: { type: String }, // nôi dung công việc
+    node: [
+      {
+        row: { type: String, default: "all" },
+        stt: { type: String, default: "all" },
+      },
+    ], // cây được áp dụng
+    // createdAt: { type: Number, default: Date.now }, // ngày tạo
   },
   {
     timestamps: {
@@ -18,8 +23,8 @@ diarySchema.statics = {
   createNew(item) {
     return this.create(item);
   },
-  showDiary() {
-    return this.find().exec();
-  },
+  // showDiary() {
+  //   return this.find().exec();
+  // },
 };
 module.exports = mongoose.model("diary", diarySchema);
