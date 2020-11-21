@@ -18,7 +18,7 @@ let createPassWord = (data) => {
     if (updateUser) {
       return resolve(ranDomPassWord);
     }
-    resolve("error");
+    reject("error");
   });
 };
 

@@ -8,6 +8,7 @@ import authReducer from "./trainRedux/reducers/authReducer";
 import fmManagerReducer from "./trainRedux/reducers/fmManagerReducer";
 import orderReducer from "./trainRedux/reducers/orderReducer";
 import userReducer from "./trainRedux/reducers/userReducer";
+import diaryReducer from "./trainRedux/reducers/diaryReducer";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   fmManagerReducer: fmManagerReducer,
   orderReducer: orderReducer,
   userReducer: userReducer,
+  diaryReducer: diaryReducer,
 });
 
 const store = createStore(

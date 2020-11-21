@@ -5,6 +5,7 @@ const orderModel = require("../models/orderModel");
 const qrCodeModel = require("../models/qrCodeModel");
 const qrcode = require("qrcode");
 const randomPW = require("../helpers/randomPW.helper");
+const callCreateBatch = require("../helpers/createBatch.helper");
 require("dotenv").config();
 const jwtHelper = require("../helpers/jwt.helper");
 
@@ -118,7 +119,11 @@ let createFarmer = async (req, res) => {
     let totalNumberQR = idCoopera.totalNumberQR + data.totalNumberQR;
     // goi await tai vi tri can truy van data
     // bac cac tuyen trinh doi truyen trinh nay song moi dc lam tuyen trinh khac
-    await farmerModel.createNew(data); // createNew laf function dc tao trong file model
+    let dataFarmer = await farmerModel.createNew(data); // createNew laf function dc tao trong file model
+
+    //tao data batch lo thua
+    await callCreateBatch.createBatch(dataFarmer);
+
     // update data htx dien tich va so nong ho
     await coopertationModel.updateLandAndTotalTree(
       idCoopera._id,
@@ -127,6 +132,7 @@ let createFarmer = async (req, res) => {
       totalNumberQR,
       idCoopera.memberfarmer + 1
     );
+
     return res.status(200).json({ message: "create succession." });
   } catch (error) {
     return res.status(500).json({ message: "create failed" });
@@ -140,8 +146,8 @@ let showFarmer = async (req, res) => {
 
     let getData = await farmerModel.showFarmer(idCoopera._id);
     let salt = bcrypt.genSaltSync(saltRounds);
-    console.log(salt);
-    console.log(getData);
+    //console.log(salt);
+    //console.log(getData);
     //Không cần chỗ này
     // getData.map(async (e) => {
     //   let pw = await bcrypt.compareSync(e.password);
@@ -192,48 +198,12 @@ let showListOrder = async (req, res) => {
     return res.status(500).json({ message: "create failed" });
   }
 };
-//ko dung'
-// let createListQR = async (req, res) => {
-//   try {
-//     //console.log(req.body.dataQR);
-//     let idCoopare = await coopertationModel.findIdCoopera(
-//       req.body.dataQR.idcustomer
-//     );
-//     if (idCoopare) {
-//       let listFarmer = await farmerModel.showFarmer(idCoopare._id); //result array
-//       // console.log(listFarmer);
-//       let arrayQR = listFarmer.map(async (e) => {
-//         let beforeConverQR = idCoopare._id + "/" + e._id;
-//         return beforeConverQR;
-//       });
-//       let convertArrayQR = await Promise.all(arrayQR);
-//       let afterArrayQR = convertArrayQR.map(async (e) => {
-//         let qrCode = { qrId: await qrcode.toDataURL(e) };
-//         return qrCode;
-//       });
-//       let doneArrayQR = await Promise.all(afterArrayQR); // array buffer
-//       // console.log(doneArrayQR);
-//       let dataDone = {
-//         idOrder: req.body.dataQR.idOrder,
-//         arrayQR: doneArrayQR,
-//       };
-//       await qrCodeModel.createNew(dataDone);
-//       await orderModel.updateDefaulQR(req.body.dataQR.idOrder);
-//       return res.status(200).json({ message: "success" });
-//     } else {
-//       return res.status(500).json({ message: "khong tim thay htx" });
-//     }
-//     //return res.status(200).json({ message: "create succession." });
-//   } catch (error) {
-//     return res.status(500).json({ message: "create failed" });
-//   }
-// };
 
 let newCreateQR = async (req, res) => {
   try {
     console.log("createQR");
-    console.log("admin " + req.body.dataQR.iduser);
-    console.log("data qr " + req.body.dataQR.idcustomer);
+    //  console.log("admin " + req.body.dataQR.iduser);
+    // console.log("data qr " + req.body.dataQR.idcustomer);
 
     //console.log("life" + accessTokenLifeQr);
     // console.log("secrec" + accessTokenSecretQr);

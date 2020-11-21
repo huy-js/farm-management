@@ -4,6 +4,7 @@ const AuthMiddleWare = require("../middleware/AuthMiddleware");
 const AuthController = require("../controllers/AuthController");
 const FriendController = require("../controllers/FriendController");
 const ManagementController = require("../controllers/ManagementController");
+const ManagementDiaryController = require("../controllers/ManagementDiaryController");
 let initAPIs = (app) => {
   //all
   router.post("/login", AuthController.login);
@@ -18,7 +19,7 @@ let initAPIs = (app) => {
   router.get("/checklogin", AuthMiddleWare.isAuthCheck);
   // kiem tra trang thai dang nhap tai server
   //cac duong dan nam sau router nay can dam bao da dang nhap
-  router.post("/checkout", AuthController.checkout)
+  router.post("/checkout", AuthController.checkout);
   router.use(AuthMiddleWare.isAuth);
   // router test => api => controller => res.json cho client
   router.get("/friends", FriendController.friendLists);
@@ -28,6 +29,17 @@ let initAPIs = (app) => {
   router.post("/createfarmer", ManagementController.createFarmer);
   router.get("/showfarmer/:id", ManagementController.showFarmer);
   router.put("/updatePassword", AuthController.updatePasswordUser);
+  // diary
+  router.get(
+    "/showlistfarmer/:id/:limit",
+    ManagementDiaryController.showListFarmer
+  );
+  router.get("/showlistbatch/:id", ManagementDiaryController.showListBatch);
+  router.put("/updatemapbatch", ManagementDiaryController.updateMapBatch);
+  router.put(
+    "/updatebatchcountStump",
+    ManagementDiaryController.updateBatchCountStump
+  );
   // order
   router.get("/showCoopare/:id", ManagementController.showCooperation);
   router.post("/createdataorder", ManagementController.createDataOrder);

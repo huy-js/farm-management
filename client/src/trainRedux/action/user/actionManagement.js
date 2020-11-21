@@ -82,3 +82,32 @@ export const userCreateFarmerFetch = (dataFamer, checkVali) => {
     }
   };
 };
+
+export const showListFarmerMapsFetch = (id, limit) => {
+  //console.log(id);
+  return (dispatch) => {
+    const token = localStorage.userToken;
+    // console.log(datacreate);
+    //console.log(token);
+    if (token) {
+      const accessToken = JSON.parse(token).accessToken;
+      //console.log(accessToken);
+      return axios
+        .get(`http://localhost:3456/showlistfarmer/${id}/${limit}`, {
+          headers: { Authorization: `${accessToken}` },
+        })
+        .then((res) => {
+          // console.log(res);
+          console.log(res.data);
+          dispatch(fetchFarmerData(res.data));
+        })
+        .catch((error) => {
+          console.log(error);
+          // localStorage.clear();
+        });
+    } else {
+      console.log("ko token");
+      //  localStorage.removeItem("userToken");
+    }
+  };
+};

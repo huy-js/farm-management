@@ -55,5 +55,8 @@ cooperationSchema.statics = {
       { nameOfCooperative: 1 }
     ).exec();
   },
+  updateTotaltree(id, totaltree) {
+    return this.findByIdAndUpdate(id, { totalTrees: totaltree }).exec();
+  },
 };
 module.exports = mongoose.model("cooperation", cooperationSchema);

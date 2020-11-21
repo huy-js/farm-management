@@ -24,6 +24,7 @@ import BusinessCooperation from "./components/manager/cooperative/business_coope
 import Search from "./components/profile/search_infor";
 import Footer from "./components/navigation/footer/Footer";
 import Profile from "./components/profile/Profile";
+import DiaryManager from "./components/manager/diary/diary_manager";
 import NotFound from "./components/NotFound";
 import * as actions from "./trainRedux/action/authentication/actionAuth";
 
@@ -63,6 +64,7 @@ class App extends Component {
           <Route path="/" exact component={Home} />
           <Route path="/logout" component={Logout} />
           <Route path="/profile" component={Profile} />
+          <Route path="/diary-manager" component={DiaryManager} />
           <Route component={NotFound} />
           <Redirect to="/" />
         </Switch>
@@ -88,7 +90,7 @@ class App extends Component {
     if (isLogin) {
       logButton = (
         <li className="nav-item" role="presentation">
-          <Link  to="/logout" className="nav-link">
+          <Link to="/logout" className="nav-link">
             Logout
           </Link>
         </li>
@@ -126,6 +128,11 @@ class App extends Component {
             <li className="nav-item" role="presentation">
               <Link to={"/manager-farmer"} className="nav-link">
                 MANAGER-FARMER
+              </Link>
+            </li>
+            <li className="nav-item" role="presentation">
+              <Link to={"/diary-manager"} className="nav-link">
+                Diary-manager
               </Link>
             </li>
             <li className="nav-item" role="presentation">

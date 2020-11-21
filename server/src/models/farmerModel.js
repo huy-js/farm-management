@@ -32,6 +32,12 @@ farmerSchema.statics = {
   findFarmer(idFarmer) {
     return this.findById(idFarmer).exec();
   },
+  showListFarmer(id, limit) {
+    return this.find({ CooperativeId: id }, { password: 0 })
+      .sort({ createdAt: 1 })
+      .limit(limit)
+      .exec();
+  },
 };
 
 module.exports = mongoose.model("farmer", farmerSchema);
