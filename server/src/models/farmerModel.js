@@ -38,6 +38,9 @@ farmerSchema.statics = {
       .limit(limit)
       .exec();
   },
+  updateTotaltree(idfarmer, totaltree) {
+    return this.findByIdAndUpdate(idfarmer, { totalTrees: totaltree }).exec();
+  },
 };
 
 module.exports = mongoose.model("farmer", farmerSchema);

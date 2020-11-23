@@ -10,6 +10,11 @@ export const fetchFarmerData = (farmerData) => ({
   payload: farmerData,
 });
 
+export const fetchCheckedMap = (data) => ({
+  type: actionTypes.FETCH_CHECK_MAP,
+  payload: data,
+});
+
 export const showListFarmerMapsFetch = (id, limit) => {
   //console.log(id);
   return (dispatch) => {
@@ -28,6 +33,7 @@ export const showListFarmerMapsFetch = (id, limit) => {
           console.log(res.data);
           dispatch(fetchFarmerData(res.data));
           dispatch(showListBatch(res.data[0]._id));
+          dispatch(checkConfromMap(res.data[0]._id));
         })
         .catch((error) => {
           console.log(error);
@@ -90,6 +96,7 @@ export const showListBatch = (id) => {
           // console.log(res);
           console.log(res.data);
           dispatch(fetchBatchList(res.data));
+          dispatch(checkConfromMap(id));
         })
         .catch((error) => {
           console.log(error);
@@ -152,6 +159,109 @@ export const updateBatchCountStump = (data) => {
           // console.log(res);
           // console.log(res.data);
           dispatch(fetchBatchList(res.data));
+        })
+        .catch((error) => {
+          console.log(error);
+          // localStorage.clear();
+        });
+    } else {
+      console.log("ko token");
+      //  localStorage.removeItem("userToken");
+    }
+  };
+};
+
+export const deleteStumpFetch = (data) => {
+  console.log(data);
+  return (dispatch) => {
+    const token = localStorage.userToken;
+    // console.log(datacreate);
+    //console.log(token);
+    if (token) {
+      const accessToken = JSON.parse(token).accessToken;
+      //console.log(accessToken);
+      return axios
+        .put(
+          `http://localhost:3456/deleteStump`,
+          { data },
+          {
+            headers: { Authorization: `${accessToken}` },
+          }
+        )
+        .then((res) => {
+          // console.log(res);
+          // console.log(res.data);
+          dispatch(fetchBatchList(res.data));
+        })
+        .catch((error) => {
+          console.log(error);
+          // localStorage.clear();
+        });
+    } else {
+      console.log("ko token");
+      //  localStorage.removeItem("userToken");
+    }
+  };
+};
+
+export const conFromMapFetch = (data) => {
+  console.log(data);
+  return (dispatch) => {
+    const token = localStorage.userToken;
+    // console.log(datacreate);
+    //console.log(token);
+    if (token) {
+      const accessToken = JSON.parse(token).accessToken;
+      //console.log(accessToken);
+      return axios
+        .post(
+          `http://localhost:3456/confrommap`,
+          { data },
+          {
+            headers: { Authorization: `${accessToken}` },
+          }
+        )
+        .then((res) => {
+          // console.log(res);
+          // console.log(res.data);
+          dispatch(checkConfromMap(data.idFarmer));
+        })
+        .catch((error) => {
+          console.log(error);
+          // localStorage.clear();
+        });
+    } else {
+      console.log("ko token");
+      //  localStorage.removeItem("userToken");
+    }
+  };
+};
+
+export const checkConfromMap = (data) => {
+  console.log(data);
+  return (dispatch) => {
+    const token = localStorage.userToken;
+    // console.log(datacreate);
+    //console.log(token);
+    if (token) {
+      const accessToken = JSON.parse(token).accessToken;
+      //console.log(accessToken);
+      return axios
+        .post(
+          `http://localhost:3456/checkmap`,
+          { data },
+          {
+            headers: { Authorization: `${accessToken}` },
+          }
+        )
+        .then((res) => {
+          // console.log(res);
+          console.log("alo" + res.data);
+          // if (res.data.message === true) {
+          //   dispatch(fetchCheckedMap(true));
+          //   return;
+          // }
+          dispatch(fetchCheckedMap(res.data));
         })
         .catch((error) => {
           console.log(error);

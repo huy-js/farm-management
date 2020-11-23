@@ -38,12 +38,16 @@ class DiaryManager extends Component {
   };
   render() {
     console.log(this.props.resArray);
-
-    let name = this.props.resArray.map((e, index) => {
+    let name = "";
+    let idfarmer = "";
+    this.props.resArray.map((e, index) => {
       if (index === 0) {
-        return e.farmOwner;
+        name = e.farmOwner;
+        idfarmer = e._id;
       }
+      return;
     });
+    console.log(idfarmer);
     return (
       <main
         className="page landing-page"
@@ -129,7 +133,7 @@ class DiaryManager extends Component {
               <div className="col-sm-9">
                 <DiaryDetail
                   name={this.state.name === "" ? name : this.state.name}
-                  id={this.state.id}
+                  id={this.state.id === "" ? idfarmer : this.state.id}
                 />
               </div>
             </div>

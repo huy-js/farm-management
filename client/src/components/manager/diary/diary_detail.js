@@ -64,6 +64,15 @@ class DiaryDetail extends Component {
     row: null,
     col: null,
   };
+  // componentDidMount = () => {
+  //   let data = {
+  //     iduser: this.props.currentUser._id,
+  //     idFarmer: this.props.id,
+  //   };
+  //   console.log(data);
+  //   // dang viet
+  //   this.props.checkConfromMap(data);
+  // };
   handleChange = (selectedOption) => {
     this.setState({
       selectedOption: selectedOption.value,
@@ -148,10 +157,33 @@ class DiaryDetail extends Component {
       display: "none",
     });
   };
+  deleteStumps = (event, totalTree) => {
+    event.preventDefault();
+    let data = {
+      iduser: this.props.currentUser._id,
+      idFarmer: this.state.idFarmer,
+      selectedOption: this.state.selectedOption,
+      selectedStumps: this.state.selectedStumps,
+      totalTree: totalTree,
+    };
+    this.props.deleteStumpFetch(data);
+    this.buttonElement.click();
+  };
+  //xac nhan map
+  ConfrommMap = (event) => {
+    event.preventDefault();
+    let data = {
+      iduser: this.props.currentUser._id,
+      idFarmer: this.props.id,
+    };
+    this.props.conFromMapFetch(data);
+    // this.setState({
 
+    // })
+  };
   render() {
     // let { match } = this.props;
-    //  console.log(this.props.currentUser._id);
+    console.log("check map " + this.props.isCheckMap);
     // this.props.showListBatch(this.props.match.params.id);
     // console.log("alo " + this.props.resBatchArray);
     let optionss = (data) => {
@@ -219,69 +251,79 @@ class DiaryDetail extends Component {
 
     let showdetail = this.props.resBatchArray.map((e, i) => {
       if (e.numberbatch === this.state.selectedOption) {
+        let lengthstump = e.stumps.length;
         let data = e.stumps.map((ele, index) => {
           if (ele.numberStumps === this.state.selectedStumps) {
             return (
-              <div
-                key={index + 1}
-                style={{ margin: "0 auto", padding: "10px" }}
-              >
-                {/* tong so cay cua lo nay {e.totalTree}, tong so cay cua thua nay{" "}
-                {ele.totalTree}, so hang {ele.row}va so cot{ele.col} */}
-                <form onSubmit={this.handleSubmit}>
-                  <label style={{ margin: "5px" }}>
-                    <p>tổng cây trong lô này</p>
-                    <input
-                      type="Number"
-                      defaultValue={e.totalTree}
-                      //min="0"
-                      // name="totalTrees"
-                      readOnly
-                    />
-                  </label>
-                  <label>
-                    <p>tổng cây trong thửa này</p>
-                    <input
-                      type="Number"
-                      defaultValue={ele.totalTree}
-                      min="0"
-                      max="50"
-                      name="stumpTotalTree"
-                      onChange={this.handleChangeMap}
-                    />
-                  </label>
-                  <label style={{ margin: "5px" }}>
-                    <p>số hàng</p>
-                    <input
-                      type="Number"
-                      defaultValue={ele.row}
-                      min="0"
-                      max="50"
-                      name="row"
-                      onChange={this.handleChangeMap}
-                    />
-                    <p>số cột</p>
-                    <input
-                      type="Number"
-                      defaultValue={ele.col}
-                      min="0"
-                      max="50"
-                      name="col"
-                      onChange={this.handleChangeMap}
-                    />
-                  </label>
-                  <button
-                    style={{
-                      fontSize: "10px",
-                      float: "right",
-                      marginTop: "120px",
-                    }}
-                    className="btn btn-outline-primary  btn-sm"
-                    type="submit"
-                  >
-                    EDIT
-                  </button>
-                </form>
+              <div key={index + 1}>
+                <div
+                  style={{
+                    float: "right",
+                    color: "red",
+                    cursor: "pointer",
+                    display:
+                      ele.numberStumps === lengthstump ? "block" : "none",
+                  }}
+                  onClick={(event) => this.deleteStumps(event, ele.totalTree)}
+                >
+                  xóa thửa {ele.numberStumps}
+                </div>
+                <div style={{ margin: "10 auto", padding: "30px 10px" }}>
+                  <form onSubmit={this.handleSubmit}>
+                    <label style={{ margin: "5px" }}>
+                      <p>tổng cây trong lô này</p>
+                      <input
+                        type="Number"
+                        defaultValue={e.totalTree}
+                        //min="0"
+                        // name="totalTrees"
+                        readOnly
+                      />
+                    </label>
+                    <label>
+                      <p>tổng cây trong thửa này</p>
+                      <input
+                        type="Number"
+                        defaultValue={ele.totalTree}
+                        min="0"
+                        max="50"
+                        name="stumpTotalTree"
+                        onChange={this.handleChangeMap}
+                      />
+                    </label>
+                    <label style={{ margin: "5px" }}>
+                      <p>số hàng</p>
+                      <input
+                        type="Number"
+                        defaultValue={ele.row}
+                        min="0"
+                        max="50"
+                        name="row"
+                        onChange={this.handleChangeMap}
+                      />
+                      <p>số cột</p>
+                      <input
+                        type="Number"
+                        defaultValue={ele.col}
+                        min="0"
+                        max="50"
+                        name="col"
+                        onChange={this.handleChangeMap}
+                      />
+                    </label>
+                    <button
+                      style={{
+                        fontSize: "10px",
+                        float: "right",
+                        marginTop: "120px",
+                      }}
+                      className="btn btn-outline-primary  btn-sm"
+                      type="submit"
+                    >
+                      EDIT
+                    </button>
+                  </form>
+                </div>
               </div>
             );
           }
@@ -362,7 +404,11 @@ class DiaryDetail extends Component {
             <p className="text-primary m-0 font-weight-bold">
               Thông tin chi tiết nong dan {this.props.name}
               <button
-                style={{ float: "right", fontSize: "10px" }}
+                style={{
+                  float: "right",
+                  fontSize: "10px",
+                  display: this.props.isCheckMap ? "none" : "block",
+                }}
                 className="btn btn-outline-primary  btn-sm"
                 type="button"
                 // onClick={this.completeTheTransaction}
@@ -410,17 +456,14 @@ class DiaryDetail extends Component {
                 </div>
               );
             })}
-            <div>
+            <div style={{ display: this.props.isCheckMap ? "none" : "block" }}>
               <button
                 style={{ float: "right", fontSize: "10px" }}
                 className="btn btn-outline-primary  btn-sm"
                 type="button"
-                // onClick={this.completeTheTransaction}
-                //data-toggle="modal"
-                // data-target="#callModal"
-                //onClick={this.resetValue}
+                onClick={this.ConfrommMap}
               >
-                XÁC NHẬN MAP
+                XÁC NHẬN MAPs
               </button>
             </div>
           </div>
@@ -472,11 +515,8 @@ class DiaryDetail extends Component {
                   options={optionstump}
                   onChange={this.handleChangeStump}
                 />
-                <div style={{ display: this.state.display }}>
-                  view {showdetail}
-                </div>
+                <div style={{ display: this.state.display }}>{showdetail}</div>
                 <div style={{ display: this.state.displayCountBatch }}>
-                  View batch count
                   {showCountStump}
                 </div>
               </div>
@@ -505,12 +545,16 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.authReducer.currentUser,
     resBatchArray: state.diaryReducer.resBatchArray,
+    isCheckMap: state.diaryReducer.isCheckMap,
   };
 };
 const mapDispatchToProps = (dispatch, props) => ({
   updateMapBatch: (data) => dispatch(actions.updateMapBatch(data)),
   updateBatchCountStump: (data) =>
     dispatch(actions.updateBatchCountStump(data)),
+  deleteStumpFetch: (data) => dispatch(actions.deleteStumpFetch(data)),
+  conFromMapFetch: (data) => dispatch(actions.conFromMapFetch(data)),
+  checkConfromMap: (data) => dispatch(actions.checkConfromMap(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiaryDetail);

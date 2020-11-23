@@ -3,13 +3,14 @@ let Schema = mongoose.Schema;
 let qrDiarySchema = new Schema(
   {
     idFarmOwner: { type: String, default: null }, // nong ho
-    totalbatch: { type: Number, default: 5 }, // tong lo
-    stumps: [
+    totalbatch: { type: Number }, // tong lo
+    batchs: [
       {
         numberbatch: { type: Number }, // stt thưa đất
         arrayQR: [{ idQR: { type: String } }], // id nhat ky
       },
     ], // thửa đất
+    active: { type: Boolean, default: true },
   },
   {
     timestamps: {
@@ -22,8 +23,10 @@ qrDiarySchema.statics = {
   createNew(item) {
     return this.create(item);
   },
-  //   showqrDiary() {
-  //     return this.find().exec();
-  //   },
+  checkactiveMap(idfarmer) {
+    return this.findOne({
+      $and: [{ idFarmOwner: idfarmer }, { active: true }],
+    }).exec();
+  },
 };
 module.exports = mongoose.model("qrDiary", qrDiarySchema);

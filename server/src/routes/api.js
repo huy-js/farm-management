@@ -40,6 +40,9 @@ let initAPIs = (app) => {
     "/updatebatchcountStump",
     ManagementDiaryController.updateBatchCountStump
   );
+  router.put("/deleteStump", ManagementDiaryController.deleteStump);
+  router.post("/confrommap", ManagementDiaryController.conFromMap);
+  router.post("/checkmap", ManagementDiaryController.checkMap);
   // order
   router.get("/showCoopare/:id", ManagementController.showCooperation);
   router.post("/createdataorder", ManagementController.createDataOrder);

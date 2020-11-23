@@ -75,5 +75,16 @@ BatchSchema.statics = {
       },
     }).exec();
   },
+  deleteStump(idBatch, batch, stump) {
+    return this.update(
+      { $and: [{ idFarmOwner: idBatch }, { numberbatch: batch }] },
+      {
+        $pull: { stumps: { numberStumps: stump } },
+      }
+    ).exec();
+  },
+  findBatchFarmer(idFarmer) {
+    return this.find({ idFarmOwner: idFarmer }).exec();
+  },
 };
 module.exports = mongoose.model("batch", BatchSchema);
