@@ -5,6 +5,7 @@ const orderModel = require("../models/orderModel");
 const qrCodeModel = require("../models/qrCodeModel");
 const qrDiaryModel = require("../models/qrDiaryModel");
 const batchModel = require("../models/batchModel");
+const diaryModel = require("../models/diaryModel");
 const qrcode = require("qrcode");
 let showListFarmer = async (req, res) => {
   try {
@@ -253,6 +254,79 @@ let checkMap = async (req, res) => {
     return res.status(500).json({ message: "confrom map error" });
   }
 };
+let getMapFarmer = async (req, res) => {
+  try {
+    let idFarmer = req.params.idfarmer;
+    console.log(idFarmer);
+    let dataMap = await batchModel.showListBatch(idFarmer);
+    console.log(dataMap);
+    return res.status(200).json(dataMap);
+  } catch (error) {
+    return res.status(500).json({ message: "confrom map error" });
+  }
+};
+let writeDiary = async (req, res) => {
+  try {
+    console.log(req.body.datadiary);
+    let datadiary = req.body.datadiary;
+    let data = {
+      work: datadiary.work, //công việc
+      preparation: datadiary.deTailVal, // nôi dung công việc
+      node: datadiary.arrayChecked,
+      idFarmer: datadiary.isFarmer,
+    };
+    let createData = await diaryModel.createNew(data);
+
+    if (datadiary.title == "allbatch") {
+      console.log("alo" + createData.idFarmer + " + " + createData._id);
+      await batchModel.updateAllBatchDiary(createData.idFarmer, createData._id);
+    }
+    if (datadiary.title == "allStumpinBatch") {
+      console.log("is batch " + datadiary.isBatch);
+      let dataBatch = await batchModel.findBatch(datadiary.isBatch);
+      console.log("is batch " + dataBatch);
+      dataBatch.stumps.map(async (e) => {
+        await batchModel.updateStumpsBatchDiary(
+          // dataBatch._id,
+          e._id,
+          createData._id
+        );
+      });
+    }
+    if (datadiary.title == "Stumps") {
+      console.log("is array stumps " + datadiary.arrayStumps);
+      let dataBatch = await batchModel.findBatch(datadiary.isBatch);
+      let arrayCheckStump = [];
+      datadiary.arrayStumps.forEach((e) => {
+        dataBatch.stumps.forEach((ele) => {
+          if (e.numberStumps === ele.numberStumps) {
+            arrayCheckStump.push(ele);
+          }
+        });
+      });
+      console.log(arrayCheckStump);
+      arrayCheckStump.map(async (e) => {
+        await batchModel.updateStumpsBatchDiary(e._id, createData._id);
+      });
+    }
+    if (datadiary.title == "detailStump") {
+      console.log("is array detailStump " + datadiary.isStump);
+      let dataBatch = await batchModel.findBatch(datadiary.isBatch);
+      console.log(dataBatch);
+      let Stumpis = dataBatch.stumps.filter((ele) => {
+        if (datadiary.isStump == ele.numberStumps) {
+          return ele;
+        }
+      });
+      console.log(Stumpis);
+      await batchModel.updateStumpsBatchDiary(Stumpis[0]._id, createData._id);
+    }
+
+    // return res.status(200).json(dataMap);
+  } catch (error) {
+    return res.status(500).json({ message: "confrom map error" });
+  }
+};
 module.exports = {
   showListFarmer: showListFarmer,
   showListBatch: showListBatch,
@@ -261,4 +335,6 @@ module.exports = {
   deleteStump: deleteStump,
   conFromMap: conFromMap,
   checkMap: checkMap,
+  getMapFarmer: getMapFarmer,
+  writeDiary: writeDiary,
 };

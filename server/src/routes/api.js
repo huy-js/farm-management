@@ -11,12 +11,11 @@ let initAPIs = (app) => {
   router.post("/register", AuthController.register);
   // diary farmer
   router.post("/loginfarmer", AuthController.loginFarmer);
+  router.get("/getMap/:idfarmer", ManagementDiaryController.getMapFarmer);
+  router.post("/writediary", ManagementDiaryController.writeDiary);
   // api find infor product continue :))
   router.get("/search/:dataQR", ManagementController.searchProductQR);
-  // router.get(
-  //   "/search/:idcoopare/:idfarmer",
-  //   ManagementController.searchProduct
-  // );
+
   //goi isAuthcheck sau moi lan vao 1 duong dan trong react
   router.get("/checklogin", AuthMiddleWare.isAuthCheck);
   // kiem tra trang thai dang nhap tai server

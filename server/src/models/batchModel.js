@@ -6,7 +6,7 @@ let BatchSchema = new Schema(
     numberbatch: { type: Number }, // stt lô
     totalTree: { type: Number, default: 250 }, // cay trong 1 lô
     totalStumps: { type: Number, default: 5 }, // so thua
-    arrayDiary: [{ idDiary: { type: String } }], // id nhat ky all
+    arrayDiaryForAll: [{ idDiary: { type: String } }], // id nhat ky all
     stumps: [
       {
         numberStumps: { type: Number }, // stt thưa đất
@@ -85,6 +85,34 @@ BatchSchema.statics = {
   },
   findBatchFarmer(idFarmer) {
     return this.find({ idFarmOwner: idFarmer }).exec();
+  },
+  updateAllBatchDiary(idFarmer, iddiary) {
+    return this.updateMany(
+      { idFarmOwner: idFarmer },
+      {
+        $push: {
+          arrayDiaryForAll: {
+            $each: [{ idDiary: iddiary }],
+          },
+        },
+      }
+    ).exec();
+  },
+  findBatch(idBatch) {
+    return this.findById(idBatch).exec();
+  },
+  updateStumpsBatchDiary(idStump, iddiary) {
+    return this.findOneAndUpdate(
+      { stumps: { $elemMatch: { _id: idStump } } },
+      {
+        $push: {
+          "stumps.$.arrayDiary": {
+            idDiary: iddiary,
+          },
+        },
+      }
+      //  { safe: true, upsert: true, new: true }
+    ).exec();
   },
 };
 module.exports = mongoose.model("batch", BatchSchema);

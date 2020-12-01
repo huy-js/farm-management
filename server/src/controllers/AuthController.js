@@ -159,7 +159,7 @@ let loginFarmer = async (req, res) => {
         .json({ message: "thông tin đăng nhập không chính xác" });
     }
 
-    use = { _id: user._id, username: user.farmOwner };
+    user = { _id: user._id, username: user.farmOwner };
     const accessToken = await jwtHelper.generateToken(
       user,
       accessTokenSecret,
