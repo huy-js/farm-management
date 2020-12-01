@@ -1,6 +1,7 @@
 const jwtHelper = require("../helpers/jwt.helper");
 const userModel = require("../models/userModel");
 const cooperaModel = require("../models/cooperationModel");
+const farmerModel = require("../models/farmerModel");
 require("dotenv").config();
 
 const bcrypt = require("bcrypt");
@@ -16,7 +17,7 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
 let login = async (req, res) => {
   try {
-    //console.log(req.body);
+    console.log(req.body);
     let user = await userModel.findByEmail(req.body.email);
     //console.log(user);
     if (!user) {
@@ -141,6 +142,36 @@ let checkout = async (req, res) => {
 
   res.json({ error, status });
 };
+let loginFarmer = async (req, res) => {
+  try {
+    console.log(req.body);
+    let user = await farmerModel.findFarmerByName(req.body.username);
+    console.log(user);
+    if (!user) {
+      return res
+        .status(500)
+        .json({ message: "thông tin đăng nhập không chính xác" });
+    }
+    if (!(await user.comparePassword(req.body.password))) {
+      // console.log("alo alo");
+      return res
+        .status(500)
+        .json({ message: "thông tin đăng nhập không chính xác" });
+    }
+
+    use = { _id: user._id, username: user.farmOwner };
+    const accessToken = await jwtHelper.generateToken(
+      user,
+      accessTokenSecret,
+      accessTokenLife
+    );
+    //tokenList[refreshToken] = { accessToken };
+
+    return res.status(200).json({ accessToken });
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
 
 module.exports = {
   login: login,
@@ -148,4 +179,5 @@ module.exports = {
 
   register: register,
   updatePasswordUser: updatePasswordUser,
+  loginFarmer: loginFarmer,
 };

@@ -9,6 +9,8 @@ let initAPIs = (app) => {
   //all
   router.post("/login", AuthController.login);
   router.post("/register", AuthController.register);
+  // diary farmer
+  router.post("/loginfarmer", AuthController.loginFarmer);
   // api find infor product continue :))
   router.get("/search/:dataQR", ManagementController.searchProductQR);
   // router.get(

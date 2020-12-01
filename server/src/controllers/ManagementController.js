@@ -98,6 +98,7 @@ let createFarmer = async (req, res) => {
   try {
     //console.log(req.body.dataFamer);
     let data = req.body.dataFamer;
+    let idUser = data.idUser;
     let idCoopera = await coopertationModel.findIdCoopera(data.idUser);
 
     let getPassWord = await randomPW.createPassWord(data);
@@ -120,7 +121,13 @@ let createFarmer = async (req, res) => {
     // goi await tai vi tri can truy van data
     // bac cac tuyen trinh doi truyen trinh nay song moi dc lam tuyen trinh khac
     let dataFarmer = await farmerModel.createNew(data); // createNew laf function dc tao trong file model
-
+    console.log("data famer " + dataFarmer);
+    console.log(idUser);
+    await userModel.updateDatafarmer(
+      idUser,
+      dataFarmer.farmOwner,
+      dataFarmer._id
+    );
     //tao data batch lo thua
     await callCreateBatch.createBatch(dataFarmer);
 

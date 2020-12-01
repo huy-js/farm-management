@@ -7,7 +7,7 @@ let createPassWord = (data) => {
       numbers: true,
     });
     let createdata = {
-      idFarmer: data.idUser,
+      idFarmer: "",
       username: data.farmOwner,
       password: ranDomPassWord,
     };

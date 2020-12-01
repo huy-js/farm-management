@@ -33,14 +33,14 @@ function callFunctionSeries(totaltree, row, col) {
   for (let i = 1; i <= row; i++) {
     for (let j = 1; j <= col; j++) {
       if (j === lastTotalTrees + 1 && i > colLastTrees) {
-        dataArray.push(0);
+        dataArray.push({ x: j, y: 0 });
         continue;
       }
       if (j > lastTotalTrees + 1) {
-        dataArray.push(0);
+        dataArray.push({ x: j, y: 0 });
         continue;
       }
-      dataArray.push(j);
+      dataArray.push({ x: j, y: j });
     }
     let ele = {
       name: i,
@@ -64,15 +64,6 @@ class DiaryDetail extends Component {
     row: null,
     col: null,
   };
-  // componentDidMount = () => {
-  //   let data = {
-  //     iduser: this.props.currentUser._id,
-  //     idFarmer: this.props.id,
-  //   };
-  //   console.log(data);
-  //   // dang viet
-  //   this.props.checkConfromMap(data);
-  // };
   handleChange = (selectedOption) => {
     this.setState({
       selectedOption: selectedOption.value,
@@ -198,15 +189,15 @@ class DiaryDetail extends Component {
         },
         plotOptions: {
           heatmap: {
-            //distributed: false,
+            //distributed: true,
             //enableShades: false,
-            // useFillColorAsStroke: true,
+            //useFillColorAsStroke: true,
             // colorScale: {
             //   ranges: [
             //     {
             //       from: 0,
             //       to: 0,
-            //       color: undefined,
+            //       //color: undefined,
             //       // foreColor: undefined,
             //       // name: undefined,
             //     },
@@ -224,6 +215,9 @@ class DiaryDetail extends Component {
         title: {
           text: "Thửa " + data,
         },
+        // stroke: {
+        //   width: 0,
+        // },
       };
     };
     const options = [];

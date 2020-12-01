@@ -75,6 +75,14 @@ userSchema.statics = {
       },
     }).exec();
   },
+  updateDatafarmer(iduser, namefarmer, idfarmer) {
+    return this.findOneAndUpdate(
+      { $and: [{ _id: iduser }, { "dataFarmer.username": namefarmer }] },
+      {
+        $set: { "dataFarmer.$.idFarmer": idfarmer },
+      }
+    ).exec();
+  },
 };
 userSchema.methods = {
   comparePassword(password) {

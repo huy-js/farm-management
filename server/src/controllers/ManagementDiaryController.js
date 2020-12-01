@@ -5,6 +5,7 @@ const orderModel = require("../models/orderModel");
 const qrCodeModel = require("../models/qrCodeModel");
 const qrDiaryModel = require("../models/qrDiaryModel");
 const batchModel = require("../models/batchModel");
+const qrcode = require("qrcode");
 let showListFarmer = async (req, res) => {
   try {
     let idUser = req.params.id;
@@ -203,29 +204,33 @@ let conFromMap = async (req, res) => {
     //console.log(dataBatch);
     let number = 0;
     // array = [];
-    let settingvalue = dataBatch.map((e, index) => {
+    let settingvalue = dataBatch.map(async (e, index) => {
       number = number + 1;
-      let settingstump = e.stumps.map((ele) => {
+      let settingstump = e.stumps.map(async (ele) => {
         let data = {
-          idQR: idfarmer + "." + e._id + "." + ele.numberStumps,
+          idQR: await qrcode.toDataURL(
+            idfarmer + "." + e._id + "." + ele.numberStumps
+          ),
         };
         return data;
       });
+      let deCodeQR = await Promise.all(settingstump);
       let result = {
         idFarmOwner: idfarmer,
         totalbatch: number,
         batchs: {
           numberbatch: index + 1,
-          arrayQR: settingstump,
+          arrayQR: deCodeQR,
         },
       };
       return result;
     });
+    let createDataMap = await Promise.all(settingvalue);
     // console.log(settingvalue);
     // settingvalue.forEach((element) => {
     //   console.log(element.batchs);
     // });
-    await qrDiaryModel.createNew(settingvalue);
+    await qrDiaryModel.createNew(createDataMap);
     return res.status(200).json({ message: "success" });
   } catch (error) {
     return res.status(500).json({ message: "confrom map error" });

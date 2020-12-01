@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const bcrypt = require("bcrypt");
 let Schema = mongoose.Schema;
 // tao gia tri co ban
 let farmerSchema = new Schema(
@@ -30,7 +30,7 @@ farmerSchema.statics = {
     return this.find({ CooperativeId: id }, { password: 0 }).exec();
   },
   findFarmer(idFarmer) {
-    return this.findById(idFarmer).exec();
+    return this.findById(idFarmer, { password: 0 }).exec();
   },
   showListFarmer(id, limit) {
     return this.find({ CooperativeId: id }, { password: 0 })
@@ -41,6 +41,13 @@ farmerSchema.statics = {
   updateTotaltree(idfarmer, totaltree) {
     return this.findByIdAndUpdate(idfarmer, { totalTrees: totaltree }).exec();
   },
+  findFarmerByName(name) {
+    return this.findOne({ farmOwner: name }).exec();
+  },
 };
-
+farmerSchema.methods = {
+  comparePassword(password) {
+    return bcrypt.compareSync(password, this.password); //compareSync là chức năng của gói bcrypt
+  },
+};
 module.exports = mongoose.model("farmer", farmerSchema);
