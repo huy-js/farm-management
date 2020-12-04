@@ -5,6 +5,7 @@ const initialState = {
   resBatchArray: [],
   resArray: [],
   isCheckMap: false,
+  dataImage: [],
 };
 
 const fetchFarmerData = (state, action) => {
@@ -25,6 +26,12 @@ const fetchCheckedMap = (state, action) => {
     isCheckMap: action.payload,
   });
 };
+// image diary
+const fetchDataDiary = (state, action) => {
+  return updateObject(state, {
+    dataImage: action.payload,
+  });
+};
 var reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.FETCH_FARMER_DATA:
@@ -33,6 +40,8 @@ var reducer = (state = initialState, action) => {
       return fetchBatchList(state, action);
     case actionTypes.FETCH_CHECK_MAP:
       return fetchCheckedMap(state, action);
+    case actionTypes.FETCH_DATA_DIARY:
+      return fetchDataDiary(state, action);
     default:
       return state;
   }

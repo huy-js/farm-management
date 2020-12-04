@@ -11,7 +11,9 @@ let diarySchema = new Schema(
       soluong: { type: String },
       dungtich: { type: String },
       luongnuoc: { type: String },
+      cachtri: { type: String },
     },
+    files: [{ data: Buffer, contentType: String, fileName: String }],
     node: [
       {
         col: { type: String },
@@ -32,8 +34,8 @@ diarySchema.statics = {
   createNew(item) {
     return this.create(item);
   },
-  // showDiary() {
-  //   return this.find().exec();
-  // },
+  showImageDiary(idF) {
+    return this.find({ idFarmer: idF }, { files: 1 }).exec();
+  },
 };
 module.exports = mongoose.model("diary", diarySchema);

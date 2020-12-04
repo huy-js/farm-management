@@ -258,13 +258,13 @@ class OrderCustomer extends Component {
                       </div>
                       <div className="form-group">
                         {/* <button className="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button> */}
-                        {/* <button
+                        <button
                           className="btn btn-outline-primary  btn-sm"
                           type="button"
                           onClick={this.completeTheTransaction}
                         >
                           HOÀN TẤT GIAO DỊCH
-                        </button> */}
+                        </button>
                         {/* <StripeCheckout
                           name={this.props.dataCooper.nameOfCooperative}
                           description="Purchase for QR code"
@@ -278,8 +278,8 @@ class OrderCustomer extends Component {
                         ></StripeCheckout> */}
                       </div>
                     </form>
-                    <StripeCheckout
-                      onClick={this.completeTheTransaction}
+                    {/* <StripeCheckout
+                     // onClick={this.completeTheTransaction}
                       name={this.props.dataCooper.nameOfCooperative}
                       description="Purchase for QR code"
                       token={onToken}
@@ -288,7 +288,7 @@ class OrderCustomer extends Component {
                       stripeKey={stripe_publickey}
                       shippingAddress
                       billingAddress
-                    ></StripeCheckout>
+                    ></StripeCheckout> */}
                   </div>
                 </div>
               </div>

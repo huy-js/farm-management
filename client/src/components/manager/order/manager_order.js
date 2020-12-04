@@ -101,6 +101,12 @@ class ManagerOrder extends Component {
         headerStyle: styleHeader,
         style: styleRow,
       },
+      {
+        dataField: "idcur",
+        //text: "TẠO QRCODE",
+        headerStyle: { display: "none" },
+        style: { display: "none" },
+      },
     ];
     const products = [];
 
@@ -132,17 +138,19 @@ class ManagerOrder extends Component {
             create
           </i>
         ),
+        idcur: element.idcustomer,
       };
       return products.push(arr);
     });
 
     const rowEvents = {
       onClick: (e, row, rowIndex) => {
-        // console.log(row);
-        // console.log(row.createQR.key);
+        console.log(row);
+        console.log(row.createQR.key);
         this.setState({
           dataQR: {
-            idcustomer: row.idcustomer,
+            //idcustomer: row.idcustomer,
+            idcustomer: row.idcur,
             landArea: row.landArea,
             memberfarmer: row.memberfarmer,
             numberQR: row.numberQR,

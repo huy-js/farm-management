@@ -5,6 +5,11 @@ const AuthController = require("../controllers/AuthController");
 const FriendController = require("../controllers/FriendController");
 const ManagementController = require("../controllers/ManagementController");
 const ManagementDiaryController = require("../controllers/ManagementDiaryController");
+const multer = require("multer");
+const storage = multer.memoryStorage();
+//const upload = multer({ storage: storage });
+
+const uploadManyFiles = multer({ storage: storage });
 let initAPIs = (app) => {
   //all
   router.post("/login", AuthController.login);
@@ -12,7 +17,12 @@ let initAPIs = (app) => {
   // diary farmer
   router.post("/loginfarmer", AuthController.loginFarmer);
   router.get("/getMap/:idfarmer", ManagementDiaryController.getMapFarmer);
-  router.post("/writediary", ManagementDiaryController.writeDiary);
+  router.post(
+    "/writediary",
+    //  upload.single("dataImage"),
+    uploadManyFiles.array("dataImage", 5),
+    ManagementDiaryController.writeDiary
+  );
   // api find infor product continue :))
   router.get("/search/:dataQR", ManagementController.searchProductQR);
 
@@ -44,6 +54,11 @@ let initAPIs = (app) => {
   router.put("/deleteStump", ManagementDiaryController.deleteStump);
   router.post("/confrommap", ManagementDiaryController.conFromMap);
   router.post("/checkmap", ManagementDiaryController.checkMap);
+  // user view diary
+  router.get(
+    "/showimagediary/:id",
+    ManagementDiaryController.showImageDiaryFarmer
+  );
   // order
   router.get("/showCoopare/:id", ManagementController.showCooperation);
   router.post("/createdataorder", ManagementController.createDataOrder);

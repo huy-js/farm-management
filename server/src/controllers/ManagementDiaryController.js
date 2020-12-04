@@ -7,6 +7,7 @@ const qrDiaryModel = require("../models/qrDiaryModel");
 const batchModel = require("../models/batchModel");
 const diaryModel = require("../models/diaryModel");
 const qrcode = require("qrcode");
+const fs = require("fs");
 let showListFarmer = async (req, res) => {
   try {
     let idUser = req.params.id;
@@ -268,18 +269,43 @@ let getMapFarmer = async (req, res) => {
 let writeDiary = async (req, res) => {
   try {
     console.log(req.body.datadiary);
-    let datadiary = req.body.datadiary;
+    //console.log(req.body.files);
+    // for (var i = 0; i < req.files.length; i++) {
+    //   console.log(req.files[i]);
+    // }
+    let fileImage = req.files.map((e) => {
+      let datafile = {
+        data: e.buffer,
+        contentType: e.mimetype,
+        fileName: e.originalname,
+      };
+      return datafile;
+    });
+    console.log("array file");
+    console.log(fileImage);
+    //console.log(req.file);
+    let dataconver = JSON.parse(req.body.datadiary);
+    let datadiary = dataconver.data;
+    console.log(datadiary);
+    // console.log(req.file.path);
+    // let fileImage = {
+    //   data: req.file.buffer,
+    //   contentType: req.file.mimetype,
+    //   fileName: req.file.originalname,
+    // };
+    // console.log(file);
     let data = {
       work: datadiary.work, //công việc
       preparation: datadiary.deTailVal, // nôi dung công việc
       node: datadiary.arrayChecked,
       idFarmer: datadiary.isFarmer,
+      files: fileImage,
     };
     let createData = await diaryModel.createNew(data);
 
-    if (datadiary.title == "allbatch") {
+    if (datadiary.title === "allbatch") {
       console.log("alo" + createData.idFarmer + " + " + createData._id);
-      await batchModel.updateAllBatchDiary(createData.idFarmer, createData._id);
+      await batchModel.updateAllBatchDiary(datadiary.isFarmer, createData._id);
     }
     if (datadiary.title == "allStumpinBatch") {
       console.log("is batch " + datadiary.isBatch);
@@ -327,6 +353,17 @@ let writeDiary = async (req, res) => {
     return res.status(500).json({ message: "confrom map error" });
   }
 };
+let showImageDiaryFarmer = async (req, res) => {
+  try {
+    let idFarmer = req.params.id;
+    console.log(idFarmer);
+    let dataImage = await diaryModel.showImageDiary(idFarmer);
+    //console.log(dataImage);
+    return res.status(200).json(dataImage);
+  } catch (error) {
+    return res.status(500).json({ message: "confrom map error" });
+  }
+};
 module.exports = {
   showListFarmer: showListFarmer,
   showListBatch: showListBatch,
@@ -337,4 +374,5 @@ module.exports = {
   checkMap: checkMap,
   getMapFarmer: getMapFarmer,
   writeDiary: writeDiary,
+  showImageDiaryFarmer: showImageDiaryFarmer,
 };

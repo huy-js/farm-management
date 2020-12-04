@@ -209,6 +209,7 @@ let showListOrder = async (req, res) => {
 let newCreateQR = async (req, res) => {
   try {
     console.log("createQR");
+    console.log(req.body);
     //  console.log("admin " + req.body.dataQR.iduser);
     // console.log("data qr " + req.body.dataQR.idcustomer);
 
@@ -220,6 +221,7 @@ let newCreateQR = async (req, res) => {
     let idCoopare = await coopertationModel.findIdCoopera(
       req.body.dataQR.idcustomer
     );
+    console.log(idCoopare);
     if (idCoopare) {
       //console.log(idCoopare);
       let listFarmer = await farmerModel.showFarmer(idCoopare._id); //result array

@@ -18,6 +18,7 @@ class ManagerFarmer extends Component {
 
   ViewDiary = (id, event) => {
     event.preventDefault();
+    this.props.ShowImageDiary(id);
     this.setState({
       dataFarmer: id,
       display: "block",
@@ -125,12 +126,48 @@ class ManagerFarmer extends Component {
       return products.push(arr);
     });
 
+    // demo show image diary
+    function bufferToBase64(buffer) {
+      return btoa(
+        new Uint8Array(buffer).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          ""
+        )
+      );
+    }
+    //console.log(this.props.imageDiary.file);
+    //console.log(this.props.imageDiary.contentType);
+    //console.log(this.props.imageDiary.data);
+    // const Image = () => {
+    //   // console.log(this.props.imageDiary.file);
+    //   console.log("alalalaa");
+    //   return (
+    //     <img
+    //       src={`data:${
+    //         this.props.imageDiary.contentType
+    //       };base64,${bufferToBase64(this.props.imageDiary.data)}`}
+    //       style={{ width: "250px", height: "250px" }}
+    //     />
+    //   );
+    // };
+    const Image = this.props.imageDiary.map((ele, index) => {
+      return (
+        <img
+          src={`data:${ele.contentType};base64,${bufferToBase64(
+            ele.data.data
+          )}`}
+          style={{ width: "250px", height: "250px" }}
+          key={index}
+        />
+      );
+    });
+
     return (
       <div>
         <main className="page contact-us-page" style={{ height: "100%" }}>
           <section
             className="clean-block clean-form "
-            style={{ height: "100vh" }}
+            // style={{ height: "100vh" }}
           >
             <div className="container">
               <div className="block-heading " style={{ marginTop: "50px" }}>
@@ -169,7 +206,9 @@ class ManagerFarmer extends Component {
               </div>
             </div>
             <div className="container" style={{ display: this.state.display }}>
-              day la noi hien thi nhat ky : {this.state.dataFarmer}
+              day la noi hien thi nhat ky : {this.state.dataFarmer} <br />
+              {/* <Image /> */}
+              {Image}
             </div>
           </section>
         </main>
@@ -183,13 +222,13 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.authReducer.currentUser,
     resArray: state.fmManagerReducer.resArray,
+    imageDiary: state.diaryReducer.dataImage,
   };
 };
 const mapDispatchToProps = (dispatch, props) => ({
   showFarmerFetch: (dataCreate) =>
     dispatch(actions.showFarmerFetch(dataCreate)),
-  // userCreateFarmerFetch: (dataCreate) =>
-  //   dispatch(userCreateFarmerFetch(dataCreate)),
+  ShowImageDiary: (idFarmer) => dispatch(actions.ShowImageDiary(idFarmer)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManagerFarmer);
