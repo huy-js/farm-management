@@ -2,33 +2,31 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 class Home extends Component {
-
   render() {
     return (
       <div>
-        <main className="page landing-page"  style={{height:"100%"}}>
+        <main className="page landing-page" style={{ height: "100%" }}>
           <section
             className="clean-block clean-hero"
             style={{
               backgroundImage: `url("assets/img/tech/image4.jpg")`,
               color: `rgba(9, 162, 255, 0.85)`,
-              height:"100vh"
+              minHeight: "100hv",
             }}
           >
             <div className="text">
-              <h2>Lorem ipsum dolor sit amet.</h2>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-                quam urna, dignissim nec auctor in, mattis vitae leo.
-              </p>
-              <button
+              <h2>Tìm thông tin sẳn phầm bằng qr ?</h2>
+
+              <i class="fa fa-qrcode" style={{ fontSize: "50px" }}></i>
+
+              {/* <button
                 className="btn btn-outline-light btn-lg"
                 type="button"
                 data-toggle="modal"
                 data-target="#exampleModalCenter"
               >
                 Learn More
-              </button>
+              </button> */}
             </div>
           </section>
         </main>

@@ -39,7 +39,9 @@ let initAPIs = (app) => {
   //user
   router.post("/createfarmer", ManagementController.createFarmer);
   router.get("/showfarmer/:id", ManagementController.showFarmer);
+  //router.get("/getpwfarmer/:id", ManagementController.getDataPWFarmer);
   router.put("/updatePassword", AuthController.updatePasswordUser);
+
   // diary
   router.get(
     "/showlistfarmer/:id/:limit",

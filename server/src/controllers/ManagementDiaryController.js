@@ -281,12 +281,12 @@ let writeDiary = async (req, res) => {
       };
       return datafile;
     });
-    console.log("array file");
-    console.log(fileImage);
+    // console.log("array file");
+    // console.log(fileImage);
     //console.log(req.file);
     let dataconver = JSON.parse(req.body.datadiary);
     let datadiary = dataconver.data;
-    console.log(datadiary);
+    //console.log(datadiary);
     // console.log(req.file.path);
     // let fileImage = {
     //   data: req.file.buffer,
@@ -301,54 +301,52 @@ let writeDiary = async (req, res) => {
       idFarmer: datadiary.isFarmer,
       files: fileImage,
     };
-    let createData = await diaryModel.createNew(data);
+    // let createData = await diaryModel.createNew(data);
 
-    if (datadiary.title === "allbatch") {
-      console.log("alo" + createData.idFarmer + " + " + createData._id);
-      await batchModel.updateAllBatchDiary(datadiary.isFarmer, createData._id);
-    }
-    if (datadiary.title == "allStumpinBatch") {
-      console.log("is batch " + datadiary.isBatch);
-      let dataBatch = await batchModel.findBatch(datadiary.isBatch);
-      console.log("is batch " + dataBatch);
-      dataBatch.stumps.map(async (e) => {
-        await batchModel.updateStumpsBatchDiary(
-          // dataBatch._id,
-          e._id,
-          createData._id
-        );
-      });
-    }
-    if (datadiary.title == "Stumps") {
-      console.log("is array stumps " + datadiary.arrayStumps);
-      let dataBatch = await batchModel.findBatch(datadiary.isBatch);
-      let arrayCheckStump = [];
-      datadiary.arrayStumps.forEach((e) => {
-        dataBatch.stumps.forEach((ele) => {
-          if (e.numberStumps === ele.numberStumps) {
-            arrayCheckStump.push(ele);
-          }
-        });
-      });
-      console.log(arrayCheckStump);
-      arrayCheckStump.map(async (e) => {
-        await batchModel.updateStumpsBatchDiary(e._id, createData._id);
-      });
-    }
-    if (datadiary.title == "detailStump") {
-      console.log("is array detailStump " + datadiary.isStump);
-      let dataBatch = await batchModel.findBatch(datadiary.isBatch);
-      console.log(dataBatch);
-      let Stumpis = dataBatch.stumps.filter((ele) => {
-        if (datadiary.isStump == ele.numberStumps) {
-          return ele;
-        }
-      });
-      console.log(Stumpis);
-      await batchModel.updateStumpsBatchDiary(Stumpis[0]._id, createData._id);
-    }
-
-    // return res.status(200).json(dataMap);
+    // if (datadiary.title === "allbatch") {
+    //   console.log("alo" + createData.idFarmer + " + " + createData._id);
+    //   await batchModel.updateAllBatchDiary(datadiary.isFarmer, createData._id);
+    // }
+    // if (datadiary.title == "allStumpinBatch") {
+    //   console.log("is batch " + datadiary.isBatch);
+    //   let dataBatch = await batchModel.findBatch(datadiary.isBatch);
+    //   console.log("is batch " + dataBatch);
+    //   dataBatch.stumps.map(async (e) => {
+    //     await batchModel.updateStumpsBatchDiary(
+    //       // dataBatch._id,
+    //       e._id,
+    //       createData._id
+    //     );
+    //   });
+    // }
+    // if (datadiary.title == "Stumps") {
+    //   console.log("is array stumps " + datadiary.arrayStumps);
+    //   let dataBatch = await batchModel.findBatch(datadiary.isBatch);
+    //   let arrayCheckStump = [];
+    //   datadiary.arrayStumps.forEach((e) => {
+    //     dataBatch.stumps.forEach((ele) => {
+    //       if (e.numberStumps === ele.numberStumps) {
+    //         arrayCheckStump.push(ele);
+    //       }
+    //     });
+    //   });
+    //   console.log(arrayCheckStump);
+    //   arrayCheckStump.map(async (e) => {
+    //     await batchModel.updateStumpsBatchDiary(e._id, createData._id);
+    //   });
+    // }
+    // if (datadiary.title == "detailStump") {
+    //   console.log("is array detailStump " + datadiary.isStump);
+    //   let dataBatch = await batchModel.findBatch(datadiary.isBatch);
+    //   console.log(dataBatch);
+    //   let Stumpis = dataBatch.stumps.filter((ele) => {
+    //     if (datadiary.isStump == ele.numberStumps) {
+    //       return ele;
+    //     }
+    //   });
+    //   console.log(Stumpis);
+    //   await batchModel.updateStumpsBatchDiary(Stumpis[0]._id, createData._id);
+    // }
   } catch (error) {
     return res.status(500).json({ message: "confrom map error" });
   }

@@ -5,6 +5,7 @@ const initialState = {
   resArray: [],
   dataCooper: "",
   dataListOrderUser: [],
+  dataPWFarmer: [],
 };
 // ARRAY FARMER
 const fetchFarmerData = (state, action) => {
@@ -12,7 +13,12 @@ const fetchFarmerData = (state, action) => {
     resArray: action.payload,
   });
 };
-
+//ARRAY PW FARMER
+const fetchDataPwFarmer = (state, action) => {
+  return updateObject(state, {
+    dataPWFarmer: action.payload,
+  });
+};
 // ARRAY ORDER
 const fetchOrderData = (state, action) => {
   return updateObject(state, {
@@ -50,6 +56,8 @@ var reducer = (state = initialState, action) => {
       return fetchCoopareData(state, action);
     case actionTypes.FETCH__LIST_USER_ORDER:
       return fetchOrderUser(state, action);
+    case actionTypes.FETCH_DATA_FARMER_PW:
+      return fetchDataPwFarmer(state, action);
     default:
       return state;
   }

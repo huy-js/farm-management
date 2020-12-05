@@ -147,6 +147,7 @@ let createFarmer = async (req, res) => {
 };
 let showFarmer = async (req, res) => {
   try {
+    console.log("show farmer");
     let idUser = req.params.id;
     //  console.log(idUser);
     let idCoopera = await coopertationModel.findIdCoopera(idUser);
@@ -160,7 +161,11 @@ let showFarmer = async (req, res) => {
     //   let pw = await bcrypt.compareSync(e.password);
     //   console.log(pw);
     // });
-    return res.status(200).json(getData);
+    let dataArray = await userModel.getDataPwfarmer(idUser);
+    console.log(dataArray);
+    return res
+      .status(200)
+      .json({ listFarmer: getData, listPWFarmer: dataArray.dataFarmer });
   } catch (error) {
     return res.status(500).json({ message: "get data farmer" });
   }
@@ -357,6 +362,18 @@ let searchProductQR = async (req, res) => {
     return res.status(500).json({ message: "create failed" });
   }
 };
+// let getDataPWFarmer = async (req, res) => {
+//   try {
+//     console.log("alo");
+//     let iduser = req.params.id;
+//     console.log(iduser);
+//     let dataArray = await userModel.getDataPwfarmer(iduser);
+//     console.log(dataArray);
+//     return res.status(200).json(dataArray.dataFarmer);
+//   } catch (error) {
+//     return res.status(500).json({ message: "create failed" });
+//   }
+// };
 module.exports = {
   showListUser: showListUser,
   updateActiveUser: updateActiveUser,
@@ -371,4 +388,5 @@ module.exports = {
   findInforProduct: findInforProduct,
   searchProduct: searchProduct,
   searchProductQR: searchProductQR,
+  // getDataPWFarmer: getDataPWFarmer,
 };

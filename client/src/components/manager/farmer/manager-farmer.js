@@ -33,6 +33,7 @@ class ManagerFarmer extends Component {
   };
 
   render() {
+    //console.log(this.props.currentUser);
     const styleHeader = {
       fontSize: "18px",
       height: "50px",
@@ -171,12 +172,22 @@ class ManagerFarmer extends Component {
           >
             <div className="container">
               <div className="block-heading " style={{ marginTop: "50px" }}>
+                <button
+                  className="btn btn-outline-primary  btn-sm"
+                  type="button"
+                  style={{ float: "left" }}
+                  //onClick={this.completeTheTransaction}
+                >
+                  EXPORT-PASSWORD-FARMER
+                </button>
                 <i
-                  className="fa fa-plus-circle"
+                  className="fa fa-plus-circle  btn-outline-primary  btn-sm"
                   style={{
                     fontSize: "25px",
                     float: "right",
-                    paddingTop: "10px",
+                    padding: "10px",
+                    borderRadius: "50px",
+                    cursor: "pointer",
                   }}
                   data-toggle="modal"
                   data-target="#showModalCreate"

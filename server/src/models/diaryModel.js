@@ -6,13 +6,16 @@ let diarySchema = new Schema(
     detail: { type: String }, // nôi dung công việc
     idFarmer: { type: String }, // chủ lô
     // danh cho phun thuoc
-    preparation: {
-      thuoc: { type: String },
-      soluong: { type: String },
-      dungtich: { type: String },
-      luongnuoc: { type: String },
-      cachtri: { type: String },
-    },
+    preparation: [
+      {
+        thuoc: { type: String },
+        soluong: { type: String },
+        dungtich: { type: String },
+        luongnuoc: { type: String },
+        loai: { type: String },
+      },
+    ],
+    cachtri: { type: String },
     files: [{ data: Buffer, contentType: String, fileName: String }],
     node: [
       {

@@ -4,10 +4,13 @@ import axios from "axios";
 import { token } from "../../../components/helpers/checkLogin";
 import * as actionTypes from "../actionType";
 // import * as actions from "../../action/actionAuth";
-
 export const fetchFarmerData = (farmerData) => ({
   type: actionTypes.FETCH_FARMER_DATA,
   payload: farmerData,
+});
+export const fetchDataPwFarmer = (dataArray) => ({
+  type: actionTypes.FETCH_DATA_FARMER_PW,
+  payload: dataArray,
 });
 
 export const fetchDataDiary = (datadiary) => ({
@@ -31,11 +34,14 @@ export const showFarmerFetch = (id) => {
         .then((res) => {
           // console.log(res);
           console.log(res.data);
-          dispatch(fetchFarmerData(res.data));
+          dispatch(fetchFarmerData(res.data.listFarmer));
+          dispatch(
+            getListPassWordFarmer(res.data.listPWFarmer, res.data.listFarmer)
+          );
         })
         .catch((error) => {
           console.log(error);
-          localStorage.clear();
+          // localStorage.clear();
         });
     } else {
       console.log("ko token");
@@ -85,6 +91,28 @@ export const userCreateFarmerFetch = (dataFamer, checkVali) => {
       // dispatch(actions.authFail("thong tin dang ky khong hop le"));
       return false;
     }
+  };
+};
+
+export const getListPassWordFarmer = (listPWFarmer, listFarmer) => {
+  let array = [];
+  // console.log(listPWFarmer);
+  listFarmer.forEach((e) => {
+    listPWFarmer.forEach((ele) => {
+      if (e._id === ele.idFarmer) {
+        let valueconvert = {
+          idFarmer: ele.idFarmer,
+          username: ele.username,
+          password: ele.password,
+          nameFarmer: e.farmOwner,
+        };
+        array.push(valueconvert);
+      }
+    });
+  });
+  console.log(array);
+  return (dispatch) => {
+    dispatch(fetchDataPwFarmer(array));
   };
 };
 
