@@ -6,6 +6,8 @@ const initialState = {
   dataCooper: "",
   dataListOrderUser: [],
   dataPWFarmer: [],
+  dataCompany: [],
+  dataCoopera: [],
 };
 // ARRAY FARMER
 const fetchFarmerData = (state, action) => {
@@ -43,7 +45,18 @@ const fetchOrderUser = (state, action) => {
     dataListOrderUser: action.payload,
   });
 };
-
+//LIST COMPANY BUSINESS
+const fetchBusinessData = (state, action) => {
+  return updateObject(state, {
+    dataCompany: action.payload,
+  });
+};
+// ARRAY COOPERA
+const fetchListCooperaData = (state, action) => {
+  return updateObject(state, {
+    dataCoopera: action.payload,
+  });
+};
 var reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.FETCH_FARMER_DATA:
@@ -58,6 +71,10 @@ var reducer = (state = initialState, action) => {
       return fetchOrderUser(state, action);
     case actionTypes.FETCH_DATA_FARMER_PW:
       return fetchDataPwFarmer(state, action);
+    case actionTypes.FETCH_BUSINESS_DATA:
+      return fetchBusinessData(state, action);
+    case actionTypes.FETCH_LIST_COOPERA_DATA:
+      return fetchListCooperaData(state, action);
     default:
       return state;
   }

@@ -8,7 +8,10 @@ export const fetchListUserData = (ListUserdata) => ({
   type: actionTypes.FETCH_LIST_USER_DATA,
   payload: ListUserdata,
 });
-
+export const fetchListCooperaData = (ListCooperaData) => ({
+  type: actionTypes.FETCH_LIST_COOPERA_DATA,
+  payload: ListCooperaData,
+});
 export const showListUserFetch = (iduser) => {
   console.log(iduser);
   return (dispatch) => {
@@ -105,29 +108,30 @@ export const createPwAndSendFetch = (data) => {
     }
   };
 };
-export const showCooperationFetch = (datacreate) => {
+export const showCooperativeFetch = (iduser) => {
+  console.log(iduser);
   return (dispatch) => {
-    //const token = localStorage.userToken;
+    const token = localStorage.userToken;
     // console.log(datacreate);
-    //console.log(datacreate);
+    //console.log(datacreate);showCooperativeFetch
     if (token) {
       const accessToken = JSON.parse(token).accessToken;
       // console.log(accessToken);
       return axios
-        .get("http://localhost:3456/showcooperation", {
+        .get(`http://localhost:3456/showcooperation/${iduser}`, {
           headers: { Authorization: `${accessToken}` },
         })
         .then((res) => {
-          // console.log(res);
-          return res.data;
+          console.log(res.data.convertDataCoopera);
+          dispatch(fetchListCooperaData(res.data.convertDataCoopera));
         })
         .catch((error) => {
           console.log(error);
-          localStorage.clear();
+          // localStorage.clear();
         });
     } else {
       console.log("ko token");
-      localStorage.removeItem("userToken");
+      //localStorage.removeItem("userToken");
     }
   };
 };

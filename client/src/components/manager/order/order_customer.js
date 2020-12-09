@@ -106,7 +106,7 @@ class OrderCustomer extends Component {
       <main className="page landing-page" style={{ height: "100%" }}>
         <section
           className="clean-block  dark "
-          style={{ height: "100vh", paddingTop: "50px" }}
+          style={{ minHeight: "100vh", paddingTop: "50px" }}
         >
           <div className="container">
             <div className="row">
@@ -158,7 +158,7 @@ class OrderCustomer extends Component {
                   >
                     <p className="text-primary m-0 font-weight-bold">Mua QR</p>
                   </div>
-                  <div className="card-body ">
+                  <div className="card-body " style={{ height: "268px" }}>
                     <form>
                       <div className="form-group ">
                         <label>
@@ -230,7 +230,7 @@ class OrderCustomer extends Component {
                           </div>
                         </div>
                       </div>
-                      <div className="form-group row">
+                      {/* <div className="form-group row">
                         <div className="col">
                           <label>
                             <strong>Hình thức thanh toán</strong>
@@ -255,7 +255,7 @@ class OrderCustomer extends Component {
                           />
                           <label className="form-check-label">PAY-PAL</label>
                         </div>
-                      </div>
+                      </div> */}
                       <div className="form-group">
                         {/* <button className="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button> */}
                         <button
@@ -263,7 +263,7 @@ class OrderCustomer extends Component {
                           type="button"
                           onClick={this.completeTheTransaction}
                         >
-                          HOÀN TẤT GIAO DỊCH
+                          THANH TOÁN QUA PAYPAL
                         </button>
                         {/* <StripeCheckout
                           name={this.props.dataCooper.nameOfCooperative}

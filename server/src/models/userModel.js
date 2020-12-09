@@ -86,6 +86,9 @@ userSchema.statics = {
   getDataPwfarmer(id) {
     return this.findById(id, { dataFarmer: 1 }).exec();
   },
+  getDataUser(id) {
+    return this.findById(id, { password: 0, dataFarmer: 0 }).exec();
+  },
 };
 userSchema.methods = {
   comparePassword(password) {

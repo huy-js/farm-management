@@ -47,7 +47,7 @@ class DiaryManager extends Component {
       }
       return;
     });
-    console.log(idfarmer);
+    //console.log(idfarmer);
     return (
       <main
         className="page landing-page"

@@ -114,5 +114,8 @@ BatchSchema.statics = {
       //  { safe: true, upsert: true, new: true }
     ).exec();
   },
+  // getDataIdDiaryAllStump(idBatch) {
+  //   return this.findById(idBatch, { arrayDiaryForAll: 1 }).exec();
+  // },
 };
 module.exports = mongoose.model("batch", BatchSchema);

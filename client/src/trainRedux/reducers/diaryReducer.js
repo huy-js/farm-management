@@ -5,7 +5,7 @@ const initialState = {
   resBatchArray: [],
   resArray: [],
   isCheckMap: false,
-  dataImage: [],
+  dataDiary: [],
 };
 
 const fetchFarmerData = (state, action) => {
@@ -27,9 +27,16 @@ const fetchCheckedMap = (state, action) => {
   });
 };
 // image diary
+// const fetchDataDiary = (state, action) => {
+//   return updateObject(state, {
+//     dataImage: action.payload,
+//   });
+// };
+
+// data diary
 const fetchDataDiary = (state, action) => {
   return updateObject(state, {
-    dataImage: action.payload,
+    dataDiary: action.payload,
   });
 };
 var reducer = (state = initialState, action) => {

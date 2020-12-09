@@ -25,6 +25,7 @@ import Search from "./components/profile/search_infor";
 import Footer from "./components/navigation/footer/Footer";
 import Profile from "./components/profile/Profile";
 import DiaryManager from "./components/manager/diary/diary_manager";
+import ManagerCooperative from "./components/manager/cooperative/cooperative-management";
 import NotFound from "./components/NotFound";
 import * as actions from "./trainRedux/action/authentication/actionAuth";
 
@@ -79,6 +80,7 @@ class App extends Component {
           />
           <Route path="/manager-order" component={ManagerOrder} />
           <Route path="/list-user" component={ListUser} />
+          <Route path="/manager-cooperative" component={ManagerCooperative} />
           <Route path="/" exact component={Home} />
           <Route path="/logout" component={Logout} />
           <Route component={NotFound} />
@@ -117,6 +119,11 @@ class App extends Component {
             <li className="nav-item" role="presentation">
               <Link to={"/manager-order"} className="nav-link">
                 MANAGER-ORDER
+              </Link>
+            </li>
+            <li className="nav-item" role="presentation">
+              <Link to={"/manager-cooperative"} className="nav-link">
+                MANAGER-COOPERATIVE
               </Link>
             </li>
           </ul>

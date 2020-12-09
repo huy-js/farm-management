@@ -1,70 +1,168 @@
 import React, { Component } from "react";
-import StripeCheckout from "react-stripe-checkout";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-toast.configure();
-
+// import StripeCheckout from "react-stripe-checkout";
+// import { toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+// toast.configure();
+import { connect } from "react-redux";
+import * as actions from "../../../trainRedux/action/user/actionManagement";
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import Company from "./create-Company";
 class BusinessCooperation extends Component {
-  render() {
-    const stripe_publickey = "pk_test_EyJcf5TSESBQZ30D0DK9flId008rgcNspJ";
-    const onToken = (token) => {
-      const product = {
-        name: "React from FB",
-        price: 10,
-        productBy: "facebook",
-      };
+  state = {
+    display: "none",
+  };
+  componentDidMount() {
+    this.props.showBusiness(this.props.currentUser._id);
+  }
 
-      const body = {
-        token,
-        product,
-      };
-
-      const headers = {
-        "Content-Type": "application/json",
-      };
-
-      return fetch(`http://localhost:3456/checkout`, {
-        method: "POST",
-        headers,
-        body: JSON.stringify(body),
-      })
-        .then((response) => {
-          console.log("RESPONSE", response);
-          const { status } = response;
-          console.log("STATUS", status);
-          toast("Success! Check emails for details", { type: "success" });
-        })
-        .catch((error) => console.log(error));
+  deleteBusiness = async (iduser, id, event) => {
+    event.preventDefault();
+    // console.log(id);
+    let data = {
+      iduser: iduser,
+      id: id,
     };
+    if (window.confirm("Xác nhận xóa thông tin")) {
+      await this.props.deleteBusinessUserFetch(data);
+    }
+  };
+  render() {
+    const styleHeader = {
+      fontSize: "18px",
+      height: "50px",
+      padding: "11px",
+      backgroundColor: "#343a40",
+      color: "white",
+      textAlign: "center",
+    };
+    const styleRow = {
+      fontSize: "15px",
+      color: "#78788c",
+      textAlign: "center",
+      borderBottom: "2px solid #78788c",
+      cursor: "pointer",
+    };
+    const columns = [
+      {
+        dataField: "stt",
+        text: "STT",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "createdAt",
+        text: "NGÀY TẠO",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "nameCompany",
+        text: "TÊN CÔNG TY",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "address",
+        text: "ĐỊA CHỈ",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "edit",
+        text: "XÓA",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+    ];
+    const products = [];
 
-    // const [product, setProduct] = useState({
-    //   name : "React from FB",
-    //   price : 10,
-    //   productBy: "facebook"
-    // });
+    this.props.dataCompany.map(async (element, index) => {
+      let dates = (string) => {
+        var options = { year: "numeric", month: "long", day: "numeric" };
+        return new Date(string).toLocaleDateString([], options);
+      };
 
+      let arr = {
+        stt: index + 1,
+        createdAt: dates(element.createdAT),
+        nameCompany: element.nameCompany,
+        address: element.address,
+        edit: (
+          <i
+            key={element._id}
+            onClick={(e) =>
+              this.deleteBusiness(this.props.currentUser._id, element._id, e)
+            }
+          >
+            delete
+          </i>
+        ),
+      };
+      return products.push(arr);
+    });
     return (
       <main className="page contact-us-page" style={{ height: "100%" }}>
         <section className="clean-block dark" style={{ height: "100vh" }}>
           <div className="container">
             <div className="block-heading">
-              <h2 className="text-info">Thông tin thêm</h2>
+              <i
+                className="fa fa-plus-circle  btn-outline-primary  btn-sm"
+                style={{
+                  fontSize: "25px",
+                  float: "right",
+                  padding: "10px",
+                  borderRadius: "50px",
+                  cursor: "pointer",
+                }}
+                data-toggle="modal"
+                data-target="#showModalCreate"
+              ></i>
+              <h2 className="text-info">Thông tin nhà phân phối</h2>
             </div>
-            <div className="row  ">nhập thong tin doanh nghiep thâu sp</div>
+            <div className="container-body">
+              {this.props.dataCompany.length === 0 ? (
+                <div className="text-center">
+                  {" "}
+                  hien tai chua co thong tin moi ban them thong tin
+                </div>
+              ) : (
+                <BootstrapTable
+                  keyField="stt"
+                  data={products}
+                  columns={columns}
+                  //rowEvents={rowEvents}
+                  pagination={paginationFactory({
+                    sizePerPage: 5,
+                    hideSizePerPage: true,
+                    // hidePageListOnlyOnePage: true
+                  })}
+                  hover
+                />
+              )}
+            </div>
           </div>
-          <StripeCheckout
-            name="MoviesStore@appbase.io"
-            description="React from FB"
-            token={onToken}
-            amount={10 * 100}
-            stripeKey={stripe_publickey}
-            shippingAddress
-            billingAddress
-          ></StripeCheckout>
+          <Company />
         </section>
       </main>
     );
   }
 }
 
-export default BusinessCooperation;
+const mapStateToProps = (state) => {
+  //console.log(state.diaryReducer.resBatchArray);
+  return {
+    currentUser: state.authReducer.currentUser,
+    dataCompany: state.fmManagerReducer.dataCompany,
+  };
+};
+const mapDispatchToProps = (dispatch, props) => ({
+  showBusiness: (iduser) => dispatch(actions.showBusiness(iduser)),
+  deleteBusinessUserFetch: (data) =>
+    dispatch(actions.deleteBusinessUserFetch(data)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BusinessCooperation);

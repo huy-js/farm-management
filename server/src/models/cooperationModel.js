@@ -14,6 +14,15 @@ let cooperationSchema = new Schema(
     totalTrees: { type: Number, default: 0 }, // tông cay trong htx
     memberfarmer: { type: Number, default: 0 }, // sô lượng nông hộ
     deletedAt: { type: Boolean, default: false },
+    //moi them hien thi nha phan phoi
+    business: [
+      {
+        nameCompany: String,
+        createdAT: { type: Number, default: Date.now },
+        typeOfTree: String,
+        address: String,
+      },
+    ],
   },
   {
     timestamps: {
@@ -57,6 +66,29 @@ cooperationSchema.statics = {
   },
   updateTotaltree(id, totaltree) {
     return this.findByIdAndUpdate(id, { totalTrees: totaltree }).exec();
+  },
+  updateBusiness(idCoopare, businessData) {
+    return this.updateMany(
+      { _id: idCoopare },
+      {
+        $push: {
+          business: {
+            $each: [businessData],
+          },
+        },
+      }
+    ).exec();
+  },
+  getAllCooperative() {
+    return this.find().exec();
+  },
+  deleteBusiness(idCoopare, id) {
+    return this.update(
+      { _id: idCoopare },
+      {
+        $pull: { business: { _id: id } },
+      }
+    ).exec();
   },
 };
 module.exports = mongoose.model("cooperation", cooperationSchema);

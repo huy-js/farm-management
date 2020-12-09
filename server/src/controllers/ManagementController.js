@@ -145,6 +145,28 @@ let createFarmer = async (req, res) => {
     return res.status(500).json({ message: "create failed" });
   }
 };
+let showCooperaTion = async (req, res) => {
+  try {
+    console.log("show cooperative");
+    let idUser = req.params.iduser;
+    // check admin
+    //  console.log(idUser);
+    let arrayCoopera = await coopertationModel.getAllCooperative();
+    let arrayConvert = await arrayCoopera.map(async (ele) => {
+      ele = ele.toObject();
+      let dataTechnical = await userModel.getDataUser(ele.technicalStaff);
+      // console.log(data);
+      ele.dataTechnical = dataTechnical;
+      return ele;
+    });
+    let convertDataCoopera = await Promise.all(arrayConvert);
+    console.log(convertDataCoopera);
+    return res.status(200).json({ convertDataCoopera });
+  } catch (error) {
+    return res.status(500).json({ message: "get data farmer" });
+  }
+};
+
 let showFarmer = async (req, res) => {
   try {
     console.log("show farmer");
@@ -374,11 +396,58 @@ let searchProductQR = async (req, res) => {
 //     return res.status(500).json({ message: "create failed" });
 //   }
 // };
+
+let showBusiness = async (req, res) => {
+  try {
+    let id = req.params.id;
+    console.log(id);
+    let idCoopera = await coopertationModel.findIdCoopera(id);
+    return res.status(200).json(idCoopera.business);
+  } catch (error) {
+    return res.status(500).json({ message: "get company failed" });
+  }
+};
+let createCompany = async (req, res) => {
+  try {
+    //console.log(req.body.dataFamer);
+    let data = req.body.dataFamer;
+    //let idUser = data.idUser;
+    let idCoopera = await coopertationModel.findIdCoopera(data.idUser);
+    delete data["idUser"];
+    console.log(data);
+    await coopertationModel.updateBusiness(idCoopera._id, data);
+
+    return res.status(200).json({ message: "create succession." });
+  } catch (error) {
+    return res.status(500).json({ message: "create failed" });
+  }
+};
+let deleteBusiness = async (req, res) => {
+  try {
+    //console.log(req.body.data);
+    //console.log(await userModel.checkAdmin(req.body.data.iduser));
+    let getdataUser = await coopertationModel.findIdCoopera(
+      req.body.data.iduser
+    );
+    if (!getdataUser) {
+      return res
+        .status(500)
+        .json({ message: "ban khong co thong tin trong htx" });
+    }
+    //console.log(getdataUser);
+    await coopertationModel.deleteBusiness(getdataUser._id, req.body.data.id);
+    return res.status(200).json({ message: "success update" });
+  } catch (error) {
+    return res.status(500).json({ message: "update failed" });
+  }
+};
+
 module.exports = {
   showListUser: showListUser,
   updateActiveUser: updateActiveUser,
   createPwAndSendMail: createPwAndSendMail,
   createFarmer: createFarmer,
+  showCooperaTion: showCooperaTion,
   showFarmer: showFarmer,
   showCooperation: showCooperation,
   createDataOrder: createDataOrder,
@@ -389,4 +458,7 @@ module.exports = {
   searchProduct: searchProduct,
   searchProductQR: searchProductQR,
   // getDataPWFarmer: getDataPWFarmer,
+  showBusiness: showBusiness,
+  createCompany: createCompany,
+  deleteBusiness: deleteBusiness,
 };

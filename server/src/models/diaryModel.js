@@ -40,5 +40,25 @@ diarySchema.statics = {
   showImageDiary(idF) {
     return this.find({ idFarmer: idF }, { files: 1 }).exec();
   },
+  getData(id) {
+    return this.findById(id).exec();
+  },
+  getDataInStump(id) {
+    //let data = this.findById(id).exec();
+    // if (data.node.length !== 0) {
+    //   return this.find({
+    //     $and: [
+    //       { _id: id },
+    //       {
+    //         $and: [
+    //           { node: { $elemMatch: { row: row } } },
+    //           { node: { $elemMatch: { col: col } } },
+    //         ],
+    //       },
+    //     ],
+    //   }).exec();
+    // }
+    return this.findById(id).exec();
+  },
 };
 module.exports = mongoose.model("diary", diarySchema);

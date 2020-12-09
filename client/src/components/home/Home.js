@@ -15,9 +15,9 @@ class Home extends Component {
             }}
           >
             <div className="text">
-              <h2>Tìm thông tin sẳn phầm bằng qr ?</h2>
+              {/* <h2>Tìm thông tin sẳn phầm bằng qr ?</h2>
 
-              <i class="fa fa-qrcode" style={{ fontSize: "50px" }}></i>
+              <i className="fa fa-qrcode" style={{ fontSize: "50px" }}></i> */}
 
               {/* <button
                 className="btn btn-outline-light btn-lg"

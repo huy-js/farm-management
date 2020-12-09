@@ -14,6 +14,11 @@ export const fetchCheckedMap = (data) => ({
   type: actionTypes.FETCH_CHECK_MAP,
   payload: data,
 });
+// redux data diary
+export const fetchDataDiary = (data) => ({
+  type: actionTypes.FETCH_DATA_DIARY,
+  payload: data,
+});
 
 export const showListFarmerMapsFetch = (id, limit) => {
   //console.log(id);
@@ -262,6 +267,39 @@ export const checkConfromMap = (data) => {
           //   return;
           // }
           dispatch(fetchCheckedMap(res.data));
+        })
+        .catch((error) => {
+          console.log(error);
+          // localStorage.clear();
+        });
+    } else {
+      console.log("ko token");
+      //  localStorage.removeItem("userToken");
+    }
+  };
+};
+
+export const getDataDiaryFetch = (data) => {
+  console.log(data);
+  return (dispatch) => {
+    const token = localStorage.userToken;
+    // console.log(datacreate);
+    //console.log(token);
+    if (token) {
+      const accessToken = JSON.parse(token).accessToken;
+      //console.log(accessToken);
+      return axios
+        .post(
+          `http://localhost:3456/getdatadiary`,
+          { data },
+          {
+            headers: { Authorization: `${accessToken}` },
+          }
+        )
+        .then((res) => {
+          // console.log(res);
+          console.log(res.data);
+          dispatch(fetchDataDiary(res.data));
         })
         .catch((error) => {
           console.log(error);

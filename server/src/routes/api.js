@@ -41,7 +41,9 @@ let initAPIs = (app) => {
   router.get("/showfarmer/:id", ManagementController.showFarmer);
   //router.get("/getpwfarmer/:id", ManagementController.getDataPWFarmer);
   router.put("/updatePassword", AuthController.updatePasswordUser);
-
+  router.post("/createCompany", ManagementController.createCompany);
+  router.get("/showbusiness/:id", ManagementController.showBusiness);
+  router.put("/deletebusiness", ManagementController.deleteBusiness);
   // diary
   router.get(
     "/showlistfarmer/:id/:limit",
@@ -56,6 +58,7 @@ let initAPIs = (app) => {
   router.put("/deleteStump", ManagementDiaryController.deleteStump);
   router.post("/confrommap", ManagementDiaryController.conFromMap);
   router.post("/checkmap", ManagementDiaryController.checkMap);
+  router.post("/getdatadiary", ManagementDiaryController.getDataDiary);
   // user view diary
   router.get(
     "/showimagediary/:id",
@@ -66,6 +69,7 @@ let initAPIs = (app) => {
   router.post("/createdataorder", ManagementController.createDataOrder);
   // admin
   router.get("/showlistuser/:iduser", ManagementController.showListUser);
+  router.get("/showcooperation/:iduser", ManagementController.showCooperaTion);
   router.put("/updateactive", ManagementController.updateActiveUser);
   router.put("/createPwandSendMail", ManagementController.createPwAndSendMail);
   router.get("/showlistorder", ManagementController.showListOrder);

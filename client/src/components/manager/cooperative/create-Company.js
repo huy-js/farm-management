@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-//import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
 import Spinner from "../../UI/Spinner/Spinner";
-import classes from "./Auth.module.css";
+import classes from "../../helpers/Auth.module.css";
 import * as actions from "../../../trainRedux/action/user/actionManagement";
 import { checkValidity } from "../../helpers/validation/checkValidation";
-class CreateFarmer extends Component {
+class Company extends Component {
   state = {
     controls: {
-      farmOwner: {
+      nameCompany: {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "Nhập tên nông hộ",
+          placeholder: "Nhập tên nhà phân phối",
         },
         value: "",
         validation: {
@@ -38,61 +38,16 @@ class CreateFarmer extends Component {
         valid: false,
         touched: false,
       },
-      landArea: {
-        elementType: "input",
-        elementConfig: {
-          type: "number",
-          placeholder: "Diện tích đất",
-          min: 0,
-        },
-        value: "",
-        validation: {
-          required: true,
-          minLength: 4,
-        },
-        valid: false,
-        touched: false,
-      },
       typeOfTree: {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "Giống cây trồng",
+          placeholder: "Nhập giống cây",
         },
         value: "",
         validation: {
           required: false,
-          minLength: 3,
-        },
-        valid: false,
-        touched: false,
-      },
-      totalTrees: {
-        elementType: "input",
-        elementConfig: {
-          type: "number",
-          placeholder: "Tổng cây có được",
-          min: 0,
-        },
-        value: "",
-        validation: {
-          required: true,
-          minLength: 3,
-        },
-        valid: false,
-        touched: false,
-      },
-      totalNumberQR: {
-        elementType: "input",
-        elementConfig: {
-          type: "number",
-          placeholder: "Tổng QR cho nông hộ",
-          min: 0,
-        },
-        value: "",
-        validation: {
-          required: true,
-          // minLength: 3,
+          isCharacter: true,
         },
         valid: false,
         touched: false,
@@ -135,23 +90,18 @@ class CreateFarmer extends Component {
     event.preventDefault();
 
     let dataFamer = {
-      farmOwner: this.state.controls.farmOwner.value,
+      nameCompany: this.state.controls.nameCompany.value,
       address: this.state.controls.address.value,
-      landArea: parseInt(this.state.controls.landArea.value),
       typeOfTree: this.state.controls.typeOfTree.value,
-      totalTrees: parseInt(this.state.controls.totalTrees.value),
-      totalNumberQR: parseInt(this.state.controls.totalNumberQR.value),
       idUser: this.props.currentUser._id,
     };
     let checkVali = [
-      this.state.controls.farmOwner.valid,
-      this.state.controls.address.valid,
-      this.state.controls.landArea.valid,
+      this.state.controls.nameCompany.valid,
       this.state.controls.typeOfTree.valid,
-      this.state.controls.totalTrees.valid,
+      this.state.controls.address.valid,
     ];
 
-    let result = this.props.userCreateFarmerFetch(dataFamer, checkVali);
+    let result = this.props.userCompanyFetch(dataFamer, checkVali);
 
     this.setState({
       result: result,
@@ -162,37 +112,37 @@ class CreateFarmer extends Component {
     //return history.goBack();
   };
 
-  showTotalTrees = (event) => {
-    event.preventDefault();
+  // showTotalTrees = (event) => {
+  //   event.preventDefault();
 
-    //console.log(newobject);
-    let total = 0;
-    this.state.controls.landArea.value === ""
-      ? (total = 0)
-      : (total = parseInt(this.state.controls.landArea.value) / 24 + 1);
+  //   //console.log(newobject);
+  //   let total = 0;
+  //   this.state.controls.landArea.value === ""
+  //     ? (total = 0)
+  //     : (total = parseInt(this.state.controls.landArea.value) / 24 + 1);
 
-    // let newobject = {
-    //   ...this.state.controls,
-    //   totalTrees: {
-    //     elementType: "input",
-    //     elementConfig: {
-    //       type: "number",
-    //       placeholder: "Tổng cây có được",
-    //       min: 0,
-    //     },
-    //     value: parseInt(total),
-    //     validation: {
-    //       required: true,
-    //       minLength: 3,
-    //     },
-    //     valid: false,
-    //     touched: false,
-    //   },
-    // };
-    this.setState({
-      treedemo: parseInt(total),
-    });
-  };
+  //   // let newobject = {
+  //   //   ...this.state.controls,
+  //   //   totalTrees: {
+  //   //     elementType: "input",
+  //   //     elementConfig: {
+  //   //       type: "number",
+  //   //       placeholder: "Tổng cây có được",
+  //   //       min: 0,
+  //   //     },
+  //   //     value: parseInt(total),
+  //   //     validation: {
+  //   //       required: true,
+  //   //       minLength: 3,
+  //   //     },
+  //   //     valid: false,
+  //   //     touched: false,
+  //   //   },
+  //   // };
+  //   this.setState({
+  //     treedemo: parseInt(total),
+  //   });
+  // };
 
   hideComment = (event) => {
     event.preventDefault();
@@ -247,7 +197,7 @@ class CreateFarmer extends Component {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLongTitle">
-                Tạo nông hộ
+                Tạo thông tin nhà phân phối
               </h5>
               <button
                 type="button"
@@ -267,23 +217,10 @@ class CreateFarmer extends Component {
                 style={{ paddingBottom: "60px" }}
               >
                 {form}
-                <p style={{ display: this.state.display }}>
-                  số cây đề suất {" " + this.state.treedemo} cây
-                </p>
 
                 <Button btnType="Success">Tạo</Button>
               </form>
             </div>
-            {/* <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-dismiss="modal"
-                ref={(button) => (this.buttonElement = button)}
-              >
-                Đóng
-              </button>
-            </div> */}
           </div>
         </div>
       </div>
@@ -300,8 +237,8 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch, props) => ({
-  userCreateFarmerFetch: (dataFamer, checkVali) =>
-    dispatch(actions.userCreateFarmerFetch(dataFamer, checkVali)),
+  userCompanyFetch: (dataFamer, checkVali) =>
+    dispatch(actions.userCompanyFetch(dataFamer, checkVali)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateFarmer);
+export default connect(mapStateToProps, mapDispatchToProps)(Company);

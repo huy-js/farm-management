@@ -5,7 +5,8 @@ import ReactApexChart from "react-apexcharts";
 import { connect } from "react-redux";
 import * as actions from "../../../trainRedux/action/diary/actionDiaryMap";
 import Select from "react-select";
-
+import { assign } from "nodemailer/lib/shared";
+import "./diary.css";
 // function generateData(count, yrange) {
 //   var i = 0;
 //   var series = [];
@@ -33,14 +34,14 @@ function callFunctionSeries(totaltree, row, col) {
   for (let i = 1; i <= row; i++) {
     for (let j = 1; j <= col; j++) {
       if (j === lastTotalTrees + 1 && i > colLastTrees) {
-        dataArray.push({ x: j, y: 0 });
+        dataArray.push({ x: `s${j}`, y: 0 });
         continue;
       }
       if (j > lastTotalTrees + 1) {
-        dataArray.push({ x: j, y: 0 });
+        dataArray.push({ x: `s${j}`, y: 0 });
         continue;
       }
-      dataArray.push({ x: j, y: j });
+      dataArray.push({ x: `s${j}`, y: j });
     }
     let ele = {
       name: i,
@@ -63,6 +64,7 @@ class DiaryDetail extends Component {
     stumpTotalTree: null,
     row: null,
     col: null,
+    BatchClickis: "",
   };
   handleChange = (selectedOption) => {
     this.setState({
@@ -172,37 +174,184 @@ class DiaryDetail extends Component {
 
     // })
   };
+  getdataDiary = async (data) => {
+    //console.log(data);
+    await this.props.getDataDiaryFetch(data);
+    this.buttonElements.click();
+  };
   render() {
+    console.log(this.props.dataDiary);
     // let { match } = this.props;
-    console.log("check map " + this.props.isCheckMap);
+    //console.log("check map " + this.props.isCheckMap);
     // this.props.showListBatch(this.props.match.params.id);
     // console.log("alo " + this.props.resBatchArray);
-    let optionss = (data) => {
+    //read diary
+    // let add = this.props.dataDiary.map((e, index) => {
+    //   e.preparation.map((ele) => {
+    //     console.log(ele);
+    //   });
+    // });
+    // console.log(add);
+    function bufferToBase64(buffer) {
+      return btoa(
+        new Uint8Array(buffer).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          ""
+        )
+      );
+    }
+    const dates = (string) => {
+      var options = { year: "numeric", month: "long", day: "numeric" };
+      return new Date(string).toLocaleDateString([], options);
+    };
+
+    const ShowDiary = this.props.dataDiary.map((e, index) => {
+      let readFile =
+        e.files.length !== 0
+          ? e.files.map((eles, indx) => {
+              return (
+                <div className="col-sm-4" style={{ padding: "20px" }}>
+                  <img
+                    src={`data:${eles.contentType};base64,${bufferToBase64(
+                      eles.data.data
+                    )}`}
+                    style={{ width: "250px", height: "250px" }}
+                    key={index}
+                  />
+                  <p>
+                    {indx === 0 ? "Benh" : indx === 1 ? " tri benh" : "..."}
+                  </p>
+                </div>
+              );
+            })
+          : null;
+      let dataThuoc =
+        e.preparation.length !== 0
+          ? e.preparation.map((ele, inx) => {
+              return (
+                <div key={inx}>
+                  <p>
+                    ten thuoc: {ele.thuoc}, loai: {ele.loai}, dung tich:{" "}
+                    {ele.dungtich}lit, so luong: {ele.soluong}, luong nuoc dung
+                    de pha: {ele.luongnuoc} m
+                  </p>
+                </div>
+              );
+            })
+          : null;
+
+      return (
+        <li key={index + 1} style={{ width: "100%", float: "left" }}>
+          <span>
+            {dates(new Date(e.createAt).getTime())} -- {e.work}{" "}
+          </span>
+          <button
+            className="btn dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            //aria-haspopup="true"
+            //aria-expanded="false"
+          ></button>
+          <div
+            className="dropdown-menu"
+            aria-labelledby="dropdownMenuButton"
+            style={{ border: "none" }}
+          >
+            <h6
+              style={{
+                fontWeight: "bold",
+                display: e.preparation.length === 0 ? "none" : "block",
+              }}
+            >
+              Pha thuoc
+            </h6>
+            {dataThuoc}
+            <h6
+              style={{
+                fontWeight: "bold",
+                display: e.files.length === 0 ? "none" : "block",
+              }}
+            >
+              hinh anh
+            </h6>
+            <div className="row" style={{ width: "900px" }}>
+              {readFile}
+            </div>
+          </div>
+        </li>
+      );
+    });
+
+    const HandleShowDiary = (isStump, Row, Col, isBatch) => {
+      console.log("get data send server");
+      let Stump = isStump.split(" ");
+      //console.log(typeof Stump[1]);
+      //console.log(Stump[1] + " + " + Row + " + " + Col);
+      //console.log(isBatch);
+      let data = {
+        isBatch: isBatch,
+        isStump: Stump[1],
+        Row: Row,
+        Col: Col,
+      };
+      return this.getdataDiary(data);
+    };
+    // show map
+    let optionss = (data, idBatch) => {
       return {
         chart: {
           // height: 300,
           // width: 200,
-          //type: "heatmap",
+          type: "heatmap",
           toolbar: {
             show: false,
+          },
+          events: {
+            click: function (event, chartContext, config) {
+              console.log("click");
+              // console.log(event);
+              // console.log(chartContext);
+              //console.log(config);
+              // console.log(
+              //   "row " + config.seriesIndex + "/ col " + config.dataPointIndex
+              // );
+              // console.log("so thua :" + config.config.title.text);
+              let checkIsTree = true;
+              config.config.series.forEach((element, index) => {
+                if (index === config.seriesIndex) {
+                  element.data.forEach((e, inx) => {
+                    if (inx === config.dataPointIndex) {
+                      if (e.y === 0) {
+                        checkIsTree = false;
+                      }
+                    }
+                  });
+                }
+              });
+              if (!checkIsTree) return;
+              HandleShowDiary(
+                config.config.title.text,
+                config.seriesIndex + 1,
+                config.dataPointIndex + 1,
+                idBatch
+              );
+            },
           },
         },
         plotOptions: {
           heatmap: {
-            //distributed: true,
-            //enableShades: false,
-            //useFillColorAsStroke: true,
-            // colorScale: {
-            //   ranges: [
-            //     {
-            //       from: 0,
-            //       to: 0,
-            //       //color: undefined,
-            //       // foreColor: undefined,
-            //       // name: undefined,
-            //     },
-            //   ],
-            // },
+            enableShades: false,
+
+            colorScale: {
+              ranges: [
+                {
+                  from: 1,
+                  to: 10,
+                  color: "#5ce058",
+                },
+              ],
+            },
           },
         },
         legend: {
@@ -211,13 +360,11 @@ class DiaryDetail extends Component {
         dataLabels: {
           enabled: false,
         },
-        colors: ["#5ce058"],
+        //  colors: ["#5ce058"],
+        colors: ["#a84e32"],
         title: {
           text: "Thửa " + data,
         },
-        // stroke: {
-        //   width: 0,
-        // },
       };
     };
     const options = [];
@@ -425,7 +572,7 @@ class DiaryDetail extends Component {
                   >
                     <div>
                       <ReactApexChart
-                        options={optionss(ele.numberStumps)}
+                        options={optionss(ele.numberStumps, e._id)}
                         series={callFunctionSeries(
                           ele.totalTree,
                           ele.row,
@@ -529,6 +676,48 @@ class DiaryDetail extends Component {
             </div>
           </div>
         </div>
+        {/* phan hien thi nhat ky */}
+        <button
+          type="button"
+          className="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModalCenter"
+          ref={(button) => (this.buttonElements = button)}
+          style={{ display: "none" }}
+        ></button>
+        <div
+          className="modal fade"
+          id="exampleModalCenter"
+          aria-labelledby="exampleModalCenterTitle"
+          aria-hidden="true"
+        >
+          <div
+            className="diary modal-dialog modal-dialog-centered"
+            role="document"
+            // style={{ maxWidth: `1000px !important` }}
+          >
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLongTitle">
+                  Nhật ký sản xuất
+                </h5>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <div className="dropdown row">
+                  <ul>{ShowDiary}</ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -540,6 +729,7 @@ const mapStateToProps = (state) => {
     currentUser: state.authReducer.currentUser,
     resBatchArray: state.diaryReducer.resBatchArray,
     isCheckMap: state.diaryReducer.isCheckMap,
+    dataDiary: state.diaryReducer.dataDiary,
   };
 };
 const mapDispatchToProps = (dispatch, props) => ({
@@ -549,6 +739,7 @@ const mapDispatchToProps = (dispatch, props) => ({
   deleteStumpFetch: (data) => dispatch(actions.deleteStumpFetch(data)),
   conFromMapFetch: (data) => dispatch(actions.conFromMapFetch(data)),
   checkConfromMap: (data) => dispatch(actions.checkConfromMap(data)),
+  getDataDiaryFetch: (data) => dispatch(actions.getDataDiaryFetch(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiaryDetail);

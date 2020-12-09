@@ -7,7 +7,10 @@ const qrDiaryModel = require("../models/qrDiaryModel");
 const batchModel = require("../models/batchModel");
 const diaryModel = require("../models/diaryModel");
 const qrcode = require("qrcode");
-const fs = require("fs");
+// const fs = require("fs");
+// const { get } = require("http");
+var lodash = require("lodash");
+
 let showListFarmer = async (req, res) => {
   try {
     let idUser = req.params.id;
@@ -362,6 +365,61 @@ let showImageDiaryFarmer = async (req, res) => {
     return res.status(500).json({ message: "confrom map error" });
   }
 };
+let getDataDiary = async (req, res) => {
+  try {
+    ///console.log(req.body.data);
+    let isStump = +req.body.data.isStump;
+    //console.log(isStump + " type " + typeof isStump);
+    let getDataBatch = await batchModel.findBatch(req.body.data.isBatch);
+    //console.log(getDataBatch.arrayDiaryForAll);
+    let dataDiaryBatch = getDataBatch.arrayDiaryForAll.map(async (e) => {
+      let getDiary = await diaryModel.getData(e.idDiary);
+      return getDiary;
+    });
+    //dataallbatch
+    let diaryDataFirst = await Promise.all(dataDiaryBatch);
+    //console.log(diaryDataFirst);
+
+    let dataStump = getDataBatch.stumps.filter((ele) => {
+      return ele.numberStumps === isStump;
+    });
+    //console.log(dataStump[0].arrayDiary);
+    let dataDiaryInStump = dataStump[0].arrayDiary.map(async (e) => {
+      let getDiary = await diaryModel.getDataInStump(e.idDiary);
+      if (getDiary.node.length !== 0) {
+        //  console.log("length");
+        let check = false;
+        getDiary.node.forEach((ele) => {
+          if (
+            +ele.row === req.body.data.Row &&
+            +ele.col === req.body.data.Col
+          ) {
+            check = true;
+          }
+        });
+        if (!check) return;
+      }
+      return getDiary;
+    });
+    //dataallbatch
+    let diaryData2nd = await Promise.all(dataDiaryInStump);
+    diaryData2nd = diaryData2nd.filter((e) => {
+      return e !== undefined;
+    });
+    //console.log(diaryData2nd);
+    let dataDiarySendClient = diaryDataFirst.concat(diaryData2nd);
+    dataDiarySendClient = lodash.sortBy(dataDiarySendClient, (item) => {
+      // let result = Instant.parse(item.updateAt).toEpochMilli();
+      // console.log(result);
+      // return -result; // sx tu cao den thap theo date
+      return -item.updateAt;
+    });
+    //console.log(dataDiarySendClient);
+    return res.status(200).json(dataDiarySendClient);
+  } catch (error) {
+    return res.status(500).json({ message: "get diary error" });
+  }
+};
 module.exports = {
   showListFarmer: showListFarmer,
   showListBatch: showListBatch,
@@ -373,4 +431,5 @@ module.exports = {
   getMapFarmer: getMapFarmer,
   writeDiary: writeDiary,
   showImageDiaryFarmer: showImageDiaryFarmer,
+  getDataDiary: getDataDiary,
 };
