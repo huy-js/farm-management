@@ -33,7 +33,7 @@ farmerSchema.statics = {
     return this.findById(idFarmer, { password: 0 }).exec();
   },
   showListFarmer(id, limit) {
-    return this.find({ CooperativeId: id }, { password: 0 })
+    return this.find({ CooperativeId: id, deletedAt: false }, { password: 0 })
       .sort({ createdAt: 1 })
       .limit(limit)
       .exec();
@@ -43,6 +43,14 @@ farmerSchema.statics = {
   },
   findFarmerByName(name) {
     return this.findOne({ farmOwner: name }).exec();
+  },
+  updateDataFarmer(data, idfarmer) {
+    return this.findByIdAndUpdate(idfarmer, data).exec();
+  },
+  deleteFarmer(idfarmer, booleanDelete) {
+    return this.findByIdAndUpdate(idfarmer, {
+      deletedAt: booleanDelete,
+    }).exec();
   },
 };
 farmerSchema.methods = {

@@ -5,7 +5,7 @@ import ReactApexChart from "react-apexcharts";
 import { connect } from "react-redux";
 import * as actions from "../../../trainRedux/action/diary/actionDiaryMap";
 import Select from "react-select";
-import { assign } from "nodemailer/lib/shared";
+//import { assign } from "nodemailer/lib/shared";
 import "./diary.css";
 // function generateData(count, yrange) {
 //   var i = 0;
@@ -23,6 +23,9 @@ import "./diary.css";
 //   }
 //   return series;
 // }
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 function callFunctionSeries(totaltree, row, col) {
   let array = [];
@@ -65,7 +68,26 @@ class DiaryDetail extends Component {
     row: null,
     col: null,
     BatchClickis: "",
+    dateSelectedDMY: new Date(),
+    dateSelectedMY: new Date(),
+    changeDate: "MY",
   };
+  HanddleDateSelected = (date, value) => {
+    console.log(value);
+    if (value === "DMY") {
+      this.setState({
+        dateSelectedDMY: date,
+        changeDate: "DMY",
+      });
+    }
+    if (value === "MY") {
+      this.setState({
+        dateSelectedMY: date,
+        changeDate: "MY",
+      });
+    }
+  };
+
   handleChange = (selectedOption) => {
     this.setState({
       selectedOption: selectedOption.value,
@@ -204,83 +226,186 @@ class DiaryDetail extends Component {
       var options = { year: "numeric", month: "long", day: "numeric" };
       return new Date(string).toLocaleDateString([], options);
     };
+    const dateMY = (string) => {
+      var options = { year: "numeric", month: "long" };
+      return new Date(string).toLocaleDateString([], options);
+    };
 
-    const ShowDiary = this.props.dataDiary.map((e, index) => {
-      let readFile =
-        e.files.length !== 0
-          ? e.files.map((eles, indx) => {
-              return (
-                <div className="col-sm-4" style={{ padding: "20px" }}>
-                  <img
-                    src={`data:${eles.contentType};base64,${bufferToBase64(
-                      eles.data.data
-                    )}`}
-                    style={{ width: "250px", height: "250px" }}
-                    key={index}
-                  />
-                  <p>
-                    {indx === 0 ? "Benh" : indx === 1 ? " tri benh" : "..."}
-                  </p>
-                </div>
-              );
-            })
-          : null;
-      let dataThuoc =
-        e.preparation.length !== 0
-          ? e.preparation.map((ele, inx) => {
-              return (
-                <div key={inx}>
-                  <p>
-                    ten thuoc: {ele.thuoc}, loai: {ele.loai}, dung tich:{" "}
-                    {ele.dungtich}lit, so luong: {ele.soluong}, luong nuoc dung
-                    de pha: {ele.luongnuoc} m
-                  </p>
-                </div>
-              );
-            })
-          : null;
+    let dataNow = dates(this.state.dateSelectedDMY.getTime());
+    let dateMYY = dateMY(this.state.dateSelectedMY.getTime());
+    console.log(dataNow);
+    console.log(dateMYY);
+    const ShowDiaryDMY = this.props.dataDiary.map((e, index) => {
+      // console.log(dates(new Date(e.createAt)));
+      let dateServer = new Date(e.createAt).getTime();
+      if (dataNow == dates(dateServer)) {
+        //   console.log("dasdas");
+        let readFile =
+          e.files.length !== 0
+            ? e.files.map((eles, indx) => {
+                return (
+                  <div
+                    key={indx}
+                    className="col-sm-4"
+                    style={{ padding: "20px" }}
+                  >
+                    <img
+                      src={`data:${eles.contentType};base64,${bufferToBase64(
+                        eles.data.data
+                      )}`}
+                      style={{ width: "250px", height: "250px" }}
+                      key={index}
+                    />
+                    <p>
+                      {indx === 0 ? "Benh" : indx === 1 ? " tri benh" : "..."}
+                    </p>
+                  </div>
+                );
+              })
+            : null;
+        let dataThuoc =
+          e.preparation.length !== 0
+            ? e.preparation.map((ele, inx) => {
+                return (
+                  <div key={inx}>
+                    <p>
+                      ten thuoc: {ele.thuoc}, loai: {ele.loai}, dung tich:{" "}
+                      {ele.dungtich}lit, so luong: {ele.soluong}, luong nuoc
+                      dung de pha: {ele.luongnuoc} m
+                    </p>
+                  </div>
+                );
+              })
+            : null;
 
-      return (
-        <li key={index + 1} style={{ width: "100%", float: "left" }}>
-          <span>
-            {dates(new Date(e.createAt).getTime())} -- {e.work}{" "}
-          </span>
-          <button
-            className="btn dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            //aria-haspopup="true"
-            //aria-expanded="false"
-          ></button>
-          <div
-            className="dropdown-menu"
-            aria-labelledby="dropdownMenuButton"
-            style={{ border: "none" }}
-          >
-            <h6
-              style={{
-                fontWeight: "bold",
-                display: e.preparation.length === 0 ? "none" : "block",
-              }}
+        return (
+          <li key={index + 1} style={{ width: "100%", float: "left" }}>
+            <span>
+              {dates(new Date(e.createAt).getTime())} -- {e.work}{" "}
+            </span>
+            <button
+              className="btn dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              //aria-haspopup="true"
+              //aria-expanded="false"
+            ></button>
+            <div
+              className="dropdown-menu"
+              aria-labelledby="dropdownMenuButton"
+              style={{ border: "none" }}
             >
-              Pha thuoc
-            </h6>
-            {dataThuoc}
-            <h6
-              style={{
-                fontWeight: "bold",
-                display: e.files.length === 0 ? "none" : "block",
-              }}
-            >
-              hinh anh
-            </h6>
-            <div className="row" style={{ width: "900px" }}>
-              {readFile}
+              <h6
+                style={{
+                  fontWeight: "bold",
+                  display: e.preparation.length === 0 ? "none" : "block",
+                }}
+              >
+                Pha thuoc
+              </h6>
+              {dataThuoc}
+              <h6
+                style={{
+                  fontWeight: "bold",
+                  display: e.files.length === 0 ? "none" : "block",
+                }}
+              >
+                hinh anh
+              </h6>
+              <div className="row" style={{ width: "900px" }}>
+                {readFile}
+              </div>
             </div>
-          </div>
-        </li>
-      );
+          </li>
+        );
+      }
+    });
+    const ShowDiaryMY = this.props.dataDiary.map((e, index) => {
+      // console.log(dates(new Date(e.createAt)));
+      let dateServer = new Date(e.createAt).getTime();
+      if (dateMYY == dateMY(dateServer)) {
+        //   console.log("dasdas");
+        let readFile =
+          e.files.length !== 0
+            ? e.files.map((eles, indx) => {
+                return (
+                  <div
+                    key={indx}
+                    className="col-sm-4"
+                    style={{ padding: "20px" }}
+                  >
+                    <img
+                      src={`data:${eles.contentType};base64,${bufferToBase64(
+                        eles.data.data
+                      )}`}
+                      style={{ width: "250px", height: "250px" }}
+                      key={index}
+                    />
+                    <p>
+                      {indx === 0 ? "Benh" : indx === 1 ? " tri benh" : "..."}
+                    </p>
+                  </div>
+                );
+              })
+            : null;
+        let dataThuoc =
+          e.preparation.length !== 0
+            ? e.preparation.map((ele, inx) => {
+                return (
+                  <div key={inx}>
+                    <p>
+                      ten thuoc: {ele.thuoc}, loai: {ele.loai}, dung tich:{" "}
+                      {ele.dungtich}lit, so luong: {ele.soluong}, luong nuoc
+                      dung de pha: {ele.luongnuoc} m
+                    </p>
+                  </div>
+                );
+              })
+            : null;
+
+        return (
+          <li key={index + 1} style={{ width: "100%", float: "left" }}>
+            <span>
+              {dates(new Date(e.createAt).getTime())} -- {e.work}{" "}
+            </span>
+            <button
+              className="btn dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              //aria-haspopup="true"
+              //aria-expanded="false"
+            ></button>
+            <div
+              className="dropdown-menu"
+              aria-labelledby="dropdownMenuButton"
+              style={{ border: "none" }}
+            >
+              <h6
+                style={{
+                  fontWeight: "bold",
+                  display: e.preparation.length === 0 ? "none" : "block",
+                }}
+              >
+                Pha thuoc
+              </h6>
+              {dataThuoc}
+              <h6
+                style={{
+                  fontWeight: "bold",
+                  display: e.files.length === 0 ? "none" : "block",
+                }}
+              >
+                hinh anh
+              </h6>
+              <div className="row" style={{ width: "900px" }}>
+                {readFile}
+              </div>
+            </div>
+          </li>
+        );
+      }
     });
 
     const HandleShowDiary = (isStump, Row, Col, isBatch) => {
@@ -692,7 +817,7 @@ class DiaryDetail extends Component {
           aria-hidden="true"
         >
           <div
-            className="diary modal-dialog modal-dialog-centered"
+            className="diary modal-dialog"
             role="document"
             // style={{ maxWidth: `1000px !important` }}
           >
@@ -712,7 +837,37 @@ class DiaryDetail extends Component {
               </div>
               <div className="modal-body">
                 <div className="dropdown row">
-                  <ul>{ShowDiary}</ul>
+                  <div className="col-12 row showDiarydate">
+                    <div className="col-sm">
+                      chọn ngày chi tiết:
+                      <DatePicker
+                        selected={this.state.dateSelectedDMY}
+                        onChange={(date) =>
+                          this.HanddleDateSelected(date, "DMY")
+                        }
+                      />
+                    </div>
+                    <div className="col-sm">
+                      chọn theo tháng
+                      <DatePicker
+                        selected={this.state.dateSelectedMY}
+                        onChange={(date) =>
+                          this.HanddleDateSelected(date, "MY")
+                        }
+                        dateFormat="MM/yyyy"
+                        showMonthYearPicker
+                        showFullMonthYearPicker
+                      />
+                    </div>
+                  </div>
+                  <div style={{ marginTop: "10px" }}>
+                    {" "}
+                    <ul>
+                      {this.state.changeDate === "DMY"
+                        ? ShowDiaryDMY
+                        : ShowDiaryMY}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>

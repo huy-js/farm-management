@@ -253,42 +253,77 @@ export const deleteBusinessUserFetch = (data) => {
     }
   };
 };
-// export const ShowImageDiary = (id) => {
-//   console.log("ShowImageDiary " + id);
-//   return (dispatch) => {
-//     const token = localStorage.userToken;
-//     // console.log(datacreate);
-//     //console.log(token);
-//     if (token) {
-//       const accessToken = JSON.parse(token).accessToken;
-//       //console.log(accessToken);
-//       return axios
-//         .get(`http://localhost:3456/showimagediary/${id}`, {
-//           headers: { Authorization: `${accessToken}` },
-//         })
-//         .then((res) => {
-//           // console.log(res);
-//           // console.log(res.data);
-//           //JSON.parse(res.data[0])
-//           let files = res.data[0].files;
-//           // let result = {
-//           //   contentType: file.contentType,
-//           //   data: file.data.data,
-//           // };
-//           let result = [];
-//           for (let file in files) {
-//             result.push(files[file]);
-//           }
-//           console.log(result);
-//           dispatch(fetchDataDiary(result));
-//         })
-//         .catch((error) => {
-//           console.log(error);
-//           // localStorage.clear();
-//         });
-//     } else {
-//       console.log("ko token");
-//       //  localStorage.removeItem("userToken");
-//     }
-//   };
-// };
+export const userUpdateDataFarmer = (dataFamer, checkVali) => {
+  let check = true;
+  checkVali.forEach((e) => {
+    if (!e) check = false;
+  });
+  return (dispatch) => {
+    //dispatch(actions.authStart());
+    const token = localStorage.userToken;
+    console.log(check);
+    //console.log(dataFamer);
+    if (token && check) {
+      // console.log(check);
+      // dispatch(actions.authFail(""));
+      const accessToken = JSON.parse(token).accessToken;
+      // console.log(accessToken);
+      return axios
+        .put(
+          "http://localhost:3456/updatedatafarmer",
+          {
+            dataFamer,
+          },
+          {
+            headers: { Authorization: `${accessToken}` },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          dispatch(showFarmerFetch(dataFamer.idUser));
+          return true;
+        })
+        .catch((error) => {
+          console.log(error);
+          // localStorage.clear();
+          return false;
+          //dispatch(actions.authFail("thong tin dang ky khong hop le"));
+        });
+    } else {
+      console.log("co loi create");
+      //localStorage.removeItem("userToken");
+      // dispatch(actions.authFail("thong tin dang ky khong hop le"));
+      return false;
+    }
+  };
+};
+export const deleteFarmerFetch = (data) => {
+  console.log(data);
+  return (dispatch) => {
+    //dispatch(actions.authStart());
+    const token = localStorage.userToken;
+    const accessToken = JSON.parse(token).accessToken;
+    // console.log(accessToken);
+    return axios
+      .put(
+        "http://localhost:3456/deletefarmer",
+        {
+          data,
+        },
+        {
+          headers: { Authorization: `${accessToken}` },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        dispatch(showFarmerFetch(data.idUser));
+        return true;
+      })
+      .catch((error) => {
+        console.log(error);
+        // localStorage.clear();
+        return false;
+        //dispatch(actions.authFail("thong tin dang ky khong hop le"));
+      });
+  };
+};

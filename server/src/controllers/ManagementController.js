@@ -121,8 +121,8 @@ let createFarmer = async (req, res) => {
     // goi await tai vi tri can truy van data
     // bac cac tuyen trinh doi truyen trinh nay song moi dc lam tuyen trinh khac
     let dataFarmer = await farmerModel.createNew(data); // createNew laf function dc tao trong file model
-    console.log("data famer " + dataFarmer);
-    console.log(idUser);
+    //console.log("data famer " + dataFarmer);
+    //console.log(idUser);
     await userModel.updateDatafarmer(
       idUser,
       dataFarmer.farmOwner,
@@ -143,6 +143,69 @@ let createFarmer = async (req, res) => {
     return res.status(200).json({ message: "create succession." });
   } catch (error) {
     return res.status(500).json({ message: "create failed" });
+  }
+};
+let updateDataFarmer = async (req, res) => {
+  try {
+    //console.log(req.body.dataFamer);
+    let data = req.body.dataFamer;
+    console.log(data.idFarmer);
+    let idCoopera = await coopertationModel.findIdCoopera(data.idUser);
+    if (!idCoopera) {
+      return res
+        .status(500)
+        .json({ message: "ban khong co thong tin trong htx" });
+    }
+    let dataFarmer = await farmerModel.findFarmer(data.idFarmer);
+    if (!dataFarmer) {
+      return res
+        .status(500)
+        .json({ message: "khong co nong dan nay trong htx" });
+    }
+    delete data["idFarmer"];
+    delete data["idUser"];
+    await farmerModel.updateDataFarmer(data, dataFarmer._id);
+
+    //console.log(dataFarmer);
+    // console.log(data);
+    let totalarea = idCoopera.landArea - dataFarmer.landArea + data.landArea;
+    let totalNumberQR =
+      idCoopera.totalNumberQR - dataFarmer.totalNumberQR + data.totalNumberQR;
+    // update data htx dien tich va so nong ho
+    await coopertationModel.updateLandAndTotalQR(
+      idCoopera._id,
+      totalarea,
+      totalNumberQR
+    );
+    return res.status(200).json({ message: "create succession." });
+  } catch (error) {
+    return res.status(500).json({ message: "create failed" });
+  }
+};
+let deleteFarmer = async (req, res) => {
+  try {
+    console.log(req.body.data);
+    //console.log(await userModel.checkAdmin(req.body.data.iduser));
+    let getdataUser = await coopertationModel.findIdCoopera(
+      req.body.data.idUser
+    );
+    //console.log(getdataUser);
+    if (!getdataUser) {
+      return res
+        .status(500)
+        .json({ message: "ban khong co thong tin trong htx" });
+    }
+    let dataFarmer = await farmerModel.findFarmer(req.body.data.idFarmer);
+    if (!dataFarmer) {
+      return res
+        .status(500)
+        .json({ message: "khong co nong dan nay trong htx" });
+    }
+    //console.log(dataFarmer);
+    await farmerModel.deleteFarmer(dataFarmer._id, !dataFarmer.deletedAt);
+    return res.status(200).json({ message: "success update" });
+  } catch (error) {
+    return res.status(500).json({ message: "update failed" });
   }
 };
 let showCooperaTion = async (req, res) => {
@@ -175,7 +238,7 @@ let showFarmer = async (req, res) => {
     let idCoopera = await coopertationModel.findIdCoopera(idUser);
 
     let getData = await farmerModel.showFarmer(idCoopera._id);
-    let salt = bcrypt.genSaltSync(saltRounds);
+    //let salt = bcrypt.genSaltSync(saltRounds);
     //console.log(salt);
     //console.log(getData);
     //Không cần chỗ này
@@ -184,7 +247,7 @@ let showFarmer = async (req, res) => {
     //   console.log(pw);
     // });
     let dataArray = await userModel.getDataPwfarmer(idUser);
-    console.log(dataArray);
+    //console.log(dataArray);
     return res
       .status(200)
       .json({ listFarmer: getData, listPWFarmer: dataArray.dataFarmer });
@@ -461,4 +524,6 @@ module.exports = {
   showBusiness: showBusiness,
   createCompany: createCompany,
   deleteBusiness: deleteBusiness,
+  updateDataFarmer: updateDataFarmer,
+  deleteFarmer: deleteFarmer,
 };

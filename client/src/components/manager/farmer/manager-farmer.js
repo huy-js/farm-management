@@ -3,7 +3,7 @@ import CreateFarmer from "./create-farmer";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import { connect } from "react-redux";
-import BusinessCooperation from "../cooperative/business_cooperation";
+//import BusinessCooperation from "../cooperative/business_cooperation";
 import * as actions from "../../../trainRedux/action/user/actionManagement";
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
@@ -81,7 +81,7 @@ class ManagerFarmer extends Component {
         value: "",
         validation: {
           required: true,
-          minLength: 2,
+          //minLength: 2,
         },
         valid: false,
         touched: false,
@@ -91,7 +91,8 @@ class ManagerFarmer extends Component {
     result: true,
     dataFarmer: "",
     display: "none",
-    dataUpdate: "",
+    dataFarmerUpdate: "",
+    deleteFarmer: null,
   };
 
   componentDidMount() {
@@ -152,7 +153,9 @@ class ManagerFarmer extends Component {
       // totalTrees: parseInt(this.state.controls.totalTrees.value),
       totalNumberQR: parseInt(this.state.controls.totalNumberQR.value),
       idUser: this.props.currentUser._id,
+      idFarmer: this.state.dataFarmerUpdate,
     };
+    console.log(dataFamer);
     let checkVali = [
       this.state.controls.farmOwner.valid,
       this.state.controls.address.valid,
@@ -160,20 +163,43 @@ class ManagerFarmer extends Component {
       this.state.controls.typeOfTree.valid,
       // this.state.controls.totalTrees.valid,
     ];
+    console.log(checkVali);
+    let result = this.props.userUpdateDataFarmer(dataFamer, checkVali);
 
-    // let result = this.props.userCreateFarmerFetch(dataFamer, checkVali);
-
-    // this.setState({
-    //   result: result,
-    // });
-    // if (result) {
-    //   this.buttonElement.click();
-    // }
-    //return history.goBack();
+    this.setState({
+      result: result,
+    });
+    if (result) {
+      this.buttonElement.click();
+    }
   };
-
+  // settingData = (data, key) => {
+  //   //  console.log(data + " + " + key);
+  //   const dataReview = {
+  //     ...this.state.controls,
+  //     [key]: {
+  //       ...this.state.controls[key],
+  //       value: data,
+  //     },
+  //   };
+  //   //console.log(data);
+  //   this.setState({ controls: dataReview });
+  //   console.log(this.state.controls);
+  // };
+  blockFarmer = (event) => {
+    //event.preventDefault();
+    //console.log("block");
+    //console.log(this.state.dataFarmerUpdate);
+    let data = {
+      idUser: this.props.currentUser._id,
+      idFarmer: this.state.dataFarmerUpdate,
+    };
+    this.buttonElement.click();
+    if (window.confirm("Xác nhận thai đổi ?")) {
+      this.props.deleteFarmerFetch(data);
+    }
+  };
   render() {
-    //console.log(this.props.currentUser);
     const styleHeader = {
       fontSize: "18px",
       height: "50px",
@@ -255,7 +281,7 @@ class ManagerFarmer extends Component {
 
       let arr = {
         stt: index + 1,
-        createAt: dates(element.createAt),
+        createAt: dates(element.updateAt),
         farmOwner: element.farmOwner,
         typeOfTree: element.typeOfTree,
         address: element.address,
@@ -277,7 +303,7 @@ class ManagerFarmer extends Component {
     const rowEvents = {
       onClick: (e, row, rowIndex) => {
         // console.log(e);
-        console.log(row.edit.key);
+        //console.log(row);
 
         let array = this.props.resArray.filter((ele) => {
           if (ele._id === row.edit.key) {
@@ -285,25 +311,110 @@ class ManagerFarmer extends Component {
           }
         });
         let data = array[0];
-        //let key = Object.keys(data);
-        //console.log(key);
         console.log(data);
-        let keyArray = [
-          "farmOwner",
-          "address",
-          "typeOfTree",
-          "landArea",
-          "totalNumberQR",
-        ];
-        keyArray.forEach((ele) => {
-          const updatedControls = {
-            ...this.state.controls,
-            [ele]: {
-              ...this.state.controls[ele],
-              value: data.ele,
+        // let result = Object.keys(data).map((key) => {
+        //   // console.log(key);
+        //   let obj = {
+        //     [key]: data[key],
+        //   };
+        //   return obj;
+        // });
+        //let data = array[0];
+        //let key = Object.keys(data);
+        // console.log(result);
+        //console.log(array);
+        // let keyArray = [
+        //   "farmOwner",
+        //   "address",
+        //   "typeOfTree",
+        //   "landArea",
+        //   // "totalNumberQR",
+        // ];
+        // keyArray.forEach((ele) => {
+        //   result.forEach((e) => {
+        //     if (ele == Object.keys(e)) {
+        //       console.log(e);
+        //       let data = Object.values(e);
+        //       // console.log(typeof data);
+        //       this.settingData(data[0], ele);
+        //     }
+        //   });
+        // });
+        this.setState({
+          deleteFarmer: data.deletedAt,
+          dataFarmerUpdate: row.edit.key,
+          controls: {
+            farmOwner: {
+              elementType: "input",
+              elementConfig: {
+                type: "text",
+                placeholder: "Tên nông hộ",
+              },
+              value: data.farmOwner,
+              validation: {
+                required: true,
+                isCharacter: true,
+              },
+              valid: true,
+              touched: false,
             },
-          };
-          this.setState({ controls: updatedControls });
+            address: {
+              elementType: "input",
+              elementConfig: {
+                type: "text",
+                placeholder: "Nhập địa chỉ",
+              },
+              value: data.address,
+              validation: {
+                required: false,
+                isCharacter: true,
+              },
+              valid: true,
+              touched: false,
+            },
+            typeOfTree: {
+              elementType: "input",
+              elementConfig: {
+                type: "text",
+                placeholder: "Nhập giống cây",
+              },
+              value: data.typeOfTree,
+              validation: {
+                required: true,
+                minLength: 4,
+              },
+              valid: true,
+              touched: false,
+            },
+            landArea: {
+              elementType: "input",
+              elementConfig: {
+                type: "text",
+                placeholder: "Diện tích",
+              },
+              value: data.landArea,
+              validation: {
+                required: true,
+                minLength: 4,
+              },
+              valid: true,
+              touched: false,
+            },
+            totalNumberQR: {
+              elementType: "input",
+              elementConfig: {
+                type: "text",
+                placeholder: "Số QR",
+              },
+              value: data.totalNumberQR,
+              validation: {
+                required: true,
+                // minLength: 2,
+              },
+              valid: true,
+              touched: false,
+            },
+          },
         });
       },
     };
@@ -439,8 +550,23 @@ class ManagerFarmer extends Component {
                   data-dismiss="modal"
                   aria-label="Close"
                   ref={(button) => (this.buttonElement = button)}
+                  style={{ display: "none" }}
                 >
                   <span aria-hidden="true">&times;</span>
+                </button>
+                <button
+                  className="btn btn-outline-primary  btn-sm"
+                  type="button"
+                  style={{
+                    float: "left",
+                    fontSize: "11px",
+                    marginTop: "5px",
+                  }}
+                  onClick={(e) => {
+                    this.blockFarmer(e);
+                  }}
+                >
+                  {this.state.deleteFarmer ? " mở khóa" : "khóa lại"}
                 </button>
               </div>
               <div className="modal-body" onMouseOver={this.showTotalTrees}>
@@ -474,7 +600,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, props) => ({
   showFarmerFetch: (dataCreate) =>
     dispatch(actions.showFarmerFetch(dataCreate)),
-  // ShowImageDiary: (idFarmer) => dispatch(actions.ShowImageDiary(idFarmer)),
+  userUpdateDataFarmer: (data, checkvail) =>
+    dispatch(actions.userUpdateDataFarmer(data, checkvail)),
+  deleteFarmerFetch: (data) => dispatch(actions.deleteFarmerFetch(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManagerFarmer);

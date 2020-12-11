@@ -38,6 +38,8 @@ let initAPIs = (app) => {
   // client => api => controller => mongo luu data
   //user
   router.post("/createfarmer", ManagementController.createFarmer);
+  router.put("/updatedatafarmer", ManagementController.updateDataFarmer);
+  router.put("/deletefarmer", ManagementController.deleteFarmer);
   router.get("/showfarmer/:id", ManagementController.showFarmer);
   //router.get("/getpwfarmer/:id", ManagementController.getDataPWFarmer);
   router.put("/updatePassword", AuthController.updatePasswordUser);

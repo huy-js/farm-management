@@ -55,6 +55,12 @@ cooperationSchema.statics = {
       memberfarmer: farmermember,
     }).exec();
   },
+  updateLandAndTotalQR(id, landarea, totalNumberQR) {
+    return this.findByIdAndUpdate(id, {
+      landArea: landarea,
+      totalNumberQR: totalNumberQR,
+    }).exec();
+  },
   findCoopare(idCoopare) {
     return this.findById(idCoopare).exec();
   },
