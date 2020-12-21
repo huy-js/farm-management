@@ -23,7 +23,7 @@ const userSchema = new Schema(
     ],
     role: { type: String, default: "customer" },
     deletedAt: { type: Boolean, default: false },
-    isActive: { type: Boolean, default: false },
+    isActive: { type: Boolean, default: true },
   },
   {
     timestamps: {

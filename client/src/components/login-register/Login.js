@@ -163,7 +163,7 @@ class Login extends Component {
                 style={{ paddingBottom: "60px" }}
               >
                 {form}
-                <Button btnType="Success">Sign In</Button>
+                <Button btnType="Success"> Đăng nhập</Button>
               </form>
             </div>
           </div>

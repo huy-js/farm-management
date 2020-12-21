@@ -15,7 +15,13 @@ let diarySchema = new Schema(
         loai: { type: String },
       },
     ],
-    cachtri: { type: String },
+    ferTiLizer: { type: String }, //phan bo'
+    // wormType: { type: String },
+    // theCure: { type: String },
+    worm: {
+      type: { type: String }, // ten sau
+      theCure: { type: String }, // cach tri
+    },
     files: [{ data: Buffer, contentType: String, fileName: String }],
     node: [
       {
@@ -59,6 +65,12 @@ diarySchema.statics = {
     //   }).exec();
     // }
     return this.findById(id).exec();
+  },
+  getDataOfFarmer(idFarmer) {
+    return this.find({ idFarmer: idFarmer }).exec();
+  },
+  deleteDataDiary(idDiary) {
+    return this.remove({ _id: idDiary }).exec();
   },
 };
 module.exports = mongoose.model("diary", diarySchema);

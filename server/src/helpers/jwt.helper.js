@@ -53,6 +53,7 @@ let generateTokenQR = (data, secretSignature, tokenLife) => {
       idCoopare: data.idCoopare,
       idFarmer: data.idFarmer,
       code: data.code,
+      passTable: data.passTable,
     };
 
     // Thực hiện ký và tạo token

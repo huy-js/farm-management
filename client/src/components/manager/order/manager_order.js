@@ -128,14 +128,15 @@ class ManagerOrder extends Component {
         totalpay: element.totalpay,
         // payments: element.payments,
         createQR: element.createQR ? (
-          <i>done</i>
+          <i className="fa fa-check" style={{ color: "red " }}></i>
         ) : (
           <i
             data-toggle="modal"
             data-target="#showModalCreate"
             key={element._id}
+            className="fa fa-plus"
           >
-            create
+            {/* create */}
           </i>
         ),
         idcur: element.idcustomer,
@@ -164,7 +165,7 @@ class ManagerOrder extends Component {
       <div>
         <main className="page contact-us-page" style={{ height: "90vh" }}>
           <section
-            className="clean-block clean-form dark"
+            className="clean-block clean-form "
             style={{ height: "100%" }}
           >
             <div className="container">
@@ -209,7 +210,7 @@ class ManagerOrder extends Component {
                   Bắt đầu tạo mã
                 </h5>
               </div>
-              <div className="modal-body">
+              <div className="modal-body text-center">
                 <button
                   type="button"
                   className="btn btn-primary "

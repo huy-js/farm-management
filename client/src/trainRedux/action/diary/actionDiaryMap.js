@@ -15,6 +15,15 @@ export const fetchCheckedMap = (data) => ({
   payload: data,
 });
 // redux data diary
+export const changeFarmer = (bl) => ({
+  type: actionTypes.FETCH_FARMER_MAP,
+  payload: bl,
+});
+export const changeScreenMap = (bl) => {
+  return (dispatch) => {
+    dispatch(changeFarmer(bl));
+  };
+};
 export const fetchDataDiary = (data) => ({
   type: actionTypes.FETCH_DATA_DIARY,
   payload: data,
@@ -38,6 +47,7 @@ export const showListFarmerMapsFetch = (id, limit) => {
           console.log(res.data);
           dispatch(fetchFarmerData(res.data));
           dispatch(showListBatch(res.data[0]._id));
+          dispatch(changeFarmer(true));
           dispatch(checkConfromMap(res.data[0]._id));
         })
         .catch((error) => {
@@ -83,6 +93,10 @@ export const fetchBatchList = (dataList) => ({
   type: actionTypes.FETCH_BATCH_LIST,
   payload: dataList,
 });
+export const dataDiaryOfBatch = (dataDiary) => ({
+  type: actionTypes.FETCH_DATA_DIARY_OF_BATCH,
+  payload: dataDiary,
+});
 
 export const showListBatch = (id) => {
   console.log("list batch " + id);
@@ -99,8 +113,9 @@ export const showListBatch = (id) => {
         })
         .then((res) => {
           // console.log(res);
-          console.log(res.data);
-          dispatch(fetchBatchList(res.data));
+          //  console.log(res.data.getData);
+          dispatch(dataDiaryOfBatch(res.data.getDataDiaryOfCoopera));
+          dispatch(fetchBatchList(res.data.getData));
           dispatch(checkConfromMap(id));
         })
         .catch((error) => {

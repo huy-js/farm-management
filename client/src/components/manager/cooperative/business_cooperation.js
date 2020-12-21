@@ -94,16 +94,16 @@ class BusinessCooperation extends Component {
             onClick={(e) =>
               this.deleteBusiness(this.props.currentUser._id, element._id, e)
             }
-          >
-            delete
-          </i>
+            className="fa fa-ban  btn-outline-danger"
+            style={{ borderRadius: "100%" }}
+          ></i>
         ),
       };
       return products.push(arr);
     });
     return (
       <main className="page contact-us-page" style={{ height: "100%" }}>
-        <section className="clean-block dark" style={{ height: "100vh" }}>
+        <section className="clean-block " style={{ height: "100vh" }}>
           <div className="container">
             <div className="block-heading">
               <i

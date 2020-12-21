@@ -60,6 +60,7 @@ export const userRegisterFetch = (data, checkVali) => {
         })
         .then((res) => {
           //console.log(res);
+          dispatch(authFail(""));
           return true;
         })
         .catch((error) => {
@@ -172,7 +173,7 @@ export const searchGuestFetch = (dataQR) => {
     // const newId = localStorage.getItem("userId");
     console.log(dataQR);
     return axios
-      .get(`http://192.168.0.179:3456/search/${dataQR}`)
+      .get(`http://192.168.1.4:3456/search/${dataQR}`)
       .then((res) => {
         //console.log(res.data);
         //  console.log(res.data.dataCoopare)

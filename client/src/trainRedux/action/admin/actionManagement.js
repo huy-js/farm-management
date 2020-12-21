@@ -141,7 +141,7 @@ export const createListQrFetch = (dataQR, iduser) => {
   dataQR.iduser = iduser;
   console.log(dataQR);
   return (dispatch) => {
-    // const token = localStorage.userToken;
+    const token = localStorage.userToken;
     // console.log(datacreate);
     // console.log(token);
     if (token) {

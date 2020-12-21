@@ -123,13 +123,14 @@ class ListUser extends Component {
             className="fa fa-plus-circle"
             data-toggle="modal"
             data-target="#showModalCreate"
+            style={{ color: "red" }}
             onClick={(e) => this.createPwUser(element._id, e)}
           ></i>
         ),
         isActive: element.isActive ? (
           <i
             className="fa fa-check"
-            // name={element._id}
+            style={{ color: "blue" }}
             onClick={(e) =>
               this.upDateActive(this.props.currentUser._id, element._id, e)
             }
@@ -137,6 +138,7 @@ class ListUser extends Component {
         ) : (
           <i
             className="fa fa-times"
+            style={{ color: "red" }}
             onClick={(e) =>
               this.upDateActive(this.props.currentUser._id, element._id, e)
             }
@@ -150,7 +152,7 @@ class ListUser extends Component {
       <div>
         <main className="page contact-us-page" style={{ height: "90vh" }}>
           <section
-            className="clean-block clean-form dark"
+            className="clean-block clean-form "
             style={{ height: "100%" }}
           >
             <div className="container">
@@ -158,20 +160,27 @@ class ListUser extends Component {
                 <h2 className="text-info">Danh sach user </h2>
               </div>
               <div className="container-body">
-                <BootstrapTable
-                  keyField="stt"
-                  data={products}
-                  columns={columns}
-                  // loading={this.state.loading}
-                  pagination={paginationFactory({
-                    sizePerPage: 5,
-                    hideSizePerPage: true,
-                    // hidePageListOnlyOnePage: true
-                  })}
-                  // striped
-                  hover
-                  // condensed
-                />
+                {this.props.resArray.length === 0 ? (
+                  <div className="text-center">
+                    {" "}
+                    hiện tại chưa có người đăng ký tài khoản
+                  </div>
+                ) : (
+                  <BootstrapTable
+                    keyField="stt"
+                    data={products}
+                    columns={columns}
+                    // loading={this.state.loading}
+                    pagination={paginationFactory({
+                      sizePerPage: 5,
+                      hideSizePerPage: true,
+                      // hidePageListOnlyOnePage: true
+                    })}
+                    // striped
+                    hover
+                    // condensed
+                  />
+                )}
               </div>
             </div>
           </section>
@@ -191,7 +200,7 @@ class ListUser extends Component {
                   Bắc đầu tạo mã
                 </h5>
               </div>
-              <div className="modal-body">
+              <div className="modal-body text-center">
                 <button
                   type="button"
                   className="btn btn-primary "
@@ -227,7 +236,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch, props) => ({
   showListUserFetch: (iduser) => dispatch(actions.showListUserFetch(iduser)),
-  updateActiveUserFetch: (data) => dispatch(actions.updateActiveUserFetch(data)),
+  updateActiveUserFetch: (data) =>
+    dispatch(actions.updateActiveUserFetch(data)),
   createPwAndSendFetch: (id) => dispatch(actions.createPwAndSendFetch(id)),
 });
 

@@ -117,5 +117,56 @@ BatchSchema.statics = {
   // getDataIdDiaryAllStump(idBatch) {
   //   return this.findById(idBatch, { arrayDiaryForAll: 1 }).exec();
   // },
+  getBatchStump(iddiary, idFarmer) {
+    return this.find({
+      $and: [
+        { idFarmOwner: idFarmer },
+        { arrayDiaryForAll: { $elemMatch: { idDiary: iddiary } } },
+      ],
+    }).exec();
+  },
+  getdataStump(iddiary, idFarmer) {
+    return this.find({
+      $and: [
+        { idFarmOwner: idFarmer },
+        { "stumps.arrayDiary.idDiary": iddiary },
+      ],
+    }).exec();
+  },
+  deleteIdDiaryAllBatch(idbatch, iddiary) {
+    return this.findByIdAndUpdate(idbatch, {
+      $pull: { arrayDiaryForAll: { idDiary: iddiary } },
+    }).exec();
+  },
+  // deleteIdDiaryIsStump(idbatch, iddiary) {
+  //   return this.updateMany(
+  //     { _id: idbatch },
+  //     {
+  //       $pull: { stumps: { arrayDiary: { idDiary: { $in: [iddiary] } } } },
+  //     }
+  //   ).exec();
+  // },
+  deleteIdDiaryIsStump(idbatch, numberStump, arrayIdDiaryNew) {
+    return this.updateOne(
+      {
+        $and: [
+          { _id: idbatch },
+          { stumps: { $elemMatch: { numberStumps: numberStump } } },
+        ],
+      },
+      {
+        $set: {
+          "stumps.$.arrayDiary": arrayIdDiaryNew,
+        },
+      }
+      // { safe: true, upsert: true, new: true }
+    ).exec();
+  },
 };
 module.exports = mongoose.model("batch", BatchSchema);
+
+// {
+//   stumps: {
+//     arrayDiary: { $elemMatch: { idDiary: iddiary } },
+//   },
+// },

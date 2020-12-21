@@ -16,7 +16,7 @@ class Home extends Component {
           >
             <div className="text">
               {/* <h2>Tìm thông tin sẳn phầm bằng qr ?</h2>
-
+              
               <i className="fa fa-qrcode" style={{ fontSize: "50px" }}></i> */}
 
               {/* <button

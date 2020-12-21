@@ -44,7 +44,7 @@ class Search extends Component {
     };
     return (
       <main className="page contact-us-page" style={{ paddingTop: "60px" }}>
-        <section className="dark" style={{ height: "80vh" }}>
+        <section className="dark" style={{ minHeight: "120vh" }}>
           <div className="container">
             <div className="block-heading" style={{ paddingTop: "30px" }}>
               <div>
