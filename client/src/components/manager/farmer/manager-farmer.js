@@ -72,20 +72,20 @@ class ManagerFarmer extends Component {
         valid: false,
         touched: false,
       },
-      totalNumberQR: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Số QR",
-        },
-        value: "",
-        validation: {
-          required: true,
-          //minLength: 2,
-        },
-        valid: false,
-        touched: false,
-      },
+      // totalNumberQR: {
+      //   elementType: "input",
+      //   elementConfig: {
+      //     type: "text",
+      //     placeholder: "Số QR",
+      //   },
+      //   value: "",
+      //   validation: {
+      //     required: true,
+      //     //minLength: 2,
+      //   },
+      //   valid: false,
+      //   touched: false,
+      // },
     },
     error: "thong tin khong hop le",
     result: true,
@@ -151,7 +151,7 @@ class ManagerFarmer extends Component {
       landArea: parseInt(this.state.controls.landArea.value),
       typeOfTree: this.state.controls.typeOfTree.value,
       // totalTrees: parseInt(this.state.controls.totalTrees.value),
-      totalNumberQR: parseInt(this.state.controls.totalNumberQR.value),
+      // totalNumberQR: parseInt(this.state.controls.totalNumberQR.value),
       idUser: this.props.currentUser._id,
       idFarmer: this.state.dataFarmerUpdate,
     };
@@ -236,7 +236,7 @@ class ManagerFarmer extends Component {
       },
       {
         dataField: "typeOfTree",
-        text: "GIỐNG CÂY",
+        text: "GIỐNG XOÀI",
         headerStyle: styleHeader,
         style: styleRow,
       },
@@ -258,12 +258,12 @@ class ManagerFarmer extends Component {
         headerStyle: styleHeader,
         style: styleRow,
       },
-      {
-        dataField: "totalNumberQR",
-        text: "SỐ QR ",
-        headerStyle: styleHeader,
-        style: styleRow,
-      },
+      // {
+      //   dataField: "totalNumberQR",
+      //   text: "SỐ QR ",
+      //   headerStyle: styleHeader,
+      //   style: styleRow,
+      // },
       {
         dataField: "edit",
         text: "SỬA ĐỔI",
@@ -287,7 +287,7 @@ class ManagerFarmer extends Component {
         address: element.address,
         landArea: element.landArea,
         totalTrees: element.totalTrees,
-        totalNumberQR: element.totalNumberQR,
+        // totalNumberQR: element.totalNumberQR,
         edit: (
           <i
             key={element._id}
@@ -399,20 +399,20 @@ class ManagerFarmer extends Component {
               valid: true,
               touched: false,
             },
-            totalNumberQR: {
-              elementType: "input",
-              elementConfig: {
-                type: "text",
-                placeholder: "Số QR",
-              },
-              value: data.totalNumberQR,
-              validation: {
-                required: true,
-                // minLength: 2,
-              },
-              valid: true,
-              touched: false,
-            },
+            // totalNumberQR: {
+            //   elementType: "input",
+            //   elementConfig: {
+            //     type: "text",
+            //     placeholder: "Số QR",
+            //   },
+            //   value: data.totalNumberQR,
+            //   validation: {
+            //     required: true,
+            //     // minLength: 2,
+            //   },
+            //   valid: true,
+            //   touched: false,
+            // },
           },
         });
       },
@@ -576,7 +576,7 @@ class ManagerFarmer extends Component {
                 >
                   {form}
 
-                  <Button btnType="Success">Tạo</Button>
+                  <Button btnType="Success">Cập nhật</Button>
                 </form>
               </div>
             </div>

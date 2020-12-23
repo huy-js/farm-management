@@ -138,8 +138,12 @@ export const showCooperativeFetch = (iduser) => {
 
 // qr
 export const createListQrFetch = (dataQR, iduser) => {
-  dataQR.iduser = iduser;
+  // dataQR.iduser = iduser;
   console.log(dataQR);
+  let data = {
+    dataQR: dataQR,
+    iduser: iduser,
+  };
   return (dispatch) => {
     const token = localStorage.userToken;
     // console.log(datacreate);
@@ -150,7 +154,7 @@ export const createListQrFetch = (dataQR, iduser) => {
       return axios
         .post(
           "http://localhost:3456/createlistqr",
-          { dataQR },
+          { data },
           {
             headers: { Authorization: `${accessToken}` },
           }

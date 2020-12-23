@@ -61,7 +61,9 @@ export const showCoopareFetch = (id) => {
   };
 };
 
-export const saveDataOrderFetch = (dataOrder) => {
+export const saveDataOrderFetch = (dataOrder, dataCreate) => {
+  console.log(dataOrder);
+  console.log(dataCreate);
   return (dispatch) => {
     const token = localStorage.userToken;
     if (token) {
@@ -70,7 +72,7 @@ export const saveDataOrderFetch = (dataOrder) => {
       return axios
         .post(
           `http://localhost:3456/createdataorder`,
-          { dataOrder },
+          { dataOrder: dataOrder, dataCreate: dataCreate },
           {
             headers: { Authorization: `${accessToken}` },
           }

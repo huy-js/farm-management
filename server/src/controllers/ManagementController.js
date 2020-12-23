@@ -271,8 +271,18 @@ let showCooperation = async (req, res) => {
 };
 let createDataOrder = async (req, res) => {
   try {
-    //console.log(req.body.dataOrder);
-    await orderModel.createNew(req.body.dataOrder);
+    console.log("tao order");
+    // console.log(req.body.dataOrder);
+    //  console.log(req.body.dataCreate);
+    let dataSave = {
+      idcustomer: req.body.dataCreate.idcustomer,
+      numberQR: req.body.dataCreate.tongQR, // song qr yeu cau'
+      memberfarmer: req.body.dataCreate.tongNongdan,
+      email: req.body.dataCreate.email,
+      inForQR: req.body.dataOrder,
+    };
+    //console.log(dataSave);
+    await orderModel.createNew(dataSave);
     return res.status(200).json({ message: "create succession." });
   } catch (error) {
     return res.status(500).json({ message: "create failed" });
@@ -299,33 +309,32 @@ let showListOrder = async (req, res) => {
 let newCreateQR = async (req, res) => {
   try {
     console.log("createQR");
-    console.log(req.body);
-    //  console.log("admin " + req.body.dataQR.iduser);
-    // console.log("data qr " + req.body.dataQR.idcustomer);
-
-    //console.log("life" + accessTokenLifeQr);
-    // console.log("secrec" + accessTokenSecretQr);
-    if (!(await userModel.checkAdmin(req.body.dataQR.iduser)))
+    // console.log(req.body.data);
+    if (!(await userModel.checkAdmin(req.body.data.iduser)))
       return res.status(500).json({ message: "ban khong phai admin" });
+
+    let dataOrder = await orderModel.showOrderCreate(req.body.data.dataQR);
+    //  console.log(dataOrder);
+    if (!dataOrder) {
+      return res.status(500).json({ message: "Thong tin truy xuat ko hop le" });
+    }
     //tim  htx
-    let idCoopare = await coopertationModel.findIdCoopera(
-      req.body.dataQR.idcustomer
-    );
-    console.log(idCoopare);
+    let idCoopare = await coopertationModel.findIdCoopera(dataOrder.idcustomer);
+    // console.log(idCoopare);
     if (idCoopare) {
       //console.log(idCoopare);
-      let listFarmer = await farmerModel.showFarmer(idCoopare._id); //result array
+      // let listFarmer = await farmerModel.showFarmer(idCoopare._id); //result array
       // chay data nong ho
       let passTableQR = generator.generate({
         length: 4,
         numbers: true,
       });
-      let arrayFarmer = listFarmer.map(async (e) => {
+      let arrayFarmer = dataOrder.inForQR.map(async (e) => {
         //console.log(e.totalNumberQR);
         // let arrayQR = await setDataQR(e.totalNumberQR, idCoopare._id, e._id);
         // console.log(arrayQR);
         let arrayQR = [];
-        for (let i = 1; i <= e.totalNumberQR; i++) {
+        for (let i = 1; i <= e.numberQR; i++) {
           let ranDomPassWord = generator.generate({
             length: 5,
             numbers: true,
@@ -336,7 +345,7 @@ let newCreateQR = async (req, res) => {
           // };
           let data = {
             idCoopare: idCoopare._id,
-            idFarmer: e._id,
+            idFarmer: e.idFarmer,
             code: ranDomPassWord,
             passTable: passTableQR,
           };
@@ -344,7 +353,7 @@ let newCreateQR = async (req, res) => {
         }
         // console.log(arrayQR);
         let dataDone = {
-          idFarmer: e._id,
+          idFarmer: e.idFarmer,
           arrayQR: arrayQR,
         };
         return dataDone;
@@ -377,12 +386,12 @@ let newCreateQR = async (req, res) => {
       console.log("adadsad" + converDataArray);
 
       let dataDone = {
-        idOrder: req.body.dataQR.idOrder,
+        idOrder: req.body.data.dataQR,
         idCoopare: idCoopare._id,
         ListFarmerQR: converDataArray,
       };
       await qrCodeModel.createNew(dataDone);
-      await orderModel.updateDefaulQR(req.body.dataQR.idOrder);
+      await orderModel.updateDefaulQR(req.body.data.dataQR);
       return res.status(200).json({ message: "success" });
     } else {
       return res.status(500).json({ message: "khong tim thay htx" });

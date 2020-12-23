@@ -4,15 +4,16 @@ let createBatch = (data) => {
   return new Promise(async (resolve, reject) => {
     let batch = 0;
     let stumps = 0;
-    // let laststumps = 0;
+    let checkTotalType = true;
     console.log("createBatch" + data.totalTrees);
     //  console.log("total trees" + typeof data.totalTrees);
     if (data.totalTrees > 250) {
       batch = parseInt(data.totalTrees / 250);
+      checkTotalType = false;
     } else {
       batch = 1;
     }
-    if (batch === 1) {
+    if (batch === 1 && checkTotalType) {
       stumps = parseInt(data.totalTrees / 50); // lay phan nguyen
       let check = data.totalTrees % 50; // phan du
       let lasttotaltrees = 50; // so cay phan du

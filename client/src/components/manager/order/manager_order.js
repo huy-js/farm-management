@@ -15,10 +15,14 @@ class ManagerOrder extends Component {
   componentDidMount() {
     this.props.showListOrderFetch();
   }
-
+  setIdOrder = (event, idOrder) => {
+    this.setState({
+      dataQR: idOrder,
+    });
+  };
   createListQR = async (event) => {
     event.preventDefault();
-    // console.log(this.state.dataQR);
+    console.log(this.state.dataQR);
 
     await this.props.createListQrFetch(
       this.state.dataQR,
@@ -50,56 +54,56 @@ class ManagerOrder extends Component {
       {
         dataField: "stt",
         text: "STT",
-        headerStyle: styleHeader,
-        style: styleRow,
+        // headerStyle: styleHeader,
+        // style: styleRow,
       },
       {
         dataField: "createAt",
         text: "NGÀY TẠO",
-        headerStyle: styleHeader,
-        style: styleRow,
+        // headerStyle: styleHeader,
+        // style: styleRow,
       },
       {
         dataField: "nameCooperaTion",
         text: "HTX",
-        headerStyle: styleHeader,
-        style: styleRow,
+        // headerStyle: styleHeader,
+        // style: styleRow,
       },
       {
         dataField: "numberQR",
-        text: "NUMBERQR",
-        headerStyle: styleHeader,
-        style: styleRow,
+        text: "SỐ LƯỢNG QR",
+        // headerStyle: styleHeader,
+        // style: styleRow,
       },
       {
         dataField: "memberfarmer",
-        text: "SỐ NÔNG HỘ",
-        headerStyle: styleHeader,
-        style: styleRow,
+        text: "SỐ LƯƠNG NÔNG HỘ ĐĂNG KÝ",
+        // headerStyle: styleHeader,
+        // style: styleRow,
       },
-      {
-        dataField: "totalTrees",
-        text: "TỔNG CÂY",
-        headerStyle: styleHeader,
-        style: styleRow,
-      },
-      {
-        dataField: "landArea",
-        text: "DIỆN TÍCH",
-        headerStyle: styleHeader,
-        style: styleRow,
-      },
-      {
-        dataField: "totalpay",
-        text: "TỔNG TIỀN",
-        headerStyle: styleHeader,
-        style: styleRow,
-      },
+      // {
+      //   dataField: "totalTrees",
+      //   text: "TỔNG CÂY",
+      //   headerStyle: styleHeader,
+      //   style: styleRow,
+      // },
+      // {
+      //   dataField: "landArea",
+      //   text: "DIỆN TÍCH",
+      //   headerStyle: styleHeader,
+      //   style: styleRow,
+      // },
+      // {
+      //   dataField: "totalpay",
+      //   text: "TỔNG TIỀN",
+      //   headerStyle: styleHeader,
+      //   style: styleRow,
+      // },
       {
         dataField: "createQR",
         text: "TẠO QRCODE",
-        headerStyle: styleHeader,
-        style: styleRow,
+        // headerStyle: styleHeader,
+        // style: styleRow,
       },
       {
         dataField: "idcur",
@@ -122,10 +126,10 @@ class ManagerOrder extends Component {
         nameCooperaTion: element.nameCooperaTion,
         numberQR: element.numberQR,
         memberfarmer: element.memberfarmer,
-        totalTrees: element.totalTrees, // tông cay trong htx
-        landArea: element.landArea, // diện tích
+        // totalTrees: element.totalTrees, // tông cay trong htx
+        // landArea: element.landArea, // diện tích
         // email: element.email,
-        totalpay: element.totalpay,
+        // totalpay: element.totalpay,
         // payments: element.payments,
         createQR: element.createQR ? (
           <i className="fa fa-check" style={{ color: "red " }}></i>
@@ -135,6 +139,7 @@ class ManagerOrder extends Component {
             data-target="#showModalCreate"
             key={element._id}
             className="fa fa-plus"
+            onClick={(event) => this.setIdOrder(event, element._id)}
           >
             {/* create */}
           </i>
@@ -144,23 +149,23 @@ class ManagerOrder extends Component {
       return products.push(arr);
     });
 
-    const rowEvents = {
-      onClick: (e, row, rowIndex) => {
-        console.log(row);
-        console.log(row.createQR.key);
-        this.setState({
-          dataQR: {
-            //idcustomer: row.idcustomer,
-            idcustomer: row.idcur,
-            landArea: row.landArea,
-            memberfarmer: row.memberfarmer,
-            numberQR: row.numberQR,
-            totalTrees: row.totalTrees,
-            idOrder: row.createQR.key,
-          },
-        });
-      },
-    };
+    // const rowEvents = {
+    //   onClick: (e, row, rowIndex) => {
+    //     console.log(row);
+    //     console.log(row.createQR.key);
+    //     this.setState({
+    //       dataQR: {
+    //         //idcustomer: row.idcustomer,
+    //         idcustomer: row.idcur,
+    //         landArea: row.landArea,
+    //         memberfarmer: row.memberfarmer,
+    //         numberQR: row.numberQR,
+    //         totalTrees: row.totalTrees,
+    //         idOrder: row.createQR.key,
+    //       },
+    //     });
+    //   },
+    // };
     return (
       <div>
         <main className="page contact-us-page" style={{ height: "90vh" }}>
@@ -172,18 +177,15 @@ class ManagerOrder extends Component {
               <div className="block-heading" style={{ marginTop: "50px" }}>
                 <h2 className="text-info">Danh sách người dùng mua hàng </h2>
               </div>
-              <div className="container-body">
+              <div className="container-body text-center">
                 {this.props.resArray.length === 0 ? (
-                  <div className="text-center">
-                    {" "}
-                    hien tai chua co thong tin moi
-                  </div>
+                  <div className="text-center"> hiện tại chưa có đơn hàng</div>
                 ) : (
                   <BootstrapTable
                     keyField="stt"
                     data={products}
                     columns={columns}
-                    rowEvents={rowEvents}
+                    // rowEvents={rowEvents}
                     pagination={paginationFactory({
                       sizePerPage: 5,
                       hideSizePerPage: true,
@@ -203,24 +205,27 @@ class ManagerOrder extends Component {
           aria-labelledby="exampleModalCenterTitle"
           aria-hidden="true"
         >
-          <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLongTitle">
                   Bắt đầu tạo mã
                 </h5>
               </div>
-              <div className="modal-body text-center">
+              <div
+                className="modal-body text-center"
+                style={{ height: "150px" }}
+              >
                 <button
                   type="button"
                   className="btn btn-primary "
                   data-dismiss="modal"
                   onClick={this.createListQR}
                 >
-                  Tạo mã và lưu file gửi khách hàng
+                  tạo mã và gửi khách hàng
                 </button>
               </div>
-              <div className="modal-footer">
+              {/* <div className="modal-footer">
                 <button
                   type="button"
                   className="btn btn-secondary"
@@ -228,7 +233,7 @@ class ManagerOrder extends Component {
                 >
                   Close
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
