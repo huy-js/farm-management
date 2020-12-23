@@ -168,6 +168,7 @@ class App extends Component {
                 <li className="nav-item" role="presentation">
                   <Link to={"/profile"} className="nav-link">
                     {this.props.currentUser.username}
+                    {role === "admin" ? "(Admin)" : null}
                   </Link>
                 </li>
               </ul>

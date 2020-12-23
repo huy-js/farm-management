@@ -82,21 +82,21 @@ class CreateFarmer extends Component {
         valid: false,
         touched: false,
       },
-      totalNumberQR: {
-        elementType: "input",
-        elementConfig: {
-          type: "number",
-          placeholder: "Tổng QR cho nông hộ",
-          min: 0,
-        },
-        value: "",
-        validation: {
-          required: true,
-          // minLength: 3,
-        },
-        valid: false,
-        touched: false,
-      },
+      // totalNumberQR: {
+      //   elementType: "input",
+      //   elementConfig: {
+      //     type: "number",
+      //     placeholder: "Tổng QR cho nông hộ",
+      //     min: 0,
+      //   },
+      //   value: "",
+      //   validation: {
+      //     required: true,
+      //     // minLength: 3,
+      //   },
+      //   valid: false,
+      //   touched: false,
+      // },
     },
     // isSignup: true,
     display: "block",
