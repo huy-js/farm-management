@@ -30,6 +30,7 @@
     "nodemon": "^2.0.4",
     "prop-types": "^15.7.2",
     "qrcode": "^1.4.4",
+    "react-bootstrap": "^1.4.0",
     "react-stripe-checkout": "^2.6.3",
     "stripe": "^8.119.0",
     "uuid": "^8.3.1",
