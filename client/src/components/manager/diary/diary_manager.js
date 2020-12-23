@@ -29,6 +29,7 @@ class DiaryManager extends Component {
   ShowDetailMaps = (name, id, event) => {
     event.preventDefault();
     console.log(id + " + " + name);
+    this.props.changeScreenMap(true);
     this.setState({
       display: "block",
       name: name,
@@ -55,34 +56,40 @@ class DiaryManager extends Component {
       >
         <section
           className="clean-block  dark "
-          style={{ height: "100%", paddingTop: "50px" }}
+          style={{ minHeight: "100vh", paddingTop: "50px" }}
         >
-          <div className="container" style={{ maxWidth: "90%" }}>
-            <div className="row">
-              <div className="col-sm-3">
-                <div className="card shadow">
-                  <div className="card-header ">
-                    <p className="text-primary m-0 font-weight-bold">
-                      Danh sách thành viên Htx
-                    </p>
-                  </div>
-                  <div
-                    className="card-body clean-pricing-item overflow-auto"
-                    style={{ paddingTop: "0px" }}
-                  >
-                    <p>thành viên hợp tác xã</p>
-                    <div className="features " style={{ height: "360px" }}>
-                      {this.props.resArray.map((e, index) => {
-                        return (
-                          <h4
-                            key={index}
-                            style={{ cursor: "pointer" }}
-                            onClick={(event) =>
-                              this.ShowDetailMaps(e.farmOwner, e._id, event)
-                            }
-                          >
-                            <span className="feature">
-                              {/* <NavLink
+          {this.props.resArray.length === 0 ? (
+            <div className="text-center">
+              chưa có thông tin nông dân mời bạn thêm thông tin ở phần quản lý
+              nông hộ
+            </div>
+          ) : (
+            <div className="container" style={{ maxWidth: "90%" }}>
+              <div className="row">
+                <div className="col-sm-3">
+                  <div className="card shadow">
+                    <div className="card-header ">
+                      <p className="text-primary m-0 font-weight-bold">
+                        Danh sách thành viên Htx
+                      </p>
+                    </div>
+                    <div
+                      className="card-body clean-pricing-item overflow-auto"
+                      style={{ paddingTop: "0px" }}
+                    >
+                      <p>thành viên hợp tác xã</p>
+                      <div className="features " style={{ height: "360px" }}>
+                        {this.props.resArray.map((e, index) => {
+                          return (
+                            <h4
+                              key={index}
+                              style={{ cursor: "pointer" }}
+                              onClick={(event) =>
+                                this.ShowDetailMaps(e.farmOwner, e._id, event)
+                              }
+                            >
+                              <span className="feature">
+                                {/* <NavLink
                                 to={
                                   "/diary-manager/diary-detail/" +
                                   e._id +
@@ -95,24 +102,27 @@ class DiaryManager extends Component {
                               >
                                 {e.farmOwner}
                               </NavLink> */}
-                              {e.farmOwner}
-                            </span>
-                            <hr />
-                          </h4>
-                        );
-                      })}
-                      <div
-                        className="text-center"
-                        style={{ cursor: "pointer" }}
-                        onClick={this.viewMore}
-                      >
-                        <i className="fa fa-caret-down" aria-hidden="true"></i>
+                                {e.farmOwner}
+                              </span>
+                              <hr />
+                            </h4>
+                          );
+                        })}
+                        <div
+                          className="text-center"
+                          style={{ cursor: "pointer" }}
+                          onClick={this.viewMore}
+                        >
+                          <i
+                            className="fa fa-caret-down"
+                            aria-hidden="true"
+                          ></i>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              {/* <div className="col-sm-9">
+                {/* <div className="col-sm-9">
                 <div className="card shadow">
                   <div
                     className="card-header"
@@ -125,19 +135,21 @@ class DiaryManager extends Component {
                   <div className="card-body "></div>
                 </div>
               </div> */}
-              {/* <Route
+                {/* <Route
                 exact
                 path="/diary-manager/diary-detail/:id/:name"
                 component={DiaryDetail}
               /> */}
-              <div className="col-sm-9">
-                <DiaryDetail
-                  name={this.state.name === "" ? name : this.state.name}
-                  id={this.state.id === "" ? idfarmer : this.state.id}
-                />
+                <div className="col-sm-9">
+                  <DiaryDetail
+                    name={this.state.name === "" ? name : this.state.name}
+                    id={this.state.id === "" ? idfarmer : this.state.id}
+                    //  changeFarmer={true}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </section>
       </main>
     );
@@ -159,6 +171,7 @@ const mapDispatchToProps = (dispatch, props) => ({
   showMoreListFarmerFetch: (idUser, limit) =>
     dispatch(actions.showMoreListFarmerFetch(idUser, limit)),
   showListBatch: (idUser) => dispatch(actionss.showListBatch(idUser)),
+  changeScreenMap: (bl) => dispatch(actionss.changeScreenMap(bl)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiaryManager);

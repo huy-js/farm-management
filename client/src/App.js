@@ -93,7 +93,7 @@ class App extends Component {
       logButton = (
         <li className="nav-item" role="presentation">
           <Link to="/logout" className="nav-link">
-            Logout
+            Đăng Xuất
           </Link>
         </li>
       );
@@ -101,7 +101,7 @@ class App extends Component {
       logButton = (
         <li className="nav-item" role="presentation">
           <NavLink to={"/login"} className="nav-link">
-            Login
+            Đăng Nhập
           </NavLink>
         </li>
       );
@@ -113,17 +113,17 @@ class App extends Component {
           <ul className="nav navbar-nav ml-auto">
             <li className="nav-item" role="presentation">
               <Link to={"/list-user"} className="nav-link">
-                LIST-USER
+                Danh sách người dùng
               </Link>
             </li>
             <li className="nav-item" role="presentation">
               <Link to={"/manager-order"} className="nav-link">
-                MANAGER-ORDER
+                Quản lý đơn hàng
               </Link>
             </li>
             <li className="nav-item" role="presentation">
               <Link to={"/manager-cooperative"} className="nav-link">
-                MANAGER-COOPERATIVE
+                Quản lý Hợp tác xã
               </Link>
             </li>
           </ul>
@@ -134,22 +134,22 @@ class App extends Component {
           <ul className="nav navbar-nav ml-auto">
             <li className="nav-item" role="presentation">
               <Link to={"/manager-farmer"} className="nav-link">
-                MANAGER-FARMER
+                Quản lý Nông dân
               </Link>
             </li>
             <li className="nav-item" role="presentation">
               <Link to={"/diary-manager"} className="nav-link">
-                Diary-manager
+                Quản lý nhật ký nông hộ
               </Link>
             </li>
             <li className="nav-item" role="presentation">
               <Link to={"/order-customer"} className="nav-link">
-                Order
+                đặt QR
               </Link>
             </li>
             <li className="nav-item" role="presentation">
               <Link to={"/business-cooperation"} className="nav-link">
-                Business-Cooperation
+                Quản lý phân phối
               </Link>
             </li>
           </ul>
@@ -162,7 +162,7 @@ class App extends Component {
     return (
       <div>
         <nav className="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
-          <div className="container">
+          <div className="container" style={{ minWidth: "100%" }}>
             <span className="navbar-brand logo">
               <ul className="nav navbar-nav ml-auto">
                 <li className="nav-item" role="presentation">
@@ -184,7 +184,7 @@ class App extends Component {
               <ul className="nav navbar-nav ml-auto">
                 <li className="nav-item" role="presentation">
                   <Link to={"/"} className="nav-link">
-                    Home
+                    Trang chủ
                   </Link>
                 </li>
                 <div style={{ display: this.props.display }}>{showManage}</div>
@@ -195,7 +195,7 @@ class App extends Component {
                   style={{ display: this.props.displayRegister }}
                 >
                   <NavLink to={"/register"} className="nav-link">
-                    Register
+                    Đăng ký
                   </NavLink>
                 </li>
               </ul>

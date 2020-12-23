@@ -202,7 +202,7 @@ class Register extends Component {
       <main className="page contact-us-page" style={{ paddingTop: "60px" }}>
         <section
           className="clean-block clean-form dark"
-          style={{ height: "120vh" }}
+          style={{ minHeight: "120vh" }}
         >
           <div className="container">
             <div className="block-heading" style={{ paddingTop: "30px" }}>
@@ -216,7 +216,7 @@ class Register extends Component {
                 style={{ paddingBottom: "60px" }}
               >
                 {form}
-                <Button btnType="Success">Register</Button>
+                <Button btnType="Success">Đăng ký</Button>
               </form>
             </div>
           </div>

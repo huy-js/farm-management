@@ -13,7 +13,9 @@ import {
 import Select from "react-select";
 
 import ReactApexChart from "react-apexcharts";
+import DatePicker from "react-datepicker";
 
+import "react-datepicker/dist/react-datepicker.css";
 function callFunctionSeries(totaltree, row, col) {
   let array = [];
   let dataArray = [];
@@ -49,8 +51,25 @@ class ManagerCooperative extends Component {
     dataCooperative: "",
     displayShowMap: "none",
     selectIdFarmer: "",
+    dateSelectedDMY: new Date(),
+    dateSelectedMY: new Date(),
+    changeDate: "MY",
   };
-
+  HanddleDateSelected = (date, value) => {
+    console.log(value);
+    if (value === "DMY") {
+      this.setState({
+        dateSelectedDMY: date,
+        changeDate: "DMY",
+      });
+    }
+    if (value === "MY") {
+      this.setState({
+        dateSelectedMY: date,
+        changeDate: "MY",
+      });
+    }
+  };
   componentDidMount() {
     this.props.showCooperativeFetch(this.props.currentUser._id);
   }
@@ -83,6 +102,187 @@ class ManagerCooperative extends Component {
       var options = { year: "numeric", month: "long", day: "numeric" };
       return new Date(string).toLocaleDateString([], options);
     };
+    const dateMY = (string) => {
+      var options = { year: "numeric", month: "long" };
+      return new Date(string).toLocaleDateString([], options);
+    };
+
+    let dataNow = dates(this.state.dateSelectedDMY.getTime());
+    let dateMYY = dateMY(this.state.dateSelectedMY.getTime());
+    //console.log(dataNow);
+    //console.log(dateMYY);
+    const ShowDiaryDMY = this.props.dataDiary.map((e, index) => {
+      // console.log(dates(new Date(e.createAt)));
+      let dateServer = new Date(e.createAt).getTime();
+      if (dataNow == dates(dateServer)) {
+        //   console.log("dasdas");
+        let readFile =
+          e.files.length !== 0
+            ? e.files.map((eles, indx) => {
+                return (
+                  <div
+                    key={indx}
+                    className="col-sm-4"
+                    style={{ padding: "20px" }}
+                  >
+                    <img
+                      src={`data:${eles.contentType};base64,${bufferToBase64(
+                        eles.data.data
+                      )}`}
+                      style={{ width: "250px", height: "250px" }}
+                      key={index}
+                    />
+                    <p>
+                      {indx === 0 ? "Benh" : indx === 1 ? " tri benh" : "..."}
+                    </p>
+                  </div>
+                );
+              })
+            : null;
+        let dataThuoc =
+          e.preparation.length !== 0
+            ? e.preparation.map((ele, inx) => {
+                return (
+                  <div key={inx}>
+                    <p>
+                      Ten thuoc: {ele.thuoc}, Loai: {ele.loai}, Dung tich:{" "}
+                      {ele.dungtich} lit, So luong: {ele.soluong}, Luong nuoc
+                      dung de pha: {ele.luongnuoc} ml
+                    </p>
+                  </div>
+                );
+              })
+            : null;
+
+        return (
+          <li key={index + 1} style={{ width: "100%", float: "left" }}>
+            <span>
+              {dates(new Date(e.createAt).getTime())} -- {e.work}{" "}
+            </span>
+            <button
+              className="btn dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              //aria-haspopup="true"
+              //aria-expanded="false"
+            ></button>
+            <div
+              className="dropdown-menu"
+              aria-labelledby="dropdownMenuButton"
+              style={{ border: "none" }}
+            >
+              <h6
+                style={{
+                  fontWeight: "bold",
+                  display: e.preparation.length === 0 ? "none" : "block",
+                }}
+              >
+                Pha thuoc
+              </h6>
+              {dataThuoc}
+              <h6
+                style={{
+                  fontWeight: "bold",
+                  display: e.files.length === 0 ? "none" : "block",
+                }}
+              >
+                hinh anh
+              </h6>
+              <div className="row" style={{ width: "900px" }}>
+                {readFile}
+              </div>
+            </div>
+          </li>
+        );
+      }
+    });
+    const ShowDiaryMY = this.props.dataDiary.map((e, index) => {
+      // console.log(dates(new Date(e.createAt)));
+      let dateServer = new Date(e.createAt).getTime();
+      if (dateMYY == dateMY(dateServer)) {
+        //   console.log("dasdas");
+        let readFile =
+          e.files.length !== 0
+            ? e.files.map((eles, indx) => {
+                return (
+                  <div
+                    key={indx}
+                    className="col-sm-4"
+                    style={{ padding: "20px" }}
+                  >
+                    <img
+                      src={`data:${eles.contentType};base64,${bufferToBase64(
+                        eles.data.data
+                      )}`}
+                      style={{ width: "250px", height: "250px" }}
+                      key={index}
+                    />
+                    <p>
+                      {indx === 0 ? "Benh" : indx === 1 ? " tri benh" : "..."}
+                    </p>
+                  </div>
+                );
+              })
+            : null;
+        let dataThuoc =
+          e.preparation.length !== 0
+            ? e.preparation.map((ele, inx) => {
+                return (
+                  <div key={inx}>
+                    <p>
+                      Ten thuoc: {ele.thuoc}, Loai: {ele.loai}, Dung tich:{" "}
+                      {ele.dungtich} lit, So luong: {ele.soluong}, Luong nuoc
+                      dung de pha: {ele.luongnuoc} ml
+                    </p>
+                  </div>
+                );
+              })
+            : null;
+
+        return (
+          <li key={index + 1} style={{ width: "100%", float: "left" }}>
+            <span>
+              {dates(new Date(e.createAt).getTime())} -- {e.work}{" "}
+            </span>
+            <button
+              className="btn dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              //aria-haspopup="true"
+              //aria-expanded="false"
+            ></button>
+            <div
+              className="dropdown-menu"
+              aria-labelledby="dropdownMenuButton"
+              style={{ border: "none" }}
+            >
+              <h6
+                style={{
+                  fontWeight: "bold",
+                  display: e.preparation.length === 0 ? "none" : "block",
+                }}
+              >
+                Pha thuoc
+              </h6>
+              {dataThuoc}
+              <h6
+                style={{
+                  fontWeight: "bold",
+                  display: e.files.length === 0 ? "none" : "block",
+                }}
+              >
+                hinh anh
+              </h6>
+              <div className="row" style={{ width: "900px" }}>
+                {readFile}
+              </div>
+            </div>
+          </li>
+        );
+      }
+    });
 
     const ShowDiarys = this.props.dataDiary.map((e, index) => {
       let readFile =
@@ -272,7 +472,7 @@ class ManagerCooperative extends Component {
         });
       },
     };
-    console.log(this.state.dataCooperative);
+    //console.log(this.state.dataCooperative);
 
     const options = [];
     this.props.resArray.map((e) => {
@@ -377,38 +577,23 @@ class ManagerCooperative extends Component {
         data.business.length !== 0
           ? data.business.map((e, i) => {
               return (
-                <div key={i} className="row">
-                  <div className="col-sm">
-                    tên công ty
-                    <p>{e.nameCompany}</p>
-                  </div>
-                  <div className="col-sm">
-                    địa chỉ
-                    <p>{e.address}</p>
-                  </div>
-                  <div className="col-sm">
-                    loại trái tiêu thụ
-                    <p>{e.typeOfTree}</p>
-                  </div>
-                </div>
+                <tr>
+                  <th scope="row" key={i}>
+                    {i}
+                  </th>
+                  <td>{e.nameCompany}</td>
+                  <td>{e.address}</td>
+                  <td>{e.typeOfTree}</td>
+                </tr>
               );
             })
           : null;
       let dataTechnicalStaff = (
-        <div className="row">
-          <div className="col-sm">
-            tên cá bộ
-            <p>{data.dataTechnical.username}</p>
-          </div>
-          <div className="col-sm">
-            địa chỉ email
-            <p>{data.dataTechnical.email}</p>
-          </div>
-          <div className="col-sm">
-            số điện thoại
-            <p>{data.dataTechnical.phonenumber}</p>
-          </div>
-        </div>
+        <tr>
+          <td>{data.dataTechnical.username}</td>
+          <td>{data.dataTechnical.email}</td>
+          <td>{data.dataTechnical.phonenumber}</td>
+        </tr>
       );
 
       return (
@@ -430,8 +615,18 @@ class ManagerCooperative extends Component {
               aria-labelledby="dropdownMenuButton"
               style={{ float: "none", border: "none" }}
             >
-              {" "}
-              {dataTechnicalStaff}
+              {/* {" "}
+              {dataTechnicalStaff} */}
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Tên Cán Bộ</th>
+                    <th scope="col">Địa chỉ Mail</th>
+                    <th scope="col">số điện thoại</th>
+                  </tr>
+                </thead>
+                <tbody> {dataTechnicalStaff}</tbody>
+              </table>
             </div>
           </div>
           <div>
@@ -447,8 +642,17 @@ class ManagerCooperative extends Component {
               aria-labelledby="dropdownMenuButton"
               style={{ float: "none", border: "none" }}
             >
-              {" "}
-              {business}
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Stt</th>
+                    <th scope="col">Tên Công ty</th>
+                    <th scope="col">Địa chỉ</th>
+                    <th scope="col">Loại Trái tiêu thụ</th>
+                  </tr>
+                </thead>
+                <tbody>{business}</tbody>
+              </table>
             </div>
           </div>
           <div>
@@ -539,7 +743,12 @@ class ManagerCooperative extends Component {
                 )}
               </div>
               <div style={{ display: this.state.display }}>
-                <div className="dropdown">{showDiary()}</div>
+                <div className="dropdown">
+                  <h2 className="text-info text-center">
+                    Chi tiết Hợp tác xã{" "}
+                  </h2>
+                  {showDiary()}
+                </div>
               </div>
             </div>
             <button
@@ -557,7 +766,7 @@ class ManagerCooperative extends Component {
               aria-hidden="true"
             >
               <div
-                className="diary modal-dialog modal-dialog-centered"
+                className="diary modal-dialog"
                 role="document"
                 // style={{ maxWidth: `1000px !important` }}
               >
@@ -577,7 +786,48 @@ class ManagerCooperative extends Component {
                   </div>
                   <div className="modal-body">
                     <div className="dropdown row">
-                      <ul>{ShowDiarys}</ul>
+                      <div className="col-12 row showDiarydate">
+                        <div className="col-sm-6 d-flex justify-content-center">
+                          <p style={{ paddingTop: "5px" }}>
+                            {" "}
+                            chọn ngày chi tiết:&nbsp;
+                          </p>
+                          <DatePicker
+                            selected={this.state.dateSelectedDMY}
+                            onChange={(date) =>
+                              this.HanddleDateSelected(date, "DMY")
+                            }
+                          />
+                        </div>
+                        <div className="col-sm-6 d-flex justify-content-center">
+                          <p style={{ paddingTop: "5px" }}>
+                            {" "}
+                            chọn theo tháng:&nbsp;{" "}
+                          </p>
+                          <DatePicker
+                            selected={this.state.dateSelectedMY}
+                            onChange={(date) =>
+                              this.HanddleDateSelected(date, "MY")
+                            }
+                            dateFormat="MM/yyyy"
+                            showMonthYearPicker
+                            showFullMonthYearPicker
+                          />
+                        </div>
+                      </div>
+                      <div className="col-12 " style={{ marginTop: "10px" }}>
+                        <h2
+                          className="text-info text-center"
+                          style={{ textAlign: "center" }}
+                        >
+                          Thông tin chi tiết
+                        </h2>
+                        <ul>
+                          {this.state.changeDate === "DMY"
+                            ? ShowDiaryDMY
+                            : ShowDiaryMY}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>

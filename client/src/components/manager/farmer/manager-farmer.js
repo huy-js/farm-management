@@ -293,9 +293,8 @@ class ManagerFarmer extends Component {
             key={element._id}
             data-toggle="modal"
             data-target="#showModalUpdate"
-          >
-            EDIT
-          </i>
+            className="fa fa-wrench"
+          ></i>
         ),
       };
       return products.push(arr);
@@ -466,7 +465,7 @@ class ManagerFarmer extends Component {
           >
             <div className="container">
               <div
-                className="block-heading "
+                className="block-heading text-center"
                 style={{ marginTop: "50px", marginRight: "0px" }}
               >
                 <button
@@ -476,13 +475,15 @@ class ManagerFarmer extends Component {
                     float: "left",
                     fontSize: "11px",
                     marginTop: "5px",
+                    display:
+                      this.props.resArray.length === 0 ? "none" : "block",
                   }}
                   onClick={(e) => {
                     const data = new Date().getTime();
                     exportToCSV(this.props.dataPWFarmer, `Password-${data}`);
                   }}
                 >
-                  EXPORT-PASSWORD-FARMER
+                  Xuất file password nông hộ
                 </button>
                 <i
                   className="fa fa-plus-circle  btn-outline-primary  btn-sm"
@@ -496,14 +497,11 @@ class ManagerFarmer extends Component {
                   data-toggle="modal"
                   data-target="#showModalCreate"
                 ></i>
-                <h2 className="text-info" style={{ paddingRight: "150px" }}>
-                  Danh sách nông hộ{" "}
-                </h2>
+                <h2 className="text-info">Danh sách nông hộ </h2>
               </div>
-              <div className="container-body">
+              <div className="container-body ">
                 {this.props.resArray.length === 0 ? (
                   <div className="text-center">
-                    {" "}
                     hien tai chua co thong tin moi ban them thong tin
                   </div>
                 ) : (

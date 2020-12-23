@@ -60,6 +60,7 @@ export const userRegisterFetch = (data, checkVali) => {
         })
         .then((res) => {
           //console.log(res);
+          dispatch(authFail(""));
           return true;
         })
         .catch((error) => {

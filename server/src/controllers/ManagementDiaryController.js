@@ -10,7 +10,23 @@ const qrcode = require("qrcode");
 // const fs = require("fs");
 // const { get } = require("http");
 var lodash = require("lodash");
-
+const { element } = require("prop-types");
+let getDataFarmerProfile = async (req, res) => {
+  try {
+    let idFarmer = req.params.id;
+    console.log(idFarmer);
+    let dataProfile = await farmerModel.findFarmer(idFarmer);
+    console.log(dataProfile);
+    let dataCoopera = await coopertationModel.findCoopare(
+      dataProfile.CooperativeId
+    );
+    dataProfile = dataProfile.toObject();
+    dataProfile.nameCooperaTion = dataCoopera.nameOfCooperative;
+    return res.status(200).json(dataProfile);
+  } catch (error) {
+    return res.status(500).json({ message: "get data profile farmer" });
+  }
+};
 let showListFarmer = async (req, res) => {
   try {
     let idUser = req.params.id;
@@ -33,14 +49,19 @@ let showListBatch = async (req, res) => {
     let idUser = req.params.id;
 
     let getData = await batchModel.showListBatch(idUser);
+    // data diary mat do cay trong
+    console.log("showListBatch");
+    let getDataDiaryOfCoopera = await diaryModel.getDataOfFarmer(idUser);
+    console.log(getDataDiaryOfCoopera);
 
-    // console.log(getData);
-
-    return res.status(200).json(getData);
+    return res
+      .status(200)
+      .json({ getData: getData, getDataDiaryOfCoopera: getDataDiaryOfCoopera });
   } catch (error) {
     return res.status(500).json({ message: "get data batch error" });
   }
 };
+
 let updateMapBatch = async (req, res) => {
   try {
     //console.log(req.body.data);
@@ -300,10 +321,20 @@ let writeDiary = async (req, res) => {
     let data = {
       work: datadiary.work, //công việc
       preparation: datadiary.deTailVal, // nôi dung công việc
+      //  ferTiLizer: datadiary.ferTiLizer, // loai phan bon'
+      // worm: datadiary.sau,
       node: datadiary.arrayChecked,
       idFarmer: datadiary.isFarmer,
       files: fileImage,
     };
+    if (datadiary.work === "bonphan") {
+      data.ferTiLizer = datadiary.ferTiLizer;
+    }
+    if (datadiary.work === "sauhai") {
+      data.worm = datadiary.sau;
+    }
+    console.log(data);
+    //return;
     let createData = await diaryModel.createNew(data);
 
     if (datadiary.title === "allbatch") {
@@ -420,7 +451,139 @@ let getDataDiary = async (req, res) => {
     return res.status(500).json({ message: "get diary error" });
   }
 };
+let getDiaryFarmer = async (req, res) => {
+  try {
+    let data = req.body.data;
+    let dataFarmer = await diaryModel.getDataOfFarmer(data.idfarmer);
+    // console.log(dataFarmer);
+
+    let array = dataFarmer.filter((ele) => {
+      // ele = ele.toObject();
+      let month = ele.updateAt.getUTCMonth() + 1; //months from 1-12
+      // let day = ele.updateAt.getUTCDate();
+      let year = ele.updateAt.getUTCFullYear();
+      date = month + "/" + year;
+      if (date == data.date) {
+        //  console.log(year + "/" + month + "/" + day);
+        //  ele.dayCreate = year + "/" + month + "/" + day;
+        return ele;
+      }
+    });
+    console.log("show diary list");
+    console.log(array);
+    return res.status(200).json(array);
+  } catch (error) {
+    return res.status(500).json({ message: "get diary farmer" });
+  }
+};
+let getBatchStump = async (req, res) => {
+  try {
+    let data = req.body.data;
+    console.log("show node");
+    console.log(data.nodeStay);
+    let dataBatchStump = await batchModel.getBatchStump(
+      data.idDiary,
+      data.idFarmer
+    );
+    //console.log(dataBatchStump);
+    console.log("stump " + data.idDiary);
+    let dataStump = await batchModel.getdataStump(data.idDiary, data.idFarmer);
+    //  console.log(dataStump);
+    console.log("end");
+    let datas = dataBatchStump.concat(dataStump);
+    // console.log(datas);
+    let dataSendClient = [];
+    datas.forEach((e) => {
+      e.arrayDiaryForAll.forEach((ele) => {
+        if (data.idDiary === ele.idDiary) {
+          let ob = {
+            batch: e.numberbatch,
+            stump: "all",
+            stay: "all",
+          };
+          dataSendClient.push(ob);
+        }
+      });
+      e.stumps.forEach((ele) => {
+        ele.arrayDiary.forEach((eles) => {
+          if (eles.idDiary === data.idDiary) {
+            if (data.nodeStay.length === 0) {
+              let ob = {
+                batch: e.numberbatch,
+                stump: ele.numberStumps,
+                stay: "all",
+              };
+              dataSendClient.push(ob);
+            } else {
+              let ob = {
+                batch: e.numberbatch,
+                stump: ele.numberStumps,
+                stay: "notAll",
+              };
+              dataSendClient.push(ob);
+            }
+          }
+        });
+      });
+    });
+    console.log(dataSendClient);
+    return res.status(200).json(dataSendClient);
+  } catch (error) {
+    return res.status(500).json({ message: "get diary farmer" });
+  }
+};
+
+let deleteDiaryByFarmer = async (req, res) => {
+  try {
+    let data = req.body.data;
+    console.log("deleteDiary");
+    console.log(data);
+    let dataBatchStump = await batchModel.getBatchStump(
+      data.idDiary,
+      data.idFarmer
+    );
+
+    // console.log(dataBatchStump);
+    if (dataBatchStump.length !== 0) {
+      dataBatchStump.map(async (element) => {
+        await batchModel.deleteIdDiaryAllBatch(element._id, data.idDiary);
+      });
+
+      // let dataBatch = dataBatchStump[0];
+
+      // await batchModel.deleteIdDiaryAllBatch(dataBatch._id, data.idDiary);
+      console.log("ok 1");
+    }
+
+    let dataStump = await batchModel.getdataStump(data.idDiary, data.idFarmer);
+    if (dataStump.length !== 0) {
+      dataStump.map(async (element) => {
+        element.stumps.map(async (ele) => {
+          ele.arrayDiary.map(async (e) => {
+            if (e.idDiary === data.idDiary) {
+              let newArray = ele.arrayDiary.filter((es) => {
+                return es.idDiary !== data.idDiary;
+              });
+              console.log(newArray);
+              await batchModel.deleteIdDiaryIsStump(
+                element._id,
+                ele.numberStumps,
+                newArray
+              );
+            }
+          });
+        });
+      });
+      console.log("ok 2");
+    }
+    await diaryModel.deleteDataDiary(data.idDiary);
+    return res.status(200).json("");
+  } catch (error) {
+    return res.status(500).json({ message: "delete failed" });
+  }
+};
 module.exports = {
+  getDataFarmerProfile: getDataFarmerProfile,
   showListFarmer: showListFarmer,
   showListBatch: showListBatch,
   updateMapBatch: updateMapBatch,
@@ -432,4 +595,7 @@ module.exports = {
   writeDiary: writeDiary,
   showImageDiaryFarmer: showImageDiaryFarmer,
   getDataDiary: getDataDiary,
+  getDiaryFarmer: getDiaryFarmer,
+  getBatchStump: getBatchStump,
+  deleteDiaryByFarmer: deleteDiaryByFarmer,
 };

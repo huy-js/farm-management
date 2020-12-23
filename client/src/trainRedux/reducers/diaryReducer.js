@@ -6,8 +6,19 @@ const initialState = {
   resArray: [],
   isCheckMap: false,
   dataDiary: [],
+  changeFarmerMap: false,
+  dataDiaryOfBatch: [],
 };
-
+const changeFarmer = (state, action) => {
+  return updateObject(state, {
+    changeFarmerMap: action.payload,
+  });
+};
+const dataDiaryOfBatch = (state, action) => {
+  return updateObject(state, {
+    dataDiaryOfBatch: action.payload,
+  });
+};
 const fetchFarmerData = (state, action) => {
   return updateObject(state, {
     resArray: action.payload,
@@ -41,6 +52,8 @@ const fetchDataDiary = (state, action) => {
 };
 var reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.FETCH_FARMER_MAP:
+      return changeFarmer(state, action);
     case actionTypes.FETCH_FARMER_DATA:
       return fetchFarmerData(state, action);
     case actionTypes.FETCH_BATCH_LIST:
@@ -49,6 +62,8 @@ var reducer = (state = initialState, action) => {
       return fetchCheckedMap(state, action);
     case actionTypes.FETCH_DATA_DIARY:
       return fetchDataDiary(state, action);
+    case actionTypes.FETCH_DATA_DIARY_OF_BATCH:
+      return dataDiaryOfBatch(state, action);
     default:
       return state;
   }

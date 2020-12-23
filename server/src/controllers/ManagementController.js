@@ -316,6 +316,10 @@ let newCreateQR = async (req, res) => {
       //console.log(idCoopare);
       let listFarmer = await farmerModel.showFarmer(idCoopare._id); //result array
       // chay data nong ho
+      let passTableQR = generator.generate({
+        length: 4,
+        numbers: true,
+      });
       let arrayFarmer = listFarmer.map(async (e) => {
         //console.log(e.totalNumberQR);
         // let arrayQR = await setDataQR(e.totalNumberQR, idCoopare._id, e._id);
@@ -334,6 +338,7 @@ let newCreateQR = async (req, res) => {
             idCoopare: idCoopare._id,
             idFarmer: e._id,
             code: ranDomPassWord,
+            passTable: passTableQR,
           };
           arrayQR.push(data);
         }
@@ -357,7 +362,10 @@ let newCreateQR = async (req, res) => {
             accessTokenLifeQr
           );
           // chuyen thanh QR
-          let convetQR = { qrId: await qrcode.toDataURL(tokenQR) };
+          let convetQR = {
+            qrId: await qrcode.toDataURL(tokenQR),
+            code: ele.code,
+          };
           // console.log("qr" + tokenQR);
           return convetQR;
         });
@@ -423,7 +431,7 @@ let searchProduct = async (req, res) => {
 let searchProductQR = async (req, res) => {
   try {
     let dataQR = req.params.dataQR;
-    console.log("decodeqr");
+    console.log("scanner QR");
     const decoded = await jwtHelper.verifyToken(dataQR, accessTokenSecretQr);
     console.log(decoded);
     if (decoded) {
@@ -432,10 +440,27 @@ let searchProductQR = async (req, res) => {
       );
       // console.log(dataCoopare);
       let dataFarmer = await farmerModel.findFarmer(decoded.data.idFarmer);
-      //console.log(dataFarmer);
+
+      let tableQRcode = await qrCodeModel.findData(
+        decoded.data.idCoopare,
+        decoded.data.idFarmer,
+        decoded.data.code
+      );
+      let checkSold = null;
+      tableQRcode.ListFarmerQR.forEach((e) => {
+        if (e.idFarmer === decoded.data.idFarmer) {
+          e.arrayQR.forEach((eles) => {
+            if (eles.code == decoded.data.code) {
+              checkSold = eles.sold;
+            }
+          });
+        }
+      });
+      //console.log(checkSold);
       let data = {
         dataCoopare: dataCoopare,
         dataFarmer: dataFarmer,
+        checkSold: checkSold,
       };
       const arrayData = Object.values(data);
       return res.status(200).json(arrayData);
@@ -459,7 +484,101 @@ let searchProductQR = async (req, res) => {
 //     return res.status(500).json({ message: "create failed" });
 //   }
 // };
+let updateQrSold = async (req, res) => {
+  try {
+    let dataQR = req.body.data;
+    console.log("updateQRarray");
 
+    let dataArray = dataQR.map(async (ele) => {
+      const decoded = await jwtHelper.verifyToken(ele, accessTokenSecretQr);
+      if (decoded) {
+        //console.log(decoded);
+        return decoded.data;
+      }
+    });
+    let arrayDecoded = await Promise.all(dataArray);
+    //console.log(arrayDecoded);
+    let arrayUpdate = [];
+    for (let i = 0; i < arrayDecoded.length; i++) {
+      let check = true;
+      if (arrayUpdate.length !== 0) {
+        arrayUpdate.forEach((e) => {
+          if (
+            e.idFarmer === arrayDecoded[i].idFarmer &&
+            e.passTable === arrayDecoded[i].passTable
+          ) {
+            check = false;
+          }
+        });
+      }
+      if (!check) continue;
+      let code = [];
+      for (let j = i; j < arrayDecoded.length; j++) {
+        if (
+          arrayDecoded[i].idFarmer === arrayDecoded[j].idFarmer &&
+          arrayDecoded[i].passTable === arrayDecoded[j].passTable
+        ) {
+          code.push(arrayDecoded[j].code);
+        }
+      }
+      arrayUpdate.push({
+        idCoopare: arrayDecoded[i].idCoopare,
+        idFarmer: arrayDecoded[i].idFarmer,
+        code: code,
+        passTable: arrayDecoded[i].passTable,
+      });
+    }
+    console.log(arrayUpdate);
+
+    arrayUpdate.map(async (ele) => {
+      let tableQRcode = await qrCodeModel.findData(
+        ele.idCoopare,
+        ele.idFarmer,
+        ele.code[0]
+      );
+      let arrayQRUpdate = [];
+      let ListFarmerQrIdArray = null;
+      tableQRcode.ListFarmerQR.map((e) => {
+        if (e.idFarmer === ele.idFarmer) {
+          ListFarmerQrIdArray = e._id;
+          let arrayUpdate = e.arrayQR.map((eles) => {
+            ele.code.forEach((element) => {
+              if (element === eles.code) {
+                eles.sold = true;
+              }
+            });
+            return eles;
+          });
+          return (arrayQRUpdate = arrayUpdate);
+        }
+        if (arrayQRUpdate.length !== 0) return;
+      });
+      //console.log(arrayQRUpdate);
+      await qrCodeModel.updatePushdataQrSold(
+        tableQRcode._id,
+        ListFarmerQrIdArray,
+        arrayQRUpdate
+      );
+      //console.log(updates);
+    });
+
+    // const lookup = arrayDecoded.reduce((a, e) => {
+    //   a[e.idFarmer] = ++a[e.idFarmer] || 0;
+    //   return a;
+    // }, {});
+    //console.log(lookup);
+    // console.log(arrayDecoded.filter((e) => lookup[e.idFarmer]));
+    //array duplicate
+    //let arrayduplicate = arrayDecoded.filter((e) => lookup[e.idFarmer]);
+    //array !duplucate
+    //console.log(arrayDecoded.filter((e) => !lookup[e.idFarmer]));
+    //let arraydifer = arrayDecoded.filter((e) => !lookup[e.idFarmer]);
+
+    return res.status(200).json({ message: "success" });
+  } catch (error) {
+    return res.status(500).json({ message: "update false" });
+  }
+};
 let showBusiness = async (req, res) => {
   try {
     let id = req.params.id;
@@ -517,6 +636,7 @@ module.exports = {
   showListOrder: showListOrder,
   // createListQR: createListQR,
   newCreateQR: newCreateQR,
+  updateQrSold: updateQrSold,
   findInforProduct: findInforProduct,
   searchProduct: searchProduct,
   searchProductQR: searchProductQR,

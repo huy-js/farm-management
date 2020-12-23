@@ -4,7 +4,8 @@ import EditmailModelCustomer from "./editmail_model_customer";
 import EditQRModelCustomer from "./editQR_model_customer";
 import StripeCheckout from "react-stripe-checkout";
 import * as actions from "../../../trainRedux/action/order/actionOrder";
-
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
 class OrderCustomer extends Component {
   state = {
     // resultData: this.props.resArray[1],
@@ -42,10 +43,7 @@ class OrderCustomer extends Component {
         this.state.email === ""
           ? this.props.currentUser.email
           : this.state.email,
-      totalpay:
-        this.state.totalTrees === 0
-          ? this.props.dataCooper.totalTrees * 1000
-          : this.state.totalTrees * 1000,
+      totalpay: this.props.dataCooper.totalNumberQR * 1000,
       payments: "",
     };
     this.props.saveDataOrderFetch(dataOrder);
@@ -57,22 +55,100 @@ class OrderCustomer extends Component {
 
   render() {
     console.log(this.props.dataListOrderUser);
-    let showOrderList = this.props.dataListOrderUser.map((e, index) => {
+    // let showOrderList = this.props.dataListOrderUser.map((e, index) => {
+    //   let dates = (string) => {
+    //     var options = { year: "numeric", month: "long", day: "numeric" };
+    //     return new Date(string).toLocaleDateString([], options);
+    //   };
+    //   return (
+    //     <div key={index}>
+    //       <div className="row">
+    //         <div className="col-sm-2"></div>
+    //         <div className="col-sm-4">ngay đặt mua: {dates(e.createAt)}</div>
+    //         <div className="col-sm-4"> số lượng: {e.numberQR}</div>
+    //         <div className="col-sm-2"></div>
+    //       </div>
+    //       <hr />
+    //     </div>
+    //   );
+    // });
+    const styleHeader = {
+      fontSize: "18px",
+      height: "50px",
+      padding: "11px",
+      backgroundColor: "#343a40",
+      color: "white",
+      textAlign: "center",
+    };
+    const styleRow = {
+      fontSize: "15px",
+      color: "#78788c",
+      textAlign: "center",
+      borderBottom: "2px solid #78788c",
+      cursor: "pointer",
+    };
+    const columns = [
+      {
+        dataField: "stt",
+        text: "STT",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "createdAt",
+        text: "NGÀY TẠO",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "memberfarmer",
+        text: "SỐ NÔNG HỘ",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "landArea",
+        text: "DIỆN TÍCH",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "numberQR",
+        text: "SÔ QR ĐĂNG KÝ",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "totalpay",
+        text: "THÀNH TIỀN",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "email",
+        text: "EMAIL ĐĂNG KÝ",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+    ];
+    const products = [];
+
+    this.props.dataListOrderUser.map(async (element, index) => {
       let dates = (string) => {
         var options = { year: "numeric", month: "long", day: "numeric" };
         return new Date(string).toLocaleDateString([], options);
       };
-      return (
-        <div key={index}>
-          <div className="row">
-            <div className="col-sm-2"></div>
-            <div className="col-sm-4">ngay đặt mua: {dates(e.createAt)}</div>
-            <div className="col-sm-4"> số lượng: {e.numberQR}</div>
-            <div className="col-sm-2"></div>
-          </div>
-          <hr />
-        </div>
-      );
+
+      let arr = {
+        stt: index + 1,
+        createdAt: dates(element.createAt),
+        memberfarmer: element.memberfarmer,
+        landArea: element.landArea,
+        numberQR: element.numberQR,
+        totalpay: element.totalpay + "vnd",
+        email: element.email,
+      };
+      return products.push(arr);
     });
 
     const stripe_publickey = "pk_test_EyJcf5TSESBQZ30D0DK9flId008rgcNspJ";
@@ -212,7 +288,7 @@ class OrderCustomer extends Component {
                               <strong>Giá</strong>
                             </label>
                             {/* <input className="form-control" type="number" placeholder="USA" name="cost"/> */}
-                            <p>1000 </p>
+                            <p>1000 vnd</p>
                           </div>
                         </div>
                         <div className="col-3">
@@ -220,7 +296,10 @@ class OrderCustomer extends Component {
                             <label>
                               <strong>Thành tiền</strong>
                             </label>
-                            <p>{this.props.dataCooper.totalNumberQR * 1000}</p>
+                            <p>
+                              {this.props.dataCooper.totalNumberQR * 1000 +
+                                "vnd"}
+                            </p>
                             {/* <input className="form-control" type="number" placeholder="USA" name="cost"/> */}
                             {/* <p>
                               {this.state.totalTrees === 0
@@ -310,7 +389,26 @@ class OrderCustomer extends Component {
                       hợp tác xã {this.props.dataCooper.nameOfCooperative},
                       {this.props.dataCooper.address}
                     </p>
-                    {showOrderList}
+                    {/* {showOrderList} */}
+                    {this.props.dataListOrderUser.length === 0 ? (
+                      <div className="text-center">
+                        {" "}
+                        hien tai chua co thong tin moi ban them thong tin
+                      </div>
+                    ) : (
+                      <BootstrapTable
+                        keyField="stt"
+                        data={products}
+                        columns={columns}
+                        //rowEvents={rowEvents}
+                        pagination={paginationFactory({
+                          sizePerPage: 3,
+                          hideSizePerPage: true,
+                          // hidePageListOnlyOnePage: true
+                        })}
+                        hover
+                      />
+                    )}
                   </div>
                 </div>
               </div>

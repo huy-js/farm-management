@@ -25,7 +25,15 @@ let initAPIs = (app) => {
   );
   // api find infor product continue :))
   router.get("/search/:dataQR", ManagementController.searchProductQR);
-
+  //tam de o day update qr sold
+  router.post("/updateqrsold", ManagementController.updateQrSold);
+  router.post("/getdiaryfarmer", ManagementDiaryController.getDiaryFarmer);
+  router.post("/getbatchstump", ManagementDiaryController.getBatchStump);
+  router.post("/deletediary", ManagementDiaryController.deleteDiaryByFarmer);
+  router.get(
+    "/getdatafarmerprofile/:id",
+    ManagementDiaryController.getDataFarmerProfile
+  );
   //goi isAuthcheck sau moi lan vao 1 duong dan trong react
   router.get("/checklogin", AuthMiddleWare.isAuthCheck);
   // kiem tra trang thai dang nhap tai server
@@ -47,6 +55,7 @@ let initAPIs = (app) => {
   router.get("/showbusiness/:id", ManagementController.showBusiness);
   router.put("/deletebusiness", ManagementController.deleteBusiness);
   // diary
+  // router.get("/getdiaryfarmer/:data", ManagementDiaryController.getDiaryFarmer);
   router.get(
     "/showlistfarmer/:id/:limit",
     ManagementDiaryController.showListFarmer
