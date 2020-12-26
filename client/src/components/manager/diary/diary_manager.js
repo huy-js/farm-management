@@ -60,25 +60,24 @@ class DiaryManager extends Component {
         >
           {this.props.resArray.length === 0 ? (
             <div className="text-center">
-              chưa có thông tin nông dân mời bạn thêm thông tin ở phần quản lý
-              nông hộ
+              Chưa có thông tin nông dân mời bạn thêm thông tin ở phần quản lý nông hộ
             </div>
           ) : (
             <div className="container" style={{ maxWidth: "90%" }}>
               <div className="row">
                 <div className="col-sm-3">
-                  <div className="card shadow">
+                  <div className="card shadow" style={{height: "100%"}}>
                     <div className="card-header ">
                       <p className="text-primary m-0 font-weight-bold">
-                        Danh sách thành viên Htx
+                        Danh sách thành viên HTX
                       </p>
                     </div>
                     <div
                       className="card-body clean-pricing-item overflow-auto"
                       style={{ paddingTop: "0px" }}
                     >
-                      <p>thành viên hợp tác xã</p>
-                      <div className="features " style={{ height: "360px" }}>
+                      <p>Thành viên hợp tác xã</p>
+                      <div className="features"  style={{ height: "360px" }}>
                         {this.props.resArray.map((e, index) => {
                           return (
                             <h4
@@ -88,7 +87,7 @@ class DiaryManager extends Component {
                                 this.ShowDetailMaps(e.farmOwner, e._id, event)
                               }
                             >
-                              <span className="feature">
+                              <span className="feature" style={{borderTopWidth: 1}}>
                                 {/* <NavLink
                                 to={
                                   "/diary-manager/diary-detail/" +

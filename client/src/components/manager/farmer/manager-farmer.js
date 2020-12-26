@@ -215,6 +215,14 @@ class ManagerFarmer extends Component {
       borderBottom: "2px solid #78788c",
       cursor: "pointer",
     };
+    const styleDiaChi = {
+      fontSize: "15px",
+      color: "#78788c",
+      width: "30%",
+      textAlign: "center",
+      borderBottom: "2px solid #78788c",
+      cursor: "pointer",
+    };
     const columns = [
       {
         dataField: "stt",
@@ -244,7 +252,7 @@ class ManagerFarmer extends Component {
         dataField: "address",
         text: "ĐỊA CHỈ",
         headerStyle: styleHeader,
-        style: styleRow,
+        style: styleDiaChi,
       },
       {
         dataField: "landArea",
@@ -502,7 +510,7 @@ class ManagerFarmer extends Component {
               <div className="container-body ">
                 {this.props.resArray.length === 0 ? (
                   <div className="text-center">
-                    hien tai chua co thong tin moi ban them thong tin
+                    Hiện tại chưa có thông tin mời bạn nhập thêm thông tin
                   </div>
                 ) : (
                   <BootstrapTable
@@ -540,7 +548,7 @@ class ManagerFarmer extends Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLongTitle">
-                  cập nhật nông hộ
+                  Cập nhật nông hộ
                 </h5>
                 <button
                   type="button"
@@ -564,7 +572,7 @@ class ManagerFarmer extends Component {
                     this.blockFarmer(e);
                   }}
                 >
-                  {this.state.deleteFarmer ? " mở khóa" : "khóa lại"}
+                  {this.state.deleteFarmer ? " Mở khóa" : "Khóa lại"}
                 </button>
               </div>
               <div className="modal-body" onMouseOver={this.showTotalTrees}>

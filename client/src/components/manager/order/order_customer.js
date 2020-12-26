@@ -252,7 +252,7 @@ class OrderCustomer extends Component {
                       onClick={this.submitInputOrder}
                       style={{ display: this.state.displayInputTT }}
                     >
-                      HOÀNG TẤT THANH TOÁN
+                      HOÀN TẤT THANH TOÁN
                     </button>
                     <div
                       style={{

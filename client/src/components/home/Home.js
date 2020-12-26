@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Carousel from '../carousel/Carousel';
+import CarouselComponent from '../carousel/CarouselComponent';
 
 class Home extends Component {
   render() {
     return (
       <div>
-        <Carousel/>
+        <CarouselComponent/>
         <div
           className="modal fade"
           id="exampleModalCenter"
