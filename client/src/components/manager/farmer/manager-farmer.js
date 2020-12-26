@@ -13,6 +13,7 @@ import Button from "../../UI/Button/Button";
 import Spinner from "../../UI/Spinner/Spinner";
 import classes from "./Auth.module.css";
 import { checkValidity } from "../../helpers/validation/checkValidation";
+import moment from "moment";
 class ManagerFarmer extends Component {
   state = {
     controls: {
@@ -281,7 +282,8 @@ class ManagerFarmer extends Component {
 
       let arr = {
         stt: index + 1,
-        createAt: dates(element.updateAt),
+        // createAt: dates(element.updateAt),
+        createAt: moment(element.updateAt).format("DD/MM/YYYY"),
         farmOwner: element.farmOwner,
         typeOfTree: element.typeOfTree,
         address: element.address,

@@ -6,7 +6,9 @@ const qrCodeModel = require("../models/qrCodeModel");
 const qrDiaryModel = require("../models/qrDiaryModel");
 const batchModel = require("../models/batchModel");
 const diaryModel = require("../models/diaryModel");
+const seasonDiaryModel = require("../models/seasonDiaryModel");
 const qrcode = require("qrcode");
+const moment = require("moment");
 // const fs = require("fs");
 // const { get } = require("http");
 var lodash = require("lodash");
@@ -382,6 +384,7 @@ let writeDiary = async (req, res) => {
       console.log(Stumpis);
       await batchModel.updateStumpsBatchDiary(Stumpis[0]._id, createData._id);
     }
+    return res.status(200).json({ message: "create diary success" });
   } catch (error) {
     return res.status(500).json({ message: "confrom map error" });
   }
@@ -583,6 +586,236 @@ let deleteDiaryByFarmer = async (req, res) => {
     return res.status(500).json({ message: "delete failed" });
   }
 };
+let createSeason = async (req, res) => {
+  try {
+    let data = req.body.dataCreate;
+    console.log("create season");
+    console.log(data);
+
+    const giaidoan = [
+      {
+        date: { from: 7, to: 10 },
+        screen: "bonphan",
+      },
+      {
+        date: { from: 30, to: 35 },
+        screen: "phunthuoc",
+      },
+      {
+        date: { from: 30, to: 45 },
+        screen: "Baotrai",
+      },
+      {
+        date: { from: 45, to: 50 },
+        screen: "bonphan",
+      },
+      {
+        date: { from: 45, to: 50 },
+        screen: "phunthuoc",
+      },
+      {
+        date: { from: 60, to: 65 },
+        screen: "bonphan",
+      },
+      {
+        date: { from: 70, to: 80 },
+        screen: "phunthuoc",
+      },
+    ];
+
+    let arrayListTasks = giaidoan.map((e) => {
+      let dateFrom = moment(data.datecreate, "YYYY-MM-DD")
+        .add(e.date.from, "days")
+        .format("YYYY-MM-DD");
+      let dateTo = moment(data.datecreate, "YYYY-MM-DD")
+        .add(e.date.to, "days")
+        .format("YYYY-MM-DD");
+      return {
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+        w: e.screen,
+      };
+    });
+    //console.log(arrayListTasks);
+
+    let dataCreate = {
+      idFarmer: data.iduser, // chủ lô
+      createDay: data.datecreate,
+      listTasks: arrayListTasks,
+    };
+    await seasonDiaryModel.createNew(dataCreate);
+    return res.status(200).json({ message: "create season diary success" });
+  } catch (error) {
+    return res.status(500).json({ message: "create season diary failed" });
+  }
+};
+let checkNotification = async (req, res) => {
+  try {
+    console.log("check notifi");
+
+    let startDate = "2020-12-01";
+    // let newD = moment(startDate, 'YYYY-MM-DD');
+    // newD.add(10, 'days');
+
+    const giaodoan = [
+      {
+        //  date: { from: 7, to: 10 },
+        dateFrom: moment(startDate, "YYYY-MM-DD")
+          .add(7, "days")
+          .format("YYYY-MM-DD"),
+        dateTo: moment(startDate, "YYYY-MM-DD")
+          .add(10, "days")
+          .format("YYYY-MM-DD"),
+        screen: "bonphan",
+      },
+      {
+        //date: { from: 30, to: 35 },
+        dateFrom: moment(startDate, "YYYY-MM-DD")
+          .add(30, "days")
+          .format("YYYY-MM-DD"),
+        dateTo: moment(startDate, "YYYY-MM-DD")
+          .add(35, "days")
+          .format("YYYY-MM-DD"),
+        screen: "phunthuoc",
+      },
+      {
+        // date: { from: 30, to: 45 },
+        dateFrom: moment(startDate, "YYYY-MM-DD")
+          .add(30, "days")
+          .format("YYYY-MM-DD"),
+        dateTo: moment(startDate, "YYYY-MM-DD")
+          .add(45, "days")
+          .format("YYYY-MM-DD"),
+        screen: "Baotrai",
+      },
+      {
+        //date: { from: 45, to: 50 },
+        dateFrom: moment(startDate, "YYYY-MM-DD")
+          .add(45, "days")
+          .format("YYYY-MM-DD"),
+        dateTo: moment(startDate, "YYYY-MM-DD")
+          .add(50, "days")
+          .format("YYYY-MM-DD"),
+        screen: "bonphan",
+      },
+      {
+        //date: { from: 45, to: 50 },
+        dateFrom: moment(startDate, "YYYY-MM-DD")
+          .add(45, "days")
+          .format("YYYY-MM-DD"),
+        dateTo: moment(startDate, "YYYY-MM-DD")
+          .add(50, "days")
+          .format("YYYY-MM-DD"),
+        screen: "phunthuoc",
+      },
+      {
+        // date: { from: 60, to: 65 },
+        dateFrom: moment(startDate, "YYYY-MM-DD")
+          .add(60, "days")
+          .format("YYYY-MM-DD"),
+        dateTo: moment(startDate, "YYYY-MM-DD")
+          .add(65, "days")
+          .format("YYYY-MM-DD"),
+        screen: "bonphan",
+      },
+      {
+        //   date: { from: 70, to: 80 },
+        dateFrom: moment(startDate, "YYYY-MM-DD")
+          .add(70, "days")
+          .format("YYYY-MM-DD"),
+        dateTo: moment(startDate, "YYYY-MM-DD")
+          .add(80, "days")
+          .format("YYYY-MM-DD"),
+        screen: "phunthuoc",
+      },
+    ];
+
+    let idFarmer = req.params.idfarmer;
+    // console.log(idFarmer);
+    let dataSeason = await seasonDiaryModel.getDataseason(idFarmer);
+    //   console.log(dataSeason);
+    //let array = [];
+    // let dataArray = [];
+    // let dataArray = giaodoan.map(async (e) => {
+    //   console.log(e);
+    //   // let check = false;
+    //   let date = await diaryModel.getCheckTime(
+    //     idFarmer,
+    //     e.screen,
+    //     new Date(e.dateFrom).getTime(),
+    //     new Date(e.dateTo).getTime()
+    //   );
+    //   if (date !== null) {
+    //     console.log(date);
+    //     return {
+    //       work: e.screen,
+    //       bool: true,
+    //     };
+    //   } else {
+    //     return {
+    //       work: e.screen,
+    //       bool: false,
+    //     };
+    //   }
+    //   // dataArray = array;
+    // });
+    dataSeason.listTasks.forEach(async (e) => {
+      //console.log(e);
+      let date = await diaryModel.getCheckTime(
+        dataSeason.idFarmer,
+        e.w,
+        new Date(e.dateFrom).getTime(),
+        new Date(e.dateTo).getTime()
+      );
+      // console.log(dataSeason.idFarmer);
+      //console.log(e.w);
+      if (date !== null) {
+        console.log(date);
+        await seasonDiaryModel.updateNodtifi(dataSeason._id, e._id);
+        // return {
+        //   work: e.screen,
+        //   bool: true,
+        // };
+      } else {
+        let datelast = await diaryModel.getCheckTimelast(
+          dataSeason.idFarmer,
+          e.w,
+          new Date(e.dateTo).getTime()
+        );
+        if (datelast !== null) {
+          await seasonDiaryModel.updateNodtifiLast(dataSeason._id, e._id);
+        }
+      }
+      // else {
+      // return {
+      //   work: e.screen,
+      //   bool: false,
+      // };
+      // }
+    });
+    // let dataUpdate = await seasonDiaryModel.getDataseason(idFarmer);
+    //  let DataCheckNotifi = await Promise.all(dataArray);
+    console.log("check alo");
+    //console.log(dataUpdate);
+    return res.status(200).json({ message: "notifi check ok" });
+  } catch (error) {
+    return res.status(500).json({ message: "notifi check failed" });
+  }
+};
+let getDataseason = async (req, res) => {
+  try {
+    console.log("get notifi");
+    let idFarmer = req.params.idfarmer;
+    // console.log(idFarmer);
+    let dataSeason = await seasonDiaryModel.getDataseason(idFarmer);
+
+    console.log("check alo");
+    //console.log(dataUpdate);
+    return res.status(200).json(dataSeason.listTasks);
+  } catch (error) {
+    return res.status(500).json({ message: "notifi check failed" });
+  }
+};
 module.exports = {
   getDataFarmerProfile: getDataFarmerProfile,
   showListFarmer: showListFarmer,
@@ -599,4 +832,7 @@ module.exports = {
   getDiaryFarmer: getDiaryFarmer,
   getBatchStump: getBatchStump,
   deleteDiaryByFarmer: deleteDiaryByFarmer,
+  checkNotification: checkNotification,
+  createSeason: createSeason,
+  getDataseason: getDataseason,
 };

@@ -34,6 +34,15 @@ let initAPIs = (app) => {
     "/getdatafarmerprofile/:id",
     ManagementDiaryController.getDataFarmerProfile
   );
+  router.get(
+    "/checknotifi/:idfarmer",
+    ManagementDiaryController.checkNotification
+  );
+  router.get(
+    "/getdataseason/:idfarmer",
+    ManagementDiaryController.getDataseason
+  );
+  router.post("/createseason", ManagementDiaryController.createSeason);
   //goi isAuthcheck sau moi lan vao 1 duong dan trong react
   router.get("/checklogin", AuthMiddleWare.isAuthCheck);
   // kiem tra trang thai dang nhap tai server

@@ -7,6 +7,7 @@ const qrcode = require("qrcode");
 const randomPW = require("../helpers/randomPW.helper");
 const callCreateBatch = require("../helpers/createBatch.helper");
 require("dotenv").config();
+const fse = require("fs-extra");
 const jwtHelper = require("../helpers/jwt.helper");
 
 const generator = require("generate-password");
@@ -15,6 +16,8 @@ const bcrypt = require("bcrypt");
 const saltRounds = 7;
 
 const sendMail = require("../helpers/sendmail.helper");
+const createExcel = require("../helpers/createExcel.helper");
+const sendMailQR = require("../helpers/sendmailQR.helper");
 
 const accessTokenLifeQr = process.env.ACCESS_TOKEN_LIFE_QR;
 
@@ -383,20 +386,74 @@ let newCreateQR = async (req, res) => {
         return e;
       });
       let converDataArray = await Promise.all(converData);
-      console.log("adadsad" + converDataArray);
+      //    console.log("adadsad" + converDataArray);
 
+      //tao ten file
+      // console.log(dataOrder._id);
+      let countId = dataOrder._id.toString();
+      let nameFile = countId.substr(countId.length - 5);
+      //   console.log(nameFile);
+      // taoj bang list qr check sp
       let dataDone = {
         idOrder: req.body.data.dataQR,
         idCoopare: idCoopare._id,
         ListFarmerQR: converDataArray,
       };
-      await qrCodeModel.createNew(dataDone);
+      let dataQRCreate = await qrCodeModel.createNew(dataDone);
+
       await orderModel.updateDefaulQR(req.body.data.dataQR);
+
+      let result = await createExcel.createFileExcel(
+        nameFile,
+        dataOrder.inForQR,
+        dataQRCreate.ListFarmerQR
+      );
+      //let email = "huuphat98s@gmail.com";
+
+      console.log("buf say");
+
+      let buf = fse.readFileSync(`./server/src/public/${nameFile}.xlsx`);
+      console.log(result);
+      //console.log(buf);
+      sendMailQR(dataOrder.email, buf)
+        .then((success) => {
+          console.log("alo success");
+          return success;
+        })
+        .catch(async (error) => {
+          console.log("nononono");
+          return error;
+        });
+
       return res.status(200).json({ message: "success" });
     } else {
       return res.status(500).json({ message: "khong tim thay htx" });
     }
-    //return res.status(200).json({ message: "create succession." });
+
+    // tesst send mail
+    console.log("alo send");
+    let dataFakeFarmer = [
+      {
+        idFarmer: 1,
+        farmOwner: "nd1",
+        numberQR: 2,
+      },
+      {
+        idFarmer: 2,
+        farmOwner: "nd2",
+        numberQR: 3,
+      },
+    ];
+    let dataFake = [
+      {
+        idFarmer: 1,
+        arrayQR: [{ qrId: "1q" }, { qrId: "2q" }],
+      },
+      {
+        idFarmer: 2,
+        arrayQR: [{ qrId: "3q" }, { qrId: "4q" }, { qrId: "5q" }],
+      },
+    ];
   } catch (error) {
     return res.status(500).json({ message: "create QR failed" });
   }
