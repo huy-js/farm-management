@@ -27,7 +27,7 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 //import { array } from "prop-types";
-
+import moment from "moment";
 function callFunctionSeries(totaltree, row, col) {
   let array = [];
   let dataArray = [];
@@ -509,22 +509,28 @@ class DiaryDetail extends Component {
       let dateServer = new Date(e.createAt).getTime();
       if (dataNow == dates(dateServer)) {
         let viewSelect = "";
+        let doWork = "Tưới nước";
         if (e.work === "bonphan") {
+          doWork = "Bón phân ";
           viewSelect = SelectBonphanBaoTrai(e);
         }
         if (e.work === "Baotrai") {
+          doWork = "Bao trái";
           viewSelect = SelectBonphanBaoTrai(e);
         }
         if (e.work === "phunthuoc") {
+          doWork = "Phun thuốc";
           viewSelect = SelectPhunthuoc(e);
         }
         if (e.work === "sauhai") {
+          doWork = "Sâu hại";
           viewSelect = SelectSauHai(e);
         }
         return (
           <li key={index + 1} style={{ width: "100%", float: "left" }}>
             <span>
-              {dates(new Date(e.createAt).getTime())} -- {e.work}{" "}
+              {/* {dates(new Date(e.createAt).getTime())} -- {e.work}{" "} */}
+              {moment(e.createAt).format("DD/MM/YYYY")} công việc {doWork}
             </span>
             <button
               className="btn dropdown-toggle"
@@ -532,7 +538,7 @@ class DiaryDetail extends Component {
               id="dropdownMenuButton"
               data-toggle="dropdown"
             ></button>
-            {viewSelect}
+            <div className="col-12"> {viewSelect}</div>
           </li>
         );
       }
@@ -542,22 +548,28 @@ class DiaryDetail extends Component {
       let dateServer = new Date(e.createAt).getTime();
       if (dateMYY == dateMY(dateServer)) {
         let viewSelect = "";
+        let doWork = "Tưới nước";
         if (e.work === "bonphan") {
+          doWork = "Bón phân ";
           viewSelect = SelectBonphanBaoTrai(e);
         }
         if (e.work === "Baotrai") {
+          doWork = "Bao trái";
           viewSelect = SelectBonphanBaoTrai(e);
         }
         if (e.work === "phunthuoc") {
+          doWork = "Phun thuốc";
           viewSelect = SelectPhunthuoc(e);
         }
         if (e.work === "sauhai") {
+          doWork = "Sâu hại";
           viewSelect = SelectSauHai(e);
         }
         return (
           <li key={index + 1} style={{ width: "100%", float: "left" }}>
             <span>
-              {dates(new Date(e.createAt).getTime())} -- {e.work}{" "}
+              {/* {dates(new Date(e.createAt).getTime())} -- {e.work}{" "} */}
+              {moment(e.createAt).format("DD/MM/YYYY")} công việc {doWork}
             </span>
             <button
               className="btn dropdown-toggle"
@@ -565,7 +577,7 @@ class DiaryDetail extends Component {
               id="dropdownMenuButton"
               data-toggle="dropdown"
             ></button>
-            {viewSelect}
+            <div className="col-12"> {viewSelect}</div>
           </li>
         );
       }
@@ -1299,6 +1311,12 @@ class DiaryDetail extends Component {
               </div>
               <div className="modal-body">
                 <div className="dropdown row">
+                  <h2
+                    className=" col-12 text-info text-center"
+                    // style={{ textAlign: "center" }}
+                  >
+                    Thông tin chi tiết
+                  </h2>
                   <div className="col-12 row showDiarydate">
                     <div className="col-sm-6 d-flex justify-content-center">
                       <p style={{ paddingTop: "5px" }}>
@@ -1329,12 +1347,12 @@ class DiaryDetail extends Component {
                     </div>
                   </div>
                   <div className="col-12 " style={{ marginTop: "10px" }}>
-                    <h2
+                    {/* <h2
                       className="text-info text-center"
                       style={{ textAlign: "center" }}
                     >
                       Thông tin chi tiết
-                    </h2>
+                    </h2> */}
                     <ul>
                       {this.state.changeDate === "DMY"
                         ? ShowDiaryDMY

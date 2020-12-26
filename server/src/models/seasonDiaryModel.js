@@ -3,6 +3,15 @@ let Schema = mongoose.Schema;
 let seasonDiarySchema = new Schema(
   {
     idFarmer: { type: String }, // chủ lô
+    startSeason: {
+      toggleXiecNuoc: { type: Boolean, default: false },
+      toggleGaySoc: { type: Boolean, default: false },
+      toggleNhietDo: { type: Boolean, default: false },
+      toggleCatCanh: { type: Boolean, default: false },
+      toggleTiaCanh: { type: Boolean, default: false },
+      togglePaclo: { type: Boolean, default: false },
+      toggleBondam: { type: Boolean, default: false },
+    },
     createDay: { type: String },
     deletedAt: { type: Boolean, default: false },
     listTasks: [

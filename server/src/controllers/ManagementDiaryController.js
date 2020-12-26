@@ -639,6 +639,7 @@ let createSeason = async (req, res) => {
     //console.log(arrayListTasks);
 
     let dataCreate = {
+      startSeason: data.startSeason, // moi them
       idFarmer: data.iduser, // chủ lô
       createDay: data.datecreate,
       listTasks: arrayListTasks,
@@ -811,7 +812,7 @@ let getDataseason = async (req, res) => {
 
     console.log("check alo");
     //console.log(dataUpdate);
-    return res.status(200).json(dataSeason.listTasks);
+    return res.status(200).json(dataSeason);
   } catch (error) {
     return res.status(500).json({ message: "notifi check failed" });
   }

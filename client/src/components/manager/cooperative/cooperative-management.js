@@ -14,7 +14,7 @@ import Select from "react-select";
 
 import ReactApexChart from "react-apexcharts";
 import DatePicker from "react-datepicker";
-
+import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 function callFunctionSeries(totaltree, row, col) {
   let array = [];
@@ -364,18 +364,18 @@ class ManagerCooperative extends Component {
 
     // table
     const styleHeader = {
-      fontSize: "18px",
+      fontSize: "15px",
       height: "50px",
       padding: "11px",
-      backgroundColor: "#343a40",
-      color: "white",
+      borderBottom: "2px solid #f78788c",
+      color: "black",
       textAlign: "center",
     };
     const styleRow = {
       fontSize: "15px",
-      color: "#78788c",
+      color: "#000",
       textAlign: "center",
-      borderBottom: "2px solid #78788c",
+      borderBottom: "2px solid #f78788c",
       cursor: "pointer",
     };
     const columns = [
@@ -415,12 +415,12 @@ class ManagerCooperative extends Component {
         headerStyle: styleHeader,
         style: styleRow,
       },
-      {
-        dataField: "totalNumberQR",
-        text: "SỐ QR ",
-        headerStyle: styleHeader,
-        style: styleRow,
-      },
+      // {
+      //   dataField: "totalNumberQR",
+      //   text: "SỐ QR ",
+      //   headerStyle: styleHeader,
+      //   style: styleRow,
+      // },
       {
         dataField: "id",
         text: "",
@@ -444,12 +444,13 @@ class ManagerCooperative extends Component {
 
       let arr = {
         stt: index + 1,
-        createAt: dates(element.createAt),
+        // createAt: dates(element.createAt),
+        createAt: moment(element.createAt).format("DD/MM/YYYY"),
         nameOfCooperative: element.nameOfCooperative,
         address: element.address,
         landArea: element.landArea,
         totalTrees: element.totalTrees,
-        totalNumberQR: element.totalNumberQR,
+        // totalNumberQR: element.totalNumberQR,
         id: element._id,
         iduser: element.technicalStaff,
       };

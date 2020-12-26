@@ -3,6 +3,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import { connect } from "react-redux";
 import * as actions from "../../../trainRedux/action/admin/actionManagement";
+import moment from "moment";
 class ListUser extends Component {
   state = {
     // resArray: [],
@@ -44,18 +45,18 @@ class ListUser extends Component {
   };
   render() {
     const styleHeader = {
-      fontSize: "18px",
+      fontSize: "15px",
       height: "50px",
       padding: "11px",
-      backgroundColor: "#343a40",
-      color: "white",
+      borderBottom: "2px solid #f78788c",
+      color: "black",
       textAlign: "center",
     };
     const styleRow = {
       fontSize: "15px",
-      color: "#78788c",
+      color: "#000",
       textAlign: "center",
-      borderBottom: "2px solid #78788c",
+      borderBottom: "2px solid #f78788c",
       cursor: "pointer",
     };
     const columns = [
@@ -112,7 +113,8 @@ class ListUser extends Component {
 
       let arr = {
         stt: index + 1,
-        createAt: dates(element.createAt),
+        //createAt: dates(element.createAt),
+        createAt: moment(element.createAt).format("DD/MM/YYYY"),
         username: element.username,
         email: element.email,
         phonenumber: element.phonenumber,

@@ -21,7 +21,7 @@ function CarouselComponent() {
             className="d-block w-100"
             src="assets/img/image0.jpg"
             alt="First slide"
-            style={{ height: "600px" }}
+            style={{ minHeight: "700px" }}
           />
           <Carousel.Caption
             style={{
@@ -49,7 +49,7 @@ function CarouselComponent() {
             className="d-block w-100"
             src="assets/img/image1.jpg"
             alt="Third slide"
-            style={{ height: "600px" }}
+            style={{ height: "760px" }}
           />
           <Carousel.Caption
             style={{
@@ -77,7 +77,7 @@ function CarouselComponent() {
             className="d-block w-100"
             src="assets/img/image3.jpg"
             alt="Third slide"
-            style={{ height: "600px" }}
+            style={{ height: "760px" }}
           />
           <Carousel.Caption
             style={{

@@ -8,6 +8,7 @@ import * as actions from "../../../trainRedux/action/user/actionManagement";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import Company from "./create-Company";
+import moment from "moment";
 class BusinessCooperation extends Component {
   state = {
     display: "none",
@@ -29,18 +30,18 @@ class BusinessCooperation extends Component {
   };
   render() {
     const styleHeader = {
-      fontSize: "18px",
+      fontSize: "15px",
       height: "50px",
       padding: "11px",
-      backgroundColor: "#343a40",
-      color: "white",
+      borderBottom: "2px solid #f78788c",
+      color: "black",
       textAlign: "center",
     };
     const styleRow = {
       fontSize: "15px",
-      color: "#78788c",
+      color: "#000",
       textAlign: "center",
-      borderBottom: "2px solid #78788c",
+      borderBottom: "2px solid #f78788c",
       cursor: "pointer",
     };
     const columns = [
@@ -85,7 +86,8 @@ class BusinessCooperation extends Component {
 
       let arr = {
         stt: index + 1,
-        createdAt: dates(element.createdAT),
+        // createdAt: dates(element.createdAT),
+        createdAt: moment(element.updateAt).format("DD/MM/YYYY"),
         nameCompany: element.nameCompany,
         address: element.address,
         edit: (

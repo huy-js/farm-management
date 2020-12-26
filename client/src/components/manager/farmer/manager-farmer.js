@@ -211,7 +211,6 @@ class ManagerFarmer extends Component {
     };
     const styleRow = {
       fontSize: "15px",
-
       color: "#000",
       textAlign: "center",
       borderBottom: "2px solid #f78788c",
