@@ -158,7 +158,7 @@ class Profile extends Component {
                 data-toggle="modal"
                 data-target="#modelEditPass"
               >
-                đổi mật khẩu
+                Đổi mật khẩu
               </button>
             </div>
           </section>

@@ -66,18 +66,17 @@ class DiaryManager extends Component {
             <div className="container" style={{ maxWidth: "90%" }}>
               <div className="row">
                 <div className="col-sm-3">
-                  <div className="card shadow" style={{height: "100%"}}>
+                  <div className="card shadow">
                     <div className="card-header ">
                       <p className="text-primary m-0 font-weight-bold">
                         Danh sách thành viên HTX
                       </p>
                     </div>
                     <div
-                      className="card-body clean-pricing-item overflow-auto"
+                      className="card-body clean-pricing-item overflow-auto "
                       style={{ paddingTop: "0px" }}
                     >
-                      <p>Thành viên hợp tác xã</p>
-                      <div className="features"  style={{ height: "360px" }}>
+                      <div className="features" >
                         {this.props.resArray.map((e, index) => {
                           return (
                             <h4
@@ -112,10 +111,10 @@ class DiaryManager extends Component {
                           style={{ cursor: "pointer" }}
                           onClick={this.viewMore}
                         >
-                          <i
+                          { this.props.resArray.length >= 5 ?  <i
                             className="fa fa-caret-down"
                             aria-hidden="true"
-                          ></i>
+                          ></i> : null}
                         </div>
                       </div>
                     </div>

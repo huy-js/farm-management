@@ -47,11 +47,11 @@ cooperationSchema.statics = {
   findIdCoopera(iduser) {
     return this.findOne({ technicalStaff: iduser }).exec();
   },
-  updateLandAndTotalTree(id, landarea, treetotal, totalNumberQR, farmermember) {
+  updateLandAndTotalTree(id, landarea, treetotal, farmermember) {
     return this.findByIdAndUpdate(id, {
       landArea: landarea,
       totalTrees: treetotal,
-      totalNumberQR: totalNumberQR,
+      // totalNumberQR: totalNumberQR,
       memberfarmer: farmermember,
     }).exec();
   },

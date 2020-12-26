@@ -60,7 +60,7 @@ export const userRegisterFetch = (data, checkVali) => {
         })
         .then((res) => {
           //console.log(res);
-          dispatch(authFail(""));
+          dispatch(authFail("ok"));
           return true;
         })
         .catch((error) => {
@@ -131,6 +131,14 @@ export const checkAuthTimeout = (expirationTime) => {
   };
 };
 
+// export const onResetError = () => {
+//   return (dispatch) => {
+//     setTimeout(() => {
+//       dispatch(authLogout());
+//     }, expirationTime * 1000);
+//   };
+// };
+
 export const checkUserLogin = () => {
   return (dispatch) => {
     const token = localStorage.userToken;
@@ -154,6 +162,7 @@ export const checkUserLogin = () => {
             const decodedToken = jwt_decode(accessToken);
             dispatch(login(decodedToken.data));
             dispatch(authCheckTrue());
+            dispatch(authFail(""));
             // dispatch(checkUserLoginGetData());
             dispatch(setAuthRedirectPath("/"));
           })

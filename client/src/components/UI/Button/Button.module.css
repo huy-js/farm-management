@@ -1,6 +1,6 @@
 .Button {
   background-color: transparent;
-  border: none;
+  border: 1px;
   color: white;
   outline: none;
   cursor: pointer;

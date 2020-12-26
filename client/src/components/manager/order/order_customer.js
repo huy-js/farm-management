@@ -106,7 +106,7 @@ class OrderCustomer extends Component {
       }
     });
     if (t === 0) {
-      return alert("bạn cần nhập số qr cho nông hộ");
+      return alert("Bạn cần nhập số QR cho nông hộ");
     }
     this.setState({
       tongNongdan: t,
@@ -198,7 +198,7 @@ class OrderCustomer extends Component {
             min="0"
             value={element.numberQR}
             // id={element.idFarmer}
-            placeholder="00"
+            placeholder="0"
             style={{
               outline: "none",
               textAlign: "center",
@@ -229,14 +229,14 @@ class OrderCustomer extends Component {
                   style={{ paddingTop: "0px" }}
                 >
                   <div
-                    className="block-heading text-left"
+                    className="block-heading d-flex justify-content-center"
                     style={{ marginRight: "0px", paddingTop: "20px" }}
                   >
                     <h4 className="text-info">Danh sách QR cho nông hộ</h4>
                   </div>
                   <div
-                    className="features text-center"
-                    style={{ height: "360px" }}
+                    className="features text-center "
+                    // style={{ height: "360px" }}
                   >
                     <BootstrapTable
                       keyField="stt"
@@ -247,9 +247,9 @@ class OrderCustomer extends Component {
                       // rowEvents={rowEvents}
                     />
                   </div>
-                  <div>
+                  <div className="d-flex justify-content-center">
                     <button
-                      className="btn btn-outline-primary  btn-sm"
+                      className="btn btn-outline-primary  btn-sm "
                       type="button"
                       onClick={this.submitInputOrder}
                       style={{ display: this.state.displayInputTT }}
@@ -263,7 +263,7 @@ class OrderCustomer extends Component {
                       }}
                       className="row"
                     >
-                      <h4>Thông tin thanh toán</h4>
+                      <h4 style={{color: "#3483eb"}}>Thông tin thanh toán</h4>
                       <div className="row">
                         <div className="col-sm-3">
                           <b>Tổng nông hộ mua QR : </b>
@@ -305,7 +305,7 @@ class OrderCustomer extends Component {
                             onClick={this.submitSendserver}
                             // style={{ display: this.state.displayInputTT }}
                           >
-                            HOÀNG TẤT
+                            HOÀN TẤT
                           </button>
                         </div>
                       </div>

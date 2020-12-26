@@ -144,7 +144,7 @@ class App extends Component {
             </li>
             <li className="nav-item" role="presentation">
               <Link to={"/order-customer"} className="nav-link">
-                đặt QR
+                Đặt QR
               </Link>
             </li>
             <li className="nav-item" role="presentation">
@@ -168,7 +168,7 @@ class App extends Component {
                 <li className="nav-item" role="presentation">
                   <Link to={"/profile"} className="nav-link">
                     {this.props.currentUser.username}
-                    {role === "admin" ? "(Admin)" : null}
+                    {role === "admin" ? " (Admin)" : role === 'customer' ? " (Customer)" : null}
                   </Link>
                 </li>
               </ul>
