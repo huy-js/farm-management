@@ -18,6 +18,7 @@ class OrderCustomer extends Component {
     displayInputTT: "block",
     displaySendserver: "none",
   };
+  
   // luu mail moi tui componet child
   setNewEmail = (newEmail) => {
     this.setState({
@@ -118,7 +119,7 @@ class OrderCustomer extends Component {
     event.preventDefault();
 
     if (this.state.isMail === "") {
-      return alert("bạn chưa nhập địa chỉ mail nhận QR");
+      return alert("Bạn chưa nhập địa chỉ mail nhận QR");
     }
     let dataOrder = this.state.dataQROrder.filter((e) => {
       return e.numberQR != 0;
