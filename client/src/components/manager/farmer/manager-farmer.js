@@ -202,18 +202,19 @@ class ManagerFarmer extends Component {
   };
   render() {
     const styleHeader = {
-      fontSize: "18px",
+      fontSize: "15px",
       height: "50px",
       padding: "11px",
-      //  backgroundColor: "#343a40",
+      borderBottom: "2px solid #f78788c",
       color: "black",
       textAlign: "center",
     };
     const styleRow = {
       fontSize: "15px",
-      color: "black",
+
+      color: "#000",
       textAlign: "center",
-      borderBottom: "2px solid #78788c",
+      borderBottom: "2px solid #f78788c",
       cursor: "pointer",
     };
     const columns = [
@@ -234,6 +235,7 @@ class ManagerFarmer extends Component {
         text: "TÊN NÔNG HỘ",
         headerStyle: styleHeader,
         style: styleRow,
+        fontWeight: "bold",
       },
       {
         dataField: "typeOfTree",
@@ -246,6 +248,7 @@ class ManagerFarmer extends Component {
         text: "ĐỊA CHỈ",
         headerStyle: styleHeader,
         style: styleRow,
+        width: "30%",
       },
       {
         dataField: "landArea",
@@ -504,7 +507,7 @@ class ManagerFarmer extends Component {
               <div className="container-body ">
                 {this.props.resArray.length === 0 ? (
                   <div className="text-center">
-                    hien tai chua co thong tin moi ban them thong tin
+                    Hiện tại chưa có thông tin mời bạn nhập thêm thông tin
                   </div>
                 ) : (
                   <BootstrapTable
@@ -542,7 +545,7 @@ class ManagerFarmer extends Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLongTitle">
-                  cập nhật nông hộ
+                  Cập nhật nông hộ
                 </h5>
                 <button
                   type="button"
@@ -566,7 +569,7 @@ class ManagerFarmer extends Component {
                     this.blockFarmer(e);
                   }}
                 >
-                  {this.state.deleteFarmer ? " mở khóa" : "khóa lại"}
+                  {this.state.deleteFarmer ? " Mở khóa" : "Khóa lại"}
                 </button>
               </div>
               <div className="modal-body" onMouseOver={this.showTotalTrees}>

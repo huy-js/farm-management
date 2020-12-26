@@ -1053,7 +1053,7 @@ class DiaryDetail extends Component {
             style={{ borderBottom: " 2px solid #5ea4f3" }}
           >
             <span className="text-primary m-0 font-weight-bold">
-              Thông tin chi tiết nong dan {this.props.name}
+              Thông tin chi tiết nông dân {this.props.name}
               <button
                 style={{
                   float: "right",
@@ -1081,7 +1081,7 @@ class DiaryDetail extends Component {
               >
                 <Select
                   options={optionMatDo}
-                  placeholder="QUAN XÁC MẬT ĐỘ CÂY"
+                  placeholder="QUAN SÁT MẬT ĐỘ CÂY"
                   height="30px"
                   onChange={this.handleChangeMatDo}
                 />
@@ -1119,7 +1119,7 @@ class DiaryDetail extends Component {
                     <div key={i + 1} className="row">
                       <div className="row col-sm-12">
                         <h1>
-                          Lô {i + 1} - số cây {e.totalTree}
+                          Lô {i + 1} - Số cây {e.totalTree}
                         </h1>
                       </div>
                       {result}
@@ -1303,7 +1303,7 @@ class DiaryDetail extends Component {
                     <div className="col-sm-6 d-flex justify-content-center">
                       <p style={{ paddingTop: "5px" }}>
                         {" "}
-                        chọn ngày chi tiết:&nbsp;
+                        Chọn ngày chi tiết:&nbsp;
                       </p>
                       <DatePicker
                         selected={this.state.dateSelectedDMY}
@@ -1315,7 +1315,7 @@ class DiaryDetail extends Component {
                     <div className="col-sm-6 d-flex justify-content-center">
                       <p style={{ paddingTop: "5px" }}>
                         {" "}
-                        chọn theo tháng:&nbsp;{" "}
+                        Chọn theo tháng:&nbsp;{" "}
                       </p>
                       <DatePicker
                         selected={this.state.dateSelectedMY}

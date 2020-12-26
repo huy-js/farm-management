@@ -1,35 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import CarouselComponent from '../carousel/CarouselComponent';
 
 class Home extends Component {
   render() {
     return (
       <div>
-        <main className="page landing-page" style={{ height: "100%" }}>
-          <section
-            className="clean-block clean-hero"
-            style={{
-              backgroundImage: `url("assets/img/tech/image4.jpg")`,
-              color: `rgba(9, 162, 255, 0.85)`,
-              minHeight: "100hv",
-            }}
-          >
-            <div className="text">
-              {/* <h2>Tìm thông tin sẳn phầm bằng qr ?</h2>
-              
-              <i className="fa fa-qrcode" style={{ fontSize: "50px" }}></i> */}
-
-              {/* <button
-                className="btn btn-outline-light btn-lg"
-                type="button"
-                data-toggle="modal"
-                data-target="#exampleModalCenter"
-              >
-                Learn More
-              </button> */}
-            </div>
-          </section>
-        </main>
+        <CarouselComponent/>
         <div
           className="modal fade"
           id="exampleModalCenter"
