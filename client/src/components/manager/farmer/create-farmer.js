@@ -42,7 +42,7 @@ class CreateFarmer extends Component {
         elementType: "input",
         elementConfig: {
           type: "number",
-          placeholder: "Diện tích đất",
+          placeholder: "Diện tích đất m²",
           min: 0,
         },
         value: "",
@@ -140,7 +140,7 @@ class CreateFarmer extends Component {
       landArea: parseInt(this.state.controls.landArea.value),
       typeOfTree: this.state.controls.typeOfTree.value,
       totalTrees: parseInt(this.state.controls.totalTrees.value),
-      totalNumberQR: parseInt(this.state.controls.totalNumberQR.value),
+      // totalNumberQR: parseInt(this.state.controls.totalNumberQR.value),
       idUser: this.props.currentUser._id,
     };
     let checkVali = [
@@ -246,7 +246,7 @@ class CreateFarmer extends Component {
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLongTitle">
+              <h5 className="modal-title" id="exampleModalLongTitle" style={{color: "#3483eb"}}>
                 Tạo nông hộ
               </h5>
               <button
@@ -264,7 +264,7 @@ class CreateFarmer extends Component {
               {errorMessage}
               <form
                 onSubmit={this.handleSubmit}
-                style={{ paddingBottom: "60px" }}
+                // style={{ paddingBottom: "60px" }}
               >
                 {form}
                 <p style={{ display: this.state.display }}>

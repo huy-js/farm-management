@@ -149,7 +149,7 @@ class Login extends Component {
       <main className="page contact-us-page" style={{ paddingTop: "60px" }}>
         <section
           className="clean-block clean-form dark"
-          style={{ height: "80vh" }}
+          style={{ height: "90vh" }}
         >
           <div className="container">
             <div className="block-heading" style={{ paddingTop: "30px" }}>

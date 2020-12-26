@@ -1096,8 +1096,7 @@ class DiaryDetail extends Component {
                     return (
                       <div
                         key={index + 1}
-                        className="col-sm-2"
-                        style={{ margin: "10px" }}
+                        className="col-sm-2 justify-content-center"
                       >
                         <div>
                           <ReactApexChart
@@ -1109,7 +1108,7 @@ class DiaryDetail extends Component {
                             )}
                             type="heatmap"
                             height={250}
-                            width={200}
+                            width={150}
                           />
                         </div>
                       </div>
@@ -1118,9 +1117,9 @@ class DiaryDetail extends Component {
                   return (
                     <div key={i + 1} className="row">
                       <div className="row col-sm-12">
-                        <h1>
+                        <h2 style={{ marginLeft: "15px" }}>
                           Lô {i + 1} - Số cây {e.totalTree}
-                        </h1>
+                        </h2>
                       </div>
                       {result}
                     </div>
@@ -1285,7 +1284,7 @@ class DiaryDetail extends Component {
           >
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLongTitle">
+                <h5 className="modal-title" id="exampleModalLongTitle" style={{color: "#3483eb"}}>
                   Nhật ký sản xuất
                 </h5>
                 <button
@@ -1297,6 +1296,19 @@ class DiaryDetail extends Component {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
+              <div className="col-12" style={{ marginTop: "10px" }}>
+                    <h2
+                      className="text-info text-center"
+                      style={{ textAlign: "center" }}
+                    >
+                      Thông tin chi tiết
+                    </h2>
+                    <ul>
+                      {this.state.changeDate === "DMY"
+                        ? ShowDiaryDMY
+                        : ShowDiaryMY}
+                    </ul>
+                  </div>
               <div className="modal-body">
                 <div className="dropdown row">
                   <div className="col-12 row showDiarydate">
@@ -1327,19 +1339,6 @@ class DiaryDetail extends Component {
                         showFullMonthYearPicker
                       />
                     </div>
-                  </div>
-                  <div className="col-12 " style={{ marginTop: "10px" }}>
-                    <h2
-                      className="text-info text-center"
-                      style={{ textAlign: "center" }}
-                    >
-                      Thông tin chi tiết
-                    </h2>
-                    <ul>
-                      {this.state.changeDate === "DMY"
-                        ? ShowDiaryDMY
-                        : ShowDiaryMY}
-                    </ul>
                   </div>
                 </div>
               </div>

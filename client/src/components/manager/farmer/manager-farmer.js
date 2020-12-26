@@ -39,7 +39,7 @@ class ManagerFarmer extends Component {
         },
         value: "",
         validation: {
-          required: false,
+          required: true,
           isCharacter: true,
         },
         valid: false,
@@ -68,7 +68,8 @@ class ManagerFarmer extends Component {
         value: "",
         validation: {
           required: true,
-          minLength: 4,
+          // minLength: 4,
+          isNumeric: true
         },
         valid: false,
         touched: false,
@@ -196,7 +197,7 @@ class ManagerFarmer extends Component {
       idFarmer: this.state.dataFarmerUpdate,
     };
     this.buttonElement.click();
-    if (window.confirm("Xác nhận thai đổi ?")) {
+    if (window.confirm("Xác nhận thay đổi ?")) {
       this.props.deleteFarmerFetch(data);
     }
   };
@@ -257,7 +258,7 @@ class ManagerFarmer extends Component {
         dataField: "totalTrees",
         text: "TỔNG CÂY",
         headerStyle: styleHeader,
-        style: styleRow,
+        style: styleRow, fontWeight: "bold"
       },
       // {
       //   dataField: "totalNumberQR",
@@ -367,7 +368,7 @@ class ManagerFarmer extends Component {
               },
               value: data.address,
               validation: {
-                required: false,
+                required: true,
                 isCharacter: true,
               },
               valid: true,
@@ -397,6 +398,7 @@ class ManagerFarmer extends Component {
               validation: {
                 required: true,
                 minLength: 4,
+                isNumeric: true
               },
               valid: true,
               touched: false,
@@ -541,7 +543,7 @@ class ManagerFarmer extends Component {
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLongTitle">
+                <h5 className="modal-title" id="exampleModalLongTitle" style={{color : "#3483eb"}}>
                   Cập nhật nông hộ
                 </h5>
                 <button
@@ -574,10 +576,9 @@ class ManagerFarmer extends Component {
                 {errorMessage}
                 <form
                   onSubmit={this.handleSubmit}
-                  style={{ paddingBottom: "60px" }}
+                  // style={{ paddingBottom: "60px" }}
                 >
                   {form}
-
                   <Button btnType="Success">Cập nhật</Button>
                 </form>
               </div>

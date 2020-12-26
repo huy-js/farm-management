@@ -7,8 +7,8 @@ let cooperationSchema = new Schema(
     nameOfCooperative: { type: String },
     technicalStaff: { type: String, default: null }, // cán bộ kỹ thuật
     address: { type: String },
-    numberQR: { type: Number }, //so qr
-    totalNumberQR: { type: Number, default: 0 },
+    // numberQR: { type: Number }, //so qr
+    // totalNumberQR: { type: Number, default: 0 },
     taxCode: { type: Number }, //ma thue
     landArea: { type: Number, default: 0 }, // diện tích
     totalTrees: { type: Number, default: 0 }, // tông cay trong htx
@@ -47,18 +47,18 @@ cooperationSchema.statics = {
   findIdCoopera(iduser) {
     return this.findOne({ technicalStaff: iduser }).exec();
   },
-  updateLandAndTotalTree(id, landarea, treetotal, totalNumberQR, farmermember) {
+  updateLandAndTotalTree(id, landarea, treetotal, farmermember) {
     return this.findByIdAndUpdate(id, {
       landArea: landarea,
       totalTrees: treetotal,
-      totalNumberQR: totalNumberQR,
+      // totalNumberQR: totalNumberQR,
       memberfarmer: farmermember,
     }).exec();
   },
-  updateLandAndTotalQR(id, landarea, totalNumberQR) {
+  updateLandAndTotalQR(id, landarea) {
     return this.findByIdAndUpdate(id, {
       landArea: landarea,
-      totalNumberQR: totalNumberQR,
+      // totalNumberQR: totalNumberQR,
     }).exec();
   },
   findCoopare(idCoopare) {

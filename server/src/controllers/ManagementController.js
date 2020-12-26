@@ -120,7 +120,7 @@ let createFarmer = async (req, res) => {
     //console.log(data);
     let totalarea = idCoopera.landArea + data.landArea;
     let totaltree = idCoopera.totalTrees + data.totalTrees;
-    let totalNumberQR = idCoopera.totalNumberQR + data.totalNumberQR;
+    // let totalNumberQR = idCoopera.totalNumberQR + data.totalNumberQR;
     // goi await tai vi tri can truy van data
     // bac cac tuyen trinh doi truyen trinh nay song moi dc lam tuyen trinh khac
     let dataFarmer = await farmerModel.createNew(data); // createNew laf function dc tao trong file model
@@ -139,7 +139,7 @@ let createFarmer = async (req, res) => {
       idCoopera._id,
       totalarea,
       totaltree,
-      totalNumberQR,
+      // totalNumberQR,
       idCoopera.memberfarmer + 1
     );
 
@@ -148,6 +148,7 @@ let createFarmer = async (req, res) => {
     return res.status(500).json({ message: "create failed" });
   }
 };
+
 let updateDataFarmer = async (req, res) => {
   try {
     //console.log(req.body.dataFamer);
@@ -172,13 +173,13 @@ let updateDataFarmer = async (req, res) => {
     //console.log(dataFarmer);
     // console.log(data);
     let totalarea = idCoopera.landArea - dataFarmer.landArea + data.landArea;
-    let totalNumberQR =
-      idCoopera.totalNumberQR - dataFarmer.totalNumberQR + data.totalNumberQR;
+    // let totalNumberQR =
+    //   idCoopera.totalNumberQR - dataFarmer.totalNumberQR + data.totalNumberQR;
     // update data htx dien tich va so nong ho
     await coopertationModel.updateLandAndTotalQR(
       idCoopera._id,
       totalarea,
-      totalNumberQR
+      // totalNumberQR
     );
     return res.status(200).json({ message: "create succession." });
   } catch (error) {

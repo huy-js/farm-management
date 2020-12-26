@@ -14,7 +14,7 @@ class Register extends Component {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "Nhập tên htx",
+          placeholder: "Nhập tên HTX",
         },
         value: "",
         validation: {
@@ -53,21 +53,21 @@ class Register extends Component {
         valid: false,
         touched: false,
       },
-      numberQR: {
-        elementType: "input",
-        elementConfig: {
-          type: "number",
-          placeholder: "Qr định đăng ký",
-          min: "0",
-        },
-        value: "",
-        validation: {
-          required: false,
-          minLength: 3,
-        },
-        valid: false,
-        touched: false,
-      },
+      // numberQR: {
+      //   elementType: "input",
+      //   elementConfig: {
+      //     type: "number",
+      //     placeholder: "Qr định đăng ký",
+      //     min: "0",
+      //   },
+      //   value: "",
+      //   validation: {
+      //     required: false,
+      //     minLength: 3,
+      //   },
+      //   valid: false,
+      //   touched: false,
+      // },
       username: {
         elementType: "input",
         elementConfig: {
@@ -100,7 +100,7 @@ class Register extends Component {
         elementType: "input",
         elementConfig: {
           type: "number",
-          placeholder: "số điện thoại người đăng ký",
+          placeholder: "Số điện thoại người đăng ký",
           min: "0",
         },
         value: "",
@@ -115,9 +115,7 @@ class Register extends Component {
     // isSignup: true,
   };
   // componentDidMount() {
-  //   if (this.props.authRedirectPath !== "/") {
-  //     this.props.onSetAuthRedirectPath();
-  //   }
+  //   this.props.error = ''
   // }
 
   handleSubmit = (event) => {
@@ -126,7 +124,7 @@ class Register extends Component {
       nameOfCooperative: this.state.controls.nameOfCooperative.value,
       address: this.state.controls.address.value,
       taxCode: this.state.controls.taxCode.value,
-      numberQR: this.state.controls.numberQR.value,
+      // numberQR: this.state.controls.numberQR.value,
       username: this.state.controls.username.value,
       email: this.state.controls.email.value,
       phonenumber: this.state.controls.phonenumber.value,
@@ -135,7 +133,7 @@ class Register extends Component {
       this.state.controls.nameOfCooperative.valid,
       this.state.controls.address.valid,
       this.state.controls.taxCode.valid,
-      this.state.controls.numberQR.valid,
+      // this.state.controls.numberQR.valid,
       this.state.controls.username.valid,
       this.state.controls.email.valid,
       this.state.controls.phonenumber.valid,
@@ -193,9 +191,9 @@ class Register extends Component {
     }
 
     let authRedirect = null;
-    if (this.props.error === "") {
-      alert("thong tin dang ki da duoc gui di hay doi nhan mail tu chung toi");
-      authRedirect = <Redirect to="/" />;
+    if (this.props.error === "ok") {
+      alert("Thông tin đăng ký đã được gửi đi hãy đợi nhận mail từ chúng tối");
+      authRedirect = <Redirect to="/"  />;
     }
 
     return (
@@ -237,7 +235,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, props) => ({
   userRegisterFetch: (data, checkVali) =>
     dispatch(actions.userRegisterFetch(data, checkVali)),
-  // onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath("/")),
+  // onResetError: () => dispatch(actions.onResetError()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);
