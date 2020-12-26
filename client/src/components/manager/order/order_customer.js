@@ -9,6 +9,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 //import paginationFactory from "react-bootstrap-table2-paginator";
 
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
+
 class OrderCustomer extends Component {
   state = {
     isMail: "",

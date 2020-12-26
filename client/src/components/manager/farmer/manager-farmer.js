@@ -205,13 +205,13 @@ class ManagerFarmer extends Component {
       fontSize: "18px",
       height: "50px",
       padding: "11px",
-      backgroundColor: "#343a40",
-      color: "white",
+      //  backgroundColor: "#343a40",
+      color: "black",
       textAlign: "center",
     };
     const styleRow = {
       fontSize: "15px",
-      color: "#78788c",
+      color: "black",
       textAlign: "center",
       borderBottom: "2px solid #78788c",
       cursor: "pointer",
