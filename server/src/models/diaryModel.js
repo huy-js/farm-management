@@ -30,7 +30,7 @@ let diarySchema = new Schema(
         stt: { type: String },
       },
     ], // cây được áp dụng
-    // createdAt: { type: Number, default: Date.now }, // ngày tạo
+    createDay: { type: Number, default: Date.now }, // ngày tạo
   },
   {
     timestamps: {
@@ -71,6 +71,25 @@ diarySchema.statics = {
   },
   deleteDataDiary(idDiary) {
     return this.remove({ _id: idDiary }).exec();
+  },
+  getCheckTime(idFarmer, screen, dateFrom, dateTo) {
+    return this.findOne({
+      $and: [
+        { idFarmer: idFarmer },
+        { work: screen },
+        { createDay: { $gte: dateFrom } },
+        { createDay: { $lte: dateTo } },
+      ],
+    }).exec();
+  },
+  getCheckTimelast(idFarmer, screen, dateTo) {
+    return this.findOne({
+      $and: [
+        { idFarmer: idFarmer },
+        { work: screen },
+        { createDay: { $gt: dateTo } },
+      ],
+    }).exec();
   },
 };
 module.exports = mongoose.model("diary", diarySchema);
