@@ -5,6 +5,8 @@ import Input from "../UI/Input/Input";
 import Button from "../UI/Button/Button";
 import Spinner from "../UI/Spinner/Spinner";
 import classes from "./Auth.module.css";
+import styles from "../manager/farmer/manager-farmer.module.css";
+
 import * as actions from "../../trainRedux/action/authentication/actionAuth";
 class Login extends Component {
   state = {
@@ -147,23 +149,26 @@ class Login extends Component {
 
     return (
       <main className="page contact-us-page" style={{ paddingTop: "60px" }}>
-        <section
-          className="clean-block clean-form dark"
-          style={{ height: "90vh" }}
-        >
+        <section className="clean-block clean-form" style={{ height: "90vh" }}>
           <div className="container">
             <div className="block-heading" style={{ paddingTop: "30px" }}>
-              <h2 className="text-info">Đăng nhập</h2>
+              <h2 className={styles.tieuDe}>Đăng nhập</h2>
             </div>
             <div>
               {authRedirect}
               {errorMessage}
               <form
                 onSubmit={this.handleSubmit}
-                style={{ paddingBottom: "60px" }}
+                className={styles.effect5}
+                style={{
+                  borderTopColor: "#00483E",
+                  borderRadius: "30px",
+                }}
               >
                 {form}
-                <Button btnType="Success" style={{textAlign: "center"}}> Đăng nhập</Button>
+                <div style={{ textAlign: "center" }}>
+                  <Button btnType="Success">Đăng nhập</Button>
+                </div>
               </form>
             </div>
           </div>

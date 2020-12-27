@@ -3,11 +3,10 @@ import { connect } from "react-redux";
 import EditmailModelCustomer from "./editmail_model_customer";
 import EditQRModelCustomer from "./editQR_model_customer";
 import StripeCheckout from "react-stripe-checkout";
+import styles from '../farmer/manager-farmer.module.css';
 import * as actions from "../../../trainRedux/action/order/actionOrder";
 import { showFarmerFetch } from "../../../trainRedux/action/user/actionManagement";
 import BootstrapTable from "react-bootstrap-table-next";
-//import paginationFactory from "react-bootstrap-table2-paginator";
-
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 
 class OrderCustomer extends Component {
@@ -19,7 +18,7 @@ class OrderCustomer extends Component {
     displayInputTT: "block",
     displaySendserver: "none",
   };
-  
+
   // luu mail moi tui componet child
   setNewEmail = (newEmail) => {
     this.setState({
@@ -176,7 +175,7 @@ class OrderCustomer extends Component {
       {
         dataField: "farmOwner",
         text: "TÊN NÔNG HỘ",
-        headerStyle: styleHeader,
+        // headerStyle: styleHeader,
         filter: textFilter(),
       },
       {
@@ -220,7 +219,7 @@ class OrderCustomer extends Component {
               className="block-heading text-center"
               style={{ marginRight: "0px", paddingTop: "50px" }}
             >
-              <h2 className="text-info">Mua QR</h2>
+              <h2 className={styles.tieuDe}>Giao dịch QR Code</h2>
             </div>
             <div>
               <div className="card shadow">
@@ -239,6 +238,7 @@ class OrderCustomer extends Component {
                     // style={{ height: "360px" }}
                   >
                     <BootstrapTable
+                      
                       keyField="stt"
                       data={products}
                       columns={columns}
@@ -263,7 +263,7 @@ class OrderCustomer extends Component {
                       }}
                       className="row"
                     >
-                      <h4 style={{color: "#3483eb"}}>Thông tin thanh toán</h4>
+                      <h4 style={{ color: "#3483eb" }}>Thông tin thanh toán</h4>
                       <div className="row">
                         <div className="col-sm-3">
                           <b>Tổng nông hộ mua QR : </b>

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import CarouselComponent from '../carousel/CarouselComponent';
+import CarouselComponent from "../carousel/CarouselComponent";
 
 class Home extends Component {
   render() {
     return (
       <div>
-        <CarouselComponent/>
+        <CarouselComponent />
         <div
           className="modal fade"
           id="exampleModalCenter"
@@ -55,10 +55,5 @@ const mapStateToProps = (state) => {
     infor: state.login,
   };
 };
-// const mapDispatchToProps = (dispatch) => ({
-//   getProfileFetch: () => dispatch(getProfileFetch()),
-// });
 
 export default connect(mapStateToProps, null)(Home);
-
-//export default Home;

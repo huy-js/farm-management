@@ -167,6 +167,7 @@ export const checkUserLogin = () => {
             dispatch(setAuthRedirectPath("/"));
           })
           .catch((error) => {
+            dispatch(authFail(""));
             dispatch(authCheckFalse());
             dispatch(authLogout());
           });

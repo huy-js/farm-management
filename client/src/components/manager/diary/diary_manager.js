@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { NavLink, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import DiaryDetail from "./diary_detail";
+import styles from '../farmer/manager-farmer.module.css';
 import * as actions from "../../../trainRedux/action/diary/actionDiaryMap";
 import * as actionss from "../../../trainRedux/action/diary/actionDiaryMap";
 
@@ -54,21 +55,31 @@ class DiaryManager extends Component {
         className="page landing-page"
         style={{ height: "100%", width: "100%" }}
       >
+        <div
+          className="block-heading text-center"
+          style={{ marginTop: "50px", marginRight: "0px" }}
+        >
+          <h2 className={styles.tieuDe}>
+            Nhật ký sản xuất
+          </h2>
+        </div>
+
         <section
-          className="clean-block  dark "
+          className="clean-block "
           style={{ minHeight: "100vh", paddingTop: "50px" }}
         >
           {this.props.resArray.length === 0 ? (
             <div className="text-center">
-              Chưa có thông tin nông dân mời bạn thêm thông tin ở phần quản lý nông hộ
+              Chưa có thông tin nông dân mời bạn thêm thông tin ở phần quản lý
+              nông hộ
             </div>
           ) : (
             <div className="container" style={{ maxWidth: "90%" }}>
               <div className="row">
                 <div className="col-sm-3">
                   <div className="card shadow">
-                    <div className="card-header ">
-                      <p className="text-primary m-0 font-weight-bold">
+                    <div className="card-header">
+                      <p className="m-0 font-weight-bold" style={{ fontWeight: "15px", color: "#00483E" }}>
                         Danh sách thành viên HTX
                       </p>
                     </div>
@@ -76,7 +87,7 @@ class DiaryManager extends Component {
                       className="card-body clean-pricing-item overflow-auto "
                       style={{ paddingTop: "0px" }}
                     >
-                      <div className="features" >
+                      <div className="features">
                         {this.props.resArray.map((e, index) => {
                           return (
                             <h4
@@ -86,7 +97,7 @@ class DiaryManager extends Component {
                                 this.ShowDetailMaps(e.farmOwner, e._id, event)
                               }
                             >
-                              <span className="feature" style={{borderTopWidth: 1}}>
+                              <span className="">
                                 {/* <NavLink
                                 to={
                                   "/diary-manager/diary-detail/" +
@@ -107,14 +118,16 @@ class DiaryManager extends Component {
                           );
                         })}
                         <div
-                          className="text-center"
+                          className="text-left"
                           style={{ cursor: "pointer" }}
                           onClick={this.viewMore}
                         >
-                          { this.props.resArray.length >= 5 ?  <i
-                            className="fa fa-caret-down"
-                            aria-hidden="true"
-                          ></i> : null}
+                          {this.props.resArray.length >= 5 ? (
+                            <i
+                              className="fa fa-caret-down"
+                              aria-hidden="true"
+                            ></i>
+                          ) : null}
                         </div>
                       </div>
                     </div>

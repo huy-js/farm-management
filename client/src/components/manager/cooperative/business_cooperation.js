@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-// import StripeCheckout from "react-stripe-checkout";
-// import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// toast.configure();
+import styles from '../farmer/manager-farmer.module.css';
 import { connect } from "react-redux";
 import * as actions from "../../../trainRedux/action/user/actionManagement";
 import BootstrapTable from "react-bootstrap-table-next";
@@ -120,7 +117,7 @@ class BusinessCooperation extends Component {
                 data-toggle="modal"
                 data-target="#showModalCreate"
               ></i>
-              <h2 className="text-info">Thông tin nhà phân phối</h2>
+              <h2 className={styles.tieuDe}>Thông tin nhà phân phối</h2>
             </div>
             <div className="container-body">
               {this.props.dataCompany.length === 0 ? (

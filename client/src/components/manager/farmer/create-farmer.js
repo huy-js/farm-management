@@ -244,34 +244,33 @@ class CreateFarmer extends Component {
         aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLongTitle" style={{color: "#3483eb"}}>
+          <div className="modal-content" style={{ borderRadius: "30px" }}>
+            <div
+              className="modal-header"
+              style={{
+                backgroundColor: "#009879",
+                borderRadius: "30px 30px 0px 0px",
+              }}
+            >
+              <h5
+                className="modal-title"
+                id="exampleModalLongTitle"
+                style={{ color: "#fff" }}
+              >
                 Tạo nông hộ
               </h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-                ref={(button) => (this.buttonElement = button)}
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
             </div>
             <div className="modal-body" onMouseOver={this.showTotalTrees}>
               {/* {authRedirect} */}
               {errorMessage}
-              <form
-                onSubmit={this.handleSubmit}
-                // style={{ paddingBottom: "60px" }}
-              >
+              <form onSubmit={this.handleSubmit}>
                 {form}
                 <p style={{ display: this.state.display }}>
                   số cây đề suất {" " + this.state.treedemo} cây
                 </p>
-
-                <Button btnType="Success">Tạo</Button>
+                <div style={{ textAlign: "center" }}>
+                  <Button btnType="Success">Tạo</Button>
+                </div>
               </form>
             </div>
             {/* <div className="modal-footer">

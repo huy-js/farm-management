@@ -12,6 +12,7 @@ import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
 import Spinner from "../../UI/Spinner/Spinner";
 import classes from "./Auth.module.css";
+import styles from "./manager-farmer.module.css";
 import { checkValidity } from "../../helpers/validation/checkValidation";
 import moment from "moment";
 class ManagerFarmer extends Component {
@@ -69,7 +70,7 @@ class ManagerFarmer extends Component {
         validation: {
           required: true,
           // minLength: 4,
-          isNumeric: true
+          isNumeric: true,
         },
         valid: false,
         touched: false,
@@ -201,19 +202,21 @@ class ManagerFarmer extends Component {
       this.props.deleteFarmerFetch(data);
     }
   };
+
   render() {
     const styleHeader = {
       fontSize: "15px",
       height: "50px",
       padding: "11px",
-      borderBottom: "2px solid #f78788c",
-      color: "black",
-      textAlign: "center",
+      borderBottom: "2px solid #009A82",
+      color: "#fff",
+      backgroundColor: "#00483E",
+      textAlign: "left",
     };
     const styleRow = {
       fontSize: "15px",
       color: "#000",
-      textAlign: "center",
+      textAlign: "left",
       borderBottom: "2px solid #f78788c",
       cursor: "pointer",
     };
@@ -226,41 +229,42 @@ class ManagerFarmer extends Component {
       },
       {
         dataField: "createAt",
-        text: "NGÀY TẠO",
+        text: "Ngày tạo",
         headerStyle: styleHeader,
         style: styleRow,
       },
       {
         dataField: "farmOwner",
-        text: "TÊN NÔNG HỘ",
+        text: "Tên nông hộ",
         headerStyle: styleHeader,
         style: styleRow,
         fontWeight: "bold",
       },
       {
         dataField: "typeOfTree",
-        text: "GIỐNG XOÀI",
+        text: "Giống xoài",
         headerStyle: styleHeader,
         style: styleRow,
       },
       {
         dataField: "address",
-        text: "ĐỊA CHỈ",
+        text: "Địa chỉ",
         headerStyle: styleHeader,
         style: styleRow,
         width: "30%",
       },
       {
         dataField: "landArea",
-        text: "DIỆN TÍCH",
+        text: "Diện tích",
         headerStyle: styleHeader,
         style: styleRow,
       },
       {
         dataField: "totalTrees",
-        text: "TỔNG CÂY",
+        text: "Tổng cây",
         headerStyle: styleHeader,
-        style: styleRow, fontWeight: "bold"
+        style: styleRow,
+        fontWeight: "bold",
       },
       // {
       //   dataField: "totalNumberQR",
@@ -270,7 +274,7 @@ class ManagerFarmer extends Component {
       // },
       {
         dataField: "edit",
-        text: "SỬA ĐỔI",
+        text: "Sửa đổi",
         headerStyle: styleHeader,
         style: styleRow,
       },
@@ -286,6 +290,7 @@ class ManagerFarmer extends Component {
       let arr = {
         stt: index + 1,
         // createAt: dates(element.updateAt),
+        id: element._id,
         createAt: moment(element.updateAt).format("DD/MM/YYYY"),
         farmOwner: element.farmOwner,
         typeOfTree: element.typeOfTree,
@@ -304,6 +309,24 @@ class ManagerFarmer extends Component {
       };
       return products.push(arr);
     });
+
+    let listFarmer = products.map((element, index) => (
+      <tr>
+        <td>{index+1}</td>
+        <td>{element.createAt}</td>
+        <td>{element.farmOwner}</td>
+        <td>{element.typeOfTree}</td>
+        <td>{element.address}</td>
+        <td>{element.landArea}</td>
+        <td>{element.totalTrees}</td>
+        <td><i
+            key={element.id}
+            data-toggle="modal"
+            data-target="#showModalUpdate"
+            className="fa fa-wrench suaNongdan"
+          ></i></td>
+      </tr>
+    ));
     const rowEvents = {
       onClick: (e, row, rowIndex) => {
         // console.log(e);
@@ -400,7 +423,7 @@ class ManagerFarmer extends Component {
               validation: {
                 required: true,
                 minLength: 4,
-                isNumeric: true
+                isNumeric: true,
               },
               valid: true,
               touched: false,
@@ -492,7 +515,7 @@ class ManagerFarmer extends Component {
                   Xuất file password nông hộ
                 </button>
                 <i
-                  className="fa fa-plus-circle  btn-outline-primary  btn-sm"
+                  className="fa fa-plus-circle btn-outline-secondary btn-sm"
                   style={{
                     fontSize: "25px",
                     float: "right",
@@ -503,7 +526,7 @@ class ManagerFarmer extends Component {
                   data-toggle="modal"
                   data-target="#showModalCreate"
                 ></i>
-                <h2 className="text-info">Danh sách nông hộ </h2>
+                <h2 className={styles.tieuDe} style={{float: "none", textAlign: "center"}}>Danh sách nông hộ </h2>
               </div>
               <div className="container-body ">
                 {this.props.resArray.length === 0 ? (
@@ -511,18 +534,37 @@ class ManagerFarmer extends Component {
                     Hiện tại chưa có thông tin mời bạn nhập thêm thông tin
                   </div>
                 ) : (
-                  <BootstrapTable
-                    keyField="stt"
-                    data={products}
-                    columns={columns}
-                    rowEvents={rowEvents}
-                    pagination={paginationFactory({
-                      sizePerPage: 5,
-                      hideSizePerPage: true,
-                      // hidePageListOnlyOnePage: true
-                    })}
-                    hover
-                  />
+                  <div>
+                    {/* <BootstrapTable
+                      keyField="stt"
+                      data={products}
+                      columns={columns}
+                      rowEvents={rowEvents}
+                      pagination={paginationFactory({
+                        sizePerPage: 5,
+                        hideSizePerPage: true,
+                        // hidePageListOnlyOnePage: true
+                      })}
+                      hover
+                    /> */}
+                    <table class={styles.content_table}>
+                      <thead>
+                        <tr>
+                          <th>STT</th>
+                          <th>Ngày tạo</th>
+                          <th>Tên nông hộ</th>
+                          <th>Giống cây</th>
+                          <th>Địa chỉ</th>
+                          <th>Diện tích</th>
+                          <th>Số cây</th>
+                          <th>Sửa đổi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {listFarmer}
+                      </tbody>
+                    </table>
+                  </div>
                 )}
               </div>
             </div>
@@ -541,11 +583,16 @@ class ManagerFarmer extends Component {
           role="dialog"
           aria-labelledby="exampleModalCenterTitle"
           aria-hidden="true"
+          
         >
-          <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLongTitle" style={{color : "#3483eb"}}>
+          <div className="modal-dialog modal-dialog-centered" role="document" >
+            <div className="modal-content" style={{borderRadius: "30px"}}>
+              <div className="modal-header" style={{backgroundColor: "#009879", borderRadius: "30px 30px 0px 0px"}}>
+                <h5
+                  className="modal-title"
+                  id="exampleModalLongTitle"
+                  style={{ color: "#fff" }}
+                >
                   Cập nhật nông hộ
                 </h5>
                 <button
@@ -559,7 +606,7 @@ class ManagerFarmer extends Component {
                   <span aria-hidden="true">&times;</span>
                 </button>
                 <button
-                  className="btn btn-outline-primary  btn-sm"
+                  className="btn"
                   type="button"
                   style={{
                     float: "left",
@@ -578,10 +625,12 @@ class ManagerFarmer extends Component {
                 {errorMessage}
                 <form
                   onSubmit={this.handleSubmit}
-                  // style={{ paddingBottom: "60px" }}
                 >
                   {form}
+                  <div style={{textAlign: "center"}}>
                   <Button btnType="Success">Cập nhật</Button>
+                  </div>
+                  
                 </form>
               </div>
             </div>

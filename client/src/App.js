@@ -27,6 +27,7 @@ import Profile from "./components/profile/Profile";
 import DiaryManager from "./components/manager/diary/diary_manager";
 import ManagerCooperative from "./components/manager/cooperative/cooperative-management";
 import NotFound from "./components/NotFound";
+import Header from './components/navigation/header/Header';
 import * as actions from "./trainRedux/action/authentication/actionAuth";
 
 class App extends Component {
@@ -89,120 +90,9 @@ class App extends Component {
       );
     }
 
-    if (isLogin) {
-      logButton = (
-        <li className="nav-item" role="presentation">
-          <Link to="/logout" className="nav-link">
-            Đăng Xuất
-          </Link>
-        </li>
-      );
-    } else {
-      logButton = (
-        <li className="nav-item" role="presentation">
-          <NavLink to={"/login"} className="nav-link">
-            Đăng Nhập
-          </NavLink>
-        </li>
-      );
-    }
-
-    switch (role) {
-      case "admin":
-        showManage = (
-          <ul className="nav navbar-nav ml-auto">
-            <li className="nav-item" role="presentation">
-              <Link to={"/list-user"} className="nav-link">
-                Danh sách người dùng
-              </Link>
-            </li>
-            <li className="nav-item" role="presentation">
-              <Link to={"/manager-order"} className="nav-link">
-                Quản lý đơn hàng
-              </Link>
-            </li>
-            <li className="nav-item" role="presentation">
-              <Link to={"/manager-cooperative"} className="nav-link">
-                Quản lý Hợp tác xã
-              </Link>
-            </li>
-          </ul>
-        );
-        break;
-      case "customer":
-        showManage = (
-          <ul className="nav navbar-nav ml-auto">
-            <li className="nav-item" role="presentation">
-              <Link to={"/manager-farmer"} className="nav-link">
-                Quản lý Nông dân
-              </Link>
-            </li>
-            <li className="nav-item" role="presentation">
-              <Link to={"/diary-manager"} className="nav-link">
-                Quản lý nhật ký nông hộ
-              </Link>
-            </li>
-            <li className="nav-item" role="presentation">
-              <Link to={"/order-customer"} className="nav-link">
-                Đặt QR
-              </Link>
-            </li>
-            <li className="nav-item" role="presentation">
-              <Link to={"/business-cooperation"} className="nav-link">
-                Quản lý phân phối
-              </Link>
-            </li>
-          </ul>
-        );
-        break;
-      default:
-        showManage = "";
-    }
-
     return (
       <div>
-        <nav className="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
-          <div className="container" style={{ minWidth: "100%" }}>
-            <span className="navbar-brand logo">
-              <ul className="nav navbar-nav ml-auto">
-                <li className="nav-item" role="presentation">
-                  <Link to={"/profile"} className="nav-link">
-                    {this.props.currentUser.username}
-                    {role === "admin" ? " (Admin)" : role === 'customer' ? " (Customer)" : null}
-                  </Link>
-                </li>
-              </ul>
-            </span>
-            <button
-              data-toggle="collapse"
-              className="navbar-toggler"
-              data-target="#navcol-1"
-            >
-              <span className="sr-only">Toggle navigation</span>
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navcol-1">
-              <ul className="nav navbar-nav ml-auto">
-                <li className="nav-item" role="presentation">
-                  <Link to={"/"} className="nav-link">
-                    Trang chủ
-                  </Link>
-                </li>
-                <div style={{ display: this.props.display }}>{showManage}</div>
-                {logButton}
-                <li
-                  className="nav-item"
-                  role="presentation"
-                  style={{ display: this.props.displayRegister }}
-                >
-                  <NavLink to={"/register"} className="nav-link">
-                    Đăng ký
-                  </NavLink>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+        <Header/>
         {routes}
         <Footer />
       </div>
