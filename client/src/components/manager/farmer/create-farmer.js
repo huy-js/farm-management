@@ -7,6 +7,7 @@ import Spinner from "../../UI/Spinner/Spinner";
 import classes from "./Auth.module.css";
 import * as actions from "../../../trainRedux/action/user/actionManagement";
 import { checkValidity } from "../../helpers/validation/checkValidation";
+
 class CreateFarmer extends Component {
   state = {
     controls: {
