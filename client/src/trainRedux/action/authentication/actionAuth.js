@@ -162,7 +162,7 @@ export const checkUserLogin = () => {
             const decodedToken = jwt_decode(accessToken);
             dispatch(login(decodedToken.data));
             dispatch(authCheckTrue());
-            
+            //  dispatch(authFail(""));
             // dispatch(checkUserLoginGetData());
             dispatch(setAuthRedirectPath("/"));
           })
@@ -183,7 +183,7 @@ export const searchGuestFetch = (dataQR) => {
     // const newId = localStorage.getItem("userId");
     console.log(dataQR);
     return axios
-      .get(`http://192.168.0.88:3456/search/${dataQR}`)
+      .get(`http://192.168.1.6:3456/search/${dataQR}`)
       .then((res) => {
         //console.log(res.data);
         //  console.log(res.data.dataCoopare)

@@ -29,7 +29,7 @@ export const fetchDataDiary = (data) => ({
   payload: data,
 });
 
-export const showListFarmerMapsFetch = (id, limit) => {
+export const showListFarmerMapsFetch = (id) => {
   //console.log(id);
   return (dispatch) => {
     const token = localStorage.userToken;
@@ -39,7 +39,7 @@ export const showListFarmerMapsFetch = (id, limit) => {
       const accessToken = JSON.parse(token).accessToken;
       //console.log(accessToken);
       return axios
-        .get(`http://localhost:3456/showlistfarmer/${id}/${limit}`, {
+        .get(`http://localhost:3456/showlistfarmer/${id}`, {
           headers: { Authorization: `${accessToken}` },
         })
         .then((res) => {

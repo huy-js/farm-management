@@ -23,7 +23,7 @@ class CarouselComponent extends Component {
               className="d-block w-100 .img-fluid. max-height: 300px;"
               src="assets/img/image0.jpg"
               alt="First slide"
-              style={{ minheight: "370px" }}
+              style={{ minHeight: "750px" }}
             />
             <Carousel.Caption
               style={{
@@ -53,7 +53,7 @@ class CarouselComponent extends Component {
               className="d-block w-100 .img-fluid. max-height: 300px;"
               src="assets/img/image1.jpg"
               alt="Third slide"
-              style={{ height: "370px" }}
+              style={{ height: "770px" }}
             />
             <Carousel.Caption
               style={{
@@ -83,7 +83,7 @@ class CarouselComponent extends Component {
               className="d-block w-100 max-height: 300px;"
               src="assets/img/image3.jpg"
               alt="Third slide"
-              style={{ height: "370px" }}
+              style={{ height: "770px" }}
             />
             <Carousel.Caption
               style={{
@@ -92,8 +92,7 @@ class CarouselComponent extends Component {
                 fontWeight: "bold",
                 textAlign: "left",
               }}
-            >
-            </Carousel.Caption>
+            ></Carousel.Caption>
           </Carousel.Item>
         </Carousel>
       </div>

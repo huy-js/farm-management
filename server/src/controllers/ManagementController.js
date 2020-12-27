@@ -149,10 +149,11 @@ let createFarmer = async (req, res) => {
   }
 };
 
-let updateDataFarmer = async (req, res) => {
+let updateDataFarmers = async (req, res) => {
   try {
-    //console.log(req.body.dataFamer);
+    console.log("update data farmer");
     let data = req.body.dataFamer;
+    console.log(data);
     console.log(data.idFarmer);
     let idCoopera = await coopertationModel.findIdCoopera(data.idUser);
     if (!idCoopera) {
@@ -173,17 +174,18 @@ let updateDataFarmer = async (req, res) => {
     //console.log(dataFarmer);
     // console.log(data);
     let totalarea = idCoopera.landArea - dataFarmer.landArea + data.landArea;
+
     // let totalNumberQR =
     //   idCoopera.totalNumberQR - dataFarmer.totalNumberQR + data.totalNumberQR;
     // update data htx dien tich va so nong ho
     await coopertationModel.updateLandAndTotalQR(
       idCoopera._id,
-      totalarea,
+      totalarea
       // totalNumberQR
     );
     return res.status(200).json({ message: "create succession." });
   } catch (error) {
-    return res.status(500).json({ message: "create failed" });
+    return res.status(500).json({ message: "update failed" });
   }
 };
 let deleteFarmer = async (req, res) => {
@@ -711,6 +713,6 @@ module.exports = {
   showBusiness: showBusiness,
   createCompany: createCompany,
   deleteBusiness: deleteBusiness,
-  updateDataFarmer: updateDataFarmer,
+  updateDataFarmer: updateDataFarmers,
   deleteFarmer: deleteFarmer,
 };

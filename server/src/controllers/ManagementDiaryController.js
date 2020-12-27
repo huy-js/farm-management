@@ -32,11 +32,11 @@ let getDataFarmerProfile = async (req, res) => {
 let showListFarmer = async (req, res) => {
   try {
     let idUser = req.params.id;
-    let Limit = req.params.limit;
-    console.log(idUser + " + " + Limit);
+    // let Limit = req.params.limit;
+    // console.log(idUser + " + " + Limit);
     let idCoopera = await coopertationModel.findIdCoopera(idUser);
 
-    let getData = await farmerModel.showListFarmer(idCoopera._id, +Limit);
+    let getData = await farmerModel.showFarmer(idCoopera._id);
 
     // console.log(getData);
 
@@ -639,6 +639,7 @@ let createSeason = async (req, res) => {
     //console.log(arrayListTasks);
 
     let dataCreate = {
+      startSeason: data.startSeason, // moi them
       idFarmer: data.iduser, // chủ lô
       createDay: data.datecreate,
       listTasks: arrayListTasks,
@@ -811,9 +812,23 @@ let getDataseason = async (req, res) => {
 
     console.log("check alo");
     //console.log(dataUpdate);
-    return res.status(200).json(dataSeason.listTasks);
+    return res.status(200).json(dataSeason);
   } catch (error) {
     return res.status(500).json({ message: "notifi check failed" });
+  }
+};
+let updateEndSeason = async (req, res) => {
+  try {
+    console.log("get update season");
+    let idseason = req.body.data;
+    // console.log(idFarmer);
+    await seasonDiaryModel.updateEndSeason(idseason);
+
+    console.log("check alo");
+    //console.log(dataUpdate);
+    return res.status(200).json({ message: "update season thanh cong" });
+  } catch (error) {
+    return res.status(500).json({ message: "update season failed" });
   }
 };
 module.exports = {
@@ -835,4 +850,5 @@ module.exports = {
   checkNotification: checkNotification,
   createSeason: createSeason,
   getDataseason: getDataseason,
+  updateEndSeason: updateEndSeason,
 };

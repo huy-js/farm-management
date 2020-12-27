@@ -4,7 +4,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import { connect } from "react-redux";
 import { showListOrderFetch } from "../../../trainRedux/action/order/actionOrder";
 import { createListQrFetch } from "../../../trainRedux/action/admin/actionManagement";
-
+import moment from "moment";
 class ManagerOrder extends Component {
   state = {
     // resArray: [],
@@ -122,7 +122,8 @@ class ManagerOrder extends Component {
 
       let arr = {
         stt: index + 1,
-        createAt: dates(element.createAt),
+        // createAt: dates(element.createAt),
+        createAt: moment(element.createAt).format("DD/MM/YYYY"),
         nameCooperaTion: element.nameCooperaTion,
         numberQR: element.numberQR,
         memberfarmer: element.memberfarmer,

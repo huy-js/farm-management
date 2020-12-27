@@ -250,6 +250,7 @@ class CreateFarmer extends Component {
               style={{
                 backgroundColor: "#009879",
                 borderRadius: "30px 30px 0px 0px",
+                borderBottom: "none",
               }}
             >
               <h5
@@ -273,16 +274,17 @@ class CreateFarmer extends Component {
                 </div>
               </form>
             </div>
-            {/* <div className="modal-footer">
+            <div className="">
               <button
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
+                style={{ display: "none" }}
                 ref={(button) => (this.buttonElement = button)}
               >
                 Đóng
               </button>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>

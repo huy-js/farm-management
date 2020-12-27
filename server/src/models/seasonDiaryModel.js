@@ -3,6 +3,15 @@ let Schema = mongoose.Schema;
 let seasonDiarySchema = new Schema(
   {
     idFarmer: { type: String }, // chủ lô
+    startSeason: {
+      toggleXiecNuoc: { type: Boolean, default: false },
+      toggleGaySoc: { type: Boolean, default: false },
+      toggleNhietDo: { type: Boolean, default: false },
+      toggleCatCanh: { type: Boolean, default: false },
+      toggleTiaCanh: { type: Boolean, default: false },
+      togglePaclo: { type: Boolean, default: false },
+      toggleBondam: { type: Boolean, default: false },
+    },
     createDay: { type: String },
     deletedAt: { type: Boolean, default: false },
     listTasks: [
@@ -28,7 +37,9 @@ seasonDiarySchema.statics = {
     return this.create(item);
   },
   getDataseason(idfarmer) {
-    return this.findOne({ idFarmer: idfarmer }).exec();
+    return this.findOne({
+      $and: [{ idFarmer: idfarmer }, { endSeason: false }],
+    }).exec();
   },
   updateNodtifi(dataSeasonid, tastid) {
     return this.findOneAndUpdate(
@@ -45,6 +56,11 @@ seasonDiarySchema.statics = {
         $set: { "listTasks.$.bool": true, "listTasks.$.late": true },
       }
     ).exec();
+  },
+  updateEndSeason(idseason) {
+    return this.findByIdAndUpdate(idseason, {
+      endSeason: true,
+    }).exec();
   },
 };
 

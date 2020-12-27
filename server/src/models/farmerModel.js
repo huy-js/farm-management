@@ -10,7 +10,7 @@ let farmerSchema = new Schema(
     typeOfTree: { type: String }, // giống cây
     totalTrees: { type: Number },
     CooperativeId: { type: String },
-    totalNumberQR: { type: Number, default: 0 },
+    // totalNumberQR: { type: Number, default: 0 },
     password: { type: String, default: "" },
     deletedAt: { type: Boolean, default: false },
   },

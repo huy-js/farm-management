@@ -2,19 +2,25 @@ import React, { Component } from "react";
 import { NavLink, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import DiaryDetail from "./diary_detail";
-import styles from '../farmer/manager-farmer.module.css';
+import styles from "../farmer/manager-farmer.module.css";
 import * as actions from "../../../trainRedux/action/diary/actionDiaryMap";
 import * as actionss from "../../../trainRedux/action/diary/actionDiaryMap";
 
+//import * as actions from "../../../trainRedux/action/user/actionManagement";
 class DiaryManager extends Component {
   state = {
     countView: 5,
     display: "none",
     name: "",
     id: "",
+    dataFarmerss: "",
   };
-  componentDidMount = () => {
-    this.props.showListFarmerMapsFetch(this.props.currentUser._id, 5);
+  componentDidMount = async () => {
+    await this.props.showListFarmerMapsFetch(this.props.currentUser._id);
+    this.setState({
+      id: this.props.resArray[0]._id,
+      dataFarmerss: this.props.resArray[0],
+    });
   };
   viewMore = (event) => {
     event.preventDefault();
@@ -27,7 +33,7 @@ class DiaryManager extends Component {
       countView: this.state.countView + 5,
     });
   };
-  ShowDetailMaps = (name, id, event) => {
+  ShowDetailMaps = (name, id, data, event) => {
     event.preventDefault();
     console.log(id + " + " + name);
     this.props.changeScreenMap(true);
@@ -35,6 +41,7 @@ class DiaryManager extends Component {
       display: "block",
       name: name,
       id: id,
+      dataFarmerss: data,
     });
     this.props.showListBatch(id);
   };
@@ -52,21 +59,19 @@ class DiaryManager extends Component {
     //console.log(idfarmer);
     return (
       <main
-        className="page landing-page"
+        className="page landing-page "
         style={{ height: "100%", width: "100%" }}
       >
         <div
           className="block-heading text-center"
           style={{ marginTop: "50px", marginRight: "0px" }}
         >
-          <h2 className={styles.tieuDe}>
-            Nhật ký sản xuất
-          </h2>
+          <h2 className={styles.tieuDe}>Nhật ký sản xuất</h2>
         </div>
 
         <section
-          className="clean-block "
-          style={{ minHeight: "100vh", paddingTop: "50px" }}
+          className="clean-block"
+          style={{ minHeight: "100vh", paddingTop: "30px" }}
         >
           {this.props.resArray.length === 0 ? (
             <div className="text-center">
@@ -77,47 +82,58 @@ class DiaryManager extends Component {
             <div className="container" style={{ maxWidth: "90%" }}>
               <div className="row">
                 <div className="col-sm-3">
-                  <div className="card shadow">
-                    <div className="card-header">
-                      <p className="m-0 font-weight-bold" style={{ fontWeight: "15px", color: "#00483E" }}>
-                        Danh sách thành viên HTX
+                  <div>
+                    <div className="container-header">
+                      <p
+                        className="font-weight-bold"
+                        style={{
+                          fontSize: "20px",
+                          color: "#00483E",
+                          textAlign: "center",
+                        }}
+                      >
+                        Danh sách nông hộ
                       </p>
                     </div>
                     <div
-                      className="card-body clean-pricing-item overflow-auto "
-                      style={{ paddingTop: "0px" }}
+                      className="container-body card shadow"
+                      style={{
+                        borderTop: "2px solid #009879",
+                        fontSize: "17px",
+                        padding: "30px",
+                      }}
                     >
-                      <div className="features">
+                      <div className="card-text">
                         {this.props.resArray.map((e, index) => {
                           return (
-                            <h4
+                            <div
                               key={index}
-                              style={{ cursor: "pointer" }}
+                              style={{
+                                cursor: "pointer",
+                                color: this.state.id === e._id ? "#009879" : "",
+                              }}
                               onClick={(event) =>
-                                this.ShowDetailMaps(e.farmOwner, e._id, event)
+                                this.ShowDetailMaps(
+                                  e.farmOwner,
+                                  e._id,
+                                  e,
+                                  event
+                                )
                               }
                             >
                               <span className="">
-                                {/* <NavLink
-                                to={
-                                  "/diary-manager/diary-detail/" +
-                                  e._id +
-                                  "/" +
-                                  e.farmOwner
-                                }
-                                // isActive={(match, location) => {
-                                //   return match ? true : false;
-                                // }}
-                              >
-                                {e.farmOwner}
-                              </NavLink> */}
-                                {e.farmOwner}
+                                {index + 1 + ".   " + e.farmOwner}
                               </span>
-                              <hr />
-                            </h4>
+                              <hr
+                                style={{
+                                  borderColor:
+                                    this.state.id === e._id ? "#009879" : "",
+                                }}
+                              />
+                            </div>
                           );
                         })}
-                        <div
+                        {/* <div
                           className="text-left"
                           style={{ cursor: "pointer" }}
                           onClick={this.viewMore}
@@ -128,34 +144,16 @@ class DiaryManager extends Component {
                               aria-hidden="true"
                             ></i>
                           ) : null}
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>
                 </div>
-                {/* <div className="col-sm-9">
-                <div className="card shadow">
-                  <div
-                    className="card-header"
-                    style={{ borderBottom: " 2px solid #5ea4f3" }}
-                  >
-                    <p className="text-primary m-0 font-weight-bold">
-                      Thông tin chi tiết
-                    </p>
-                  </div>
-                  <div className="card-body "></div>
-                </div>
-              </div> */}
-                {/* <Route
-                exact
-                path="/diary-manager/diary-detail/:id/:name"
-                component={DiaryDetail}
-              /> */}
                 <div className="col-sm-9">
                   <DiaryDetail
                     name={this.state.name === "" ? name : this.state.name}
                     id={this.state.id === "" ? idfarmer : this.state.id}
-                    //  changeFarmer={true}
+                    dataFarmerss={this.state.dataFarmerss}
                   />
                 </div>
               </div>
@@ -179,10 +177,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, props) => ({
   showListFarmerMapsFetch: (idUser, limit) =>
     dispatch(actions.showListFarmerMapsFetch(idUser, limit)),
-  showMoreListFarmerFetch: (idUser, limit) =>
-    dispatch(actions.showMoreListFarmerFetch(idUser, limit)),
+  // showMoreListFarmerFetch: (idUser, limit) =>
+  //   dispatch(actions.showMoreListFarmerFetch(idUser, limit)),
   showListBatch: (idUser) => dispatch(actionss.showListBatch(idUser)),
   changeScreenMap: (bl) => dispatch(actionss.changeScreenMap(bl)),
+  // showFarmerFetch: (dataCreate) =>
+  //   dispatch(actions.showFarmerFetch(dataCreate)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiaryManager);

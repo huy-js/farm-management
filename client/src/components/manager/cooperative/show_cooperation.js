@@ -22,18 +22,18 @@ class ShowListCooperation extends Component {
   render() {
     console.log(this.state.resArray);
     const styleHeader = {
-      fontSize: "18px",
+      fontSize: "15px",
       height: "50px",
       padding: "11px",
-      backgroundColor: "#343a40",
-      color: "white",
+      borderBottom: "2px solid #f78788c",
+      color: "black",
       textAlign: "center",
     };
     const styleRow = {
       fontSize: "15px",
-      color: "#78788c",
+      color: "#000",
       textAlign: "center",
-      borderBottom: "2px solid #78788c",
+      borderBottom: "2px solid #f78788c",
       cursor: "pointer",
     };
     const columns = [
