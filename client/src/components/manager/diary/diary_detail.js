@@ -1312,7 +1312,7 @@ class DiaryDetail extends Component {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div className="col-12" style={{ marginTop: "10px" }}>
+              {/* <div className="col-12" style={{ marginTop: "10px" }}>
                 <h2
                   className="text-info text-center"
                   style={{ textAlign: "center" }}
@@ -1322,7 +1322,7 @@ class DiaryDetail extends Component {
                 <ul>
                   {this.state.changeDate === "DMY" ? ShowDiaryDMY : ShowDiaryMY}
                 </ul>
-              </div>
+              </div> */}
               <div className="modal-body">
                 <div className="dropdown row">
                   <h2

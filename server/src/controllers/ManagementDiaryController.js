@@ -817,6 +817,20 @@ let getDataseason = async (req, res) => {
     return res.status(500).json({ message: "notifi check failed" });
   }
 };
+let updateEndSeason = async (req, res) => {
+  try {
+    console.log("get update season");
+    let idseason = req.body.data;
+    // console.log(idFarmer);
+    await seasonDiaryModel.updateEndSeason(idseason);
+
+    console.log("check alo");
+    //console.log(dataUpdate);
+    return res.status(200).json({ message: "update season thanh cong" });
+  } catch (error) {
+    return res.status(500).json({ message: "update season failed" });
+  }
+};
 module.exports = {
   getDataFarmerProfile: getDataFarmerProfile,
   showListFarmer: showListFarmer,
@@ -836,4 +850,5 @@ module.exports = {
   checkNotification: checkNotification,
   createSeason: createSeason,
   getDataseason: getDataseason,
+  updateEndSeason: updateEndSeason,
 };

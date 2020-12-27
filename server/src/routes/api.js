@@ -43,6 +43,7 @@ let initAPIs = (app) => {
     ManagementDiaryController.getDataseason
   );
   router.post("/createseason", ManagementDiaryController.createSeason);
+  router.post("/updateendseason", ManagementDiaryController.updateEndSeason);
   //goi isAuthcheck sau moi lan vao 1 duong dan trong react
   router.get("/checklogin", AuthMiddleWare.isAuthCheck);
   // kiem tra trang thai dang nhap tai server

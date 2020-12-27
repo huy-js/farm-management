@@ -37,7 +37,9 @@ seasonDiarySchema.statics = {
     return this.create(item);
   },
   getDataseason(idfarmer) {
-    return this.findOne({ idFarmer: idfarmer }).exec();
+    return this.findOne({
+      $and: [{ idFarmer: idfarmer }, { endSeason: false }],
+    }).exec();
   },
   updateNodtifi(dataSeasonid, tastid) {
     return this.findOneAndUpdate(
@@ -54,6 +56,11 @@ seasonDiarySchema.statics = {
         $set: { "listTasks.$.bool": true, "listTasks.$.late": true },
       }
     ).exec();
+  },
+  updateEndSeason(idseason) {
+    return this.findByIdAndUpdate(idseason, {
+      endSeason: true,
+    }).exec();
   },
 };
 
