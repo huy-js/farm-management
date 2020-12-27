@@ -20,14 +20,14 @@ class CarouselComponent extends Component {
         <Carousel>
           <Carousel.Item interval={1000}>
             <img
-              className="d-block w-100 .img-fluid. max-height: 100%;"
+              className="d-block w-100 .img-fluid. max-height: 300px;"
               src="assets/img/image0.jpg"
               alt="First slide"
-              // style={{ height: "100%" }}
+              style={{ minheight: "370px" }}
             />
             <Carousel.Caption
               style={{
-                paddingBottom: "200px",
+                paddingBottom: "250px",
                 fontSize: "200%",
                 fontWeight: "bold",
                 textAlign: "left",
@@ -50,14 +50,14 @@ class CarouselComponent extends Component {
           </Carousel.Item>
           <Carousel.Item interval={500}>
             <img
-              className="d-block w-100 .img-fluid. max-height: 100%;"
+              className="d-block w-100 .img-fluid. max-height: 300px;"
               src="assets/img/image1.jpg"
               alt="Third slide"
-              // style={{ height: "100%" }}
+              style={{ height: "370px" }}
             />
             <Carousel.Caption
               style={{
-                paddingBottom: "200px",
+                paddingBottom: "250px",
                 fontSize: "200%",
                 fontWeight: "bold",
                 textAlign: "left",
@@ -80,23 +80,19 @@ class CarouselComponent extends Component {
           </Carousel.Item>
           <Carousel.Item>
             <img
-              className="d-block w-100"
+              className="d-block w-100 max-height: 300px;"
               src="assets/img/image3.jpg"
               alt="Third slide"
-              style={{ height: "100%" }}
+              style={{ height: "370px" }}
             />
             <Carousel.Caption
               style={{
-                paddingBottom: "200px",
+                paddingBottom: "250px",
                 fontSize: "200%",
                 fontWeight: "bold",
                 textAlign: "left",
               }}
             >
-              {/* <h3>Third slide label</h3>
-              <p>
-                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-              </p> */}
             </Carousel.Caption>
           </Carousel.Item>
         </Carousel>
@@ -110,10 +106,5 @@ const mapStateToProps = (state) => {
     isLogin: state.authReducer.isLogin,
   };
 };
-// const mapDispatchToProps = (dispatch) => ({
-//   getProfileFetch: () => dispatch(getProfileFetch()),
-// });
 
 export default connect(mapStateToProps, null)(CarouselComponent);
-
-//export default Home;

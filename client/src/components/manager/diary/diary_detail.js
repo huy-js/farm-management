@@ -846,7 +846,7 @@ class DiaryDetail extends Component {
                           className="btn  btn-outline-danger  btn-sm"
                           // type="button"
                         >
-                          xóa thửa {ele.numberStumps}
+                          Xóa thửa {ele.numberStumps}
                         </div>
                       </div>
                     </div>
@@ -958,15 +958,23 @@ class DiaryDetail extends Component {
 
     // xu ly mat do
     const optionMatDo = [];
-    const arrayMAtDo = [
+    const arrayMatDo = [
+      "Quan sát mật độ cây",
       "Sâu Hại",
       "Bón Phân",
       "Phun Thuốc",
       "Tưới nước",
       "Bao Trái",
     ];
-    arrayMAtDo.map((e, index) => {
+    arrayMatDo.map((e, index) => {
       let option = {};
+      
+      if (e === "Quan sát mật độ cây") {
+        option = {
+          value: "quansat",
+          label: "Quan sát mật độ cây",
+        };
+      }
       if (e === "Sâu Hại") {
         option = {
           value: "sauhai",
@@ -999,6 +1007,7 @@ class DiaryDetail extends Component {
       }
       optionMatDo.push(option);
     });
+
     // checkDiaryMax
     // function checkDiaryMAx(arrayDiary, arrayDiaryForAll, arrayDiarys) {
     //   let countMax = 0;
@@ -1050,9 +1059,9 @@ class DiaryDetail extends Component {
         <div className="card shadow">
           <div
             className="card-header"
-            style={{ borderBottom: " 2px solid #5ea4f3" }}
+            style={{ fontWeight: "15px", borderBottom: "2px solid #fff" }}
           >
-            <span className="text-primary m-0 font-weight-bold">
+            <span className="m-0 font-weight-bold">
               Thông tin chi tiết nông dân {this.props.name}
               <button
                 style={{
@@ -1078,14 +1087,13 @@ class DiaryDetail extends Component {
                   display: this.props.isCheckMap ? "block" : "none",
                 }}
                 // className="btn btn-outline-primary  btn-sm"
-              >
-                <Select
-                  options={optionMatDo}
-                  placeholder="QUAN SÁT MẬT ĐỘ CÂY"
-                  height="30px"
-                  onChange={this.handleChangeMatDo}
-                />
-              </i>
+              ></i>
+              <Select
+                options={optionMatDo}
+                placeholder="Quan sát mật độ cây"
+                height="30px"
+                onChange={this.handleChangeMatDo}
+              />
             </span>
           </div>
           <div className="card-body " style={{ minHeight: "450px" }}>
@@ -1284,7 +1292,11 @@ class DiaryDetail extends Component {
           >
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLongTitle" style={{color: "#3483eb"}}>
+                <h5
+                  className="modal-title"
+                  id="exampleModalLongTitle"
+                  style={{ color: "#3483eb" }}
+                >
                   Nhật ký sản xuất
                 </h5>
                 <button
@@ -1297,18 +1309,16 @@ class DiaryDetail extends Component {
                 </button>
               </div>
               <div className="col-12" style={{ marginTop: "10px" }}>
-                    <h2
-                      className="text-info text-center"
-                      style={{ textAlign: "center" }}
-                    >
-                      Thông tin chi tiết
-                    </h2>
-                    <ul>
-                      {this.state.changeDate === "DMY"
-                        ? ShowDiaryDMY
-                        : ShowDiaryMY}
-                    </ul>
-                  </div>
+                <h2
+                  className="text-info text-center"
+                  style={{ textAlign: "center" }}
+                >
+                  Thông tin chi tiết
+                </h2>
+                <ul>
+                  {this.state.changeDate === "DMY" ? ShowDiaryDMY : ShowDiaryMY}
+                </ul>
+              </div>
               <div className="modal-body">
                 <div className="dropdown row">
                   <div className="col-12 row showDiarydate">

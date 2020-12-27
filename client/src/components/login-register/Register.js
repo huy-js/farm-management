@@ -5,6 +5,7 @@ import Input from "../UI/Input/Input";
 import Button from "../UI/Button/Button";
 import Spinner from "../UI/Spinner/Spinner";
 import classes from "./Auth.module.css";
+import styles from "../manager/farmer/manager-farmer.module.css";
 import * as actions from "../../trainRedux/action/authentication/actionAuth";
 import { checkValidity } from "../helpers/validation/checkValidation";
 class Register extends Component {
@@ -193,28 +194,34 @@ class Register extends Component {
     let authRedirect = null;
     if (this.props.error === "ok") {
       alert("Thông tin đăng ký đã được gửi đi hãy đợi nhận mail từ chúng tối");
-      authRedirect = <Redirect to="/"  />;
+      authRedirect = <Redirect to="/" />;
     }
 
     return (
       <main className="page contact-us-page" style={{ paddingTop: "60px" }}>
         <section
-          className="clean-block clean-form dark"
+          className="clean-block clean-form"
           style={{ minHeight: "120vh" }}
         >
           <div className="container">
             <div className="block-heading" style={{ paddingTop: "30px" }}>
-              <h2 className="text-info">Đăng ký tài khoản giao dịch</h2>
+              <h2 className={styles.tieuDe}>Đăng ký tài khoản giao dịch</h2>
             </div>
             <div>
               {authRedirect}
               {errorMessage}
               <form
                 onSubmit={this.handleSubmit}
-                style={{ paddingBottom: "60px" }}
+                style={{
+                  paddingBottom: "60px",
+                  borderTopColor: "#00483E",
+                  borderRadius: "30px",
+                }}
               >
                 {form}
-                <Button btnType="Success">Đăng ký</Button>
+                <div style={{ textAlign: "center" }}>
+                  <Button btnType="Success">Đăng ký</Button>
+                </div>
               </form>
             </div>
           </div>

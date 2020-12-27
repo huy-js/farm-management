@@ -162,11 +162,12 @@ export const checkUserLogin = () => {
             const decodedToken = jwt_decode(accessToken);
             dispatch(login(decodedToken.data));
             dispatch(authCheckTrue());
-            dispatch(authFail(""));
+            
             // dispatch(checkUserLoginGetData());
             dispatch(setAuthRedirectPath("/"));
           })
           .catch((error) => {
+            dispatch(authFail(""));
             dispatch(authCheckFalse());
             dispatch(authLogout());
           });

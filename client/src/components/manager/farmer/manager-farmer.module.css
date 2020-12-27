@@ -1,0 +1,56 @@
+.tieuDe {
+  color: #00483E;
+  font-weight: bold;
+}
+
+
+.suaNongdan:hover {
+  color: red;
+}
+
+.content_table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content_table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.content_table th,
+.content_table td {
+  padding: 12px 15px;
+}
+
+.content_table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.content_table tbody tr:hover {
+  background-color: #d6d6d6;
+}
+
+.content_table tbody tr:nth-of-type(even):hover {
+  background-color: #d6d6d6;
+}
+
+.content_table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.content_table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+.content_table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
