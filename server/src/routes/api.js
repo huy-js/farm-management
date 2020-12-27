@@ -66,10 +66,7 @@ let initAPIs = (app) => {
   router.put("/deletebusiness", ManagementController.deleteBusiness);
   // diary
   // router.get("/getdiaryfarmer/:data", ManagementDiaryController.getDiaryFarmer);
-  router.get(
-    "/showlistfarmer/:id/:limit",
-    ManagementDiaryController.showListFarmer
-  );
+  router.get("/showlistfarmer/:id", ManagementDiaryController.showListFarmer);
   router.get("/showlistbatch/:id", ManagementDiaryController.showListBatch);
   router.put("/updatemapbatch", ManagementDiaryController.updateMapBatch);
   router.put(

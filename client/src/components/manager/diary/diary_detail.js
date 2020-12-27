@@ -157,6 +157,7 @@ class DiaryDetail extends Component {
     dateSelectedDMY: new Date(),
     dateSelectedMY: new Date(),
     changeDate: "MY",
+    // dataFarmerShowMap: null,
   };
   HanddleDateSelected = (date, value) => {
     console.log(value);
@@ -173,7 +174,16 @@ class DiaryDetail extends Component {
       });
     }
   };
-
+  // componentDidMount = async () => {
+  //   let dataFarmer = this.props.resArray.map(async (e) => {
+  //     if (this.props.id === e._id) {
+  //       return e;
+  //     }
+  //   });
+  //   this.setState({
+  //     dataFarmerShowMap: dataFarmer[0],
+  //   });
+  // };
   //componentDidMount = () => {
   //   this.setState({
   //     changeSreen: this.props.changeFarmer,
@@ -306,7 +316,7 @@ class DiaryDetail extends Component {
   //   });
   // };
   render() {
-    console.log(this.props.dataDiaryOfBatch);
+    console.log(this.state.dataFarmerShowMap);
     // {
     //   this.props.changeFarmer ? this.screenMap() : null;
     // }
@@ -971,7 +981,6 @@ class DiaryDetail extends Component {
     // xu ly mat do
     const optionMatDo = [];
     const arrayMatDo = [
-      "Quan sát mật độ cây",
       "Sâu Hại",
       "Bón Phân",
       "Phun Thuốc",
@@ -981,12 +990,12 @@ class DiaryDetail extends Component {
     arrayMatDo.map((e, index) => {
       let option = {};
 
-      if (e === "Quan sát mật độ cây") {
-        option = {
-          value: "quansat",
-          label: "Quan sát mật độ cây",
-        };
-      }
+      // if (e === "Quan sát mật độ cây") {
+      //   option = {
+      //     value: "quansat",
+      //     label: "Quan sát mật độ cây",
+      //   };
+      // }
       if (e === "Sâu Hại") {
         option = {
           value: "sauhai",
@@ -1066,31 +1075,36 @@ class DiaryDetail extends Component {
       console.log(countMax + count);
       return countMax + count;
     }
+
     return (
       <div>
-        <div className="card shadow">
+        <div className="container ">
           <div
-            className="card-header"
-            style={{ fontWeight: "15px", borderBottom: "2px solid #fff" }}
+            className="container-header"
+            style={{
+              fontSize: "20px",
+              borderBottom: "2px solid #009879",
+              paddingBottom: "16px",
+            }}
           >
-            <span className="m-0 font-weight-bold">
-              Thông tin chi tiết nông dân {this.props.name}
+            <span className="m-0 ">
+              <b> Thông tin chi tiết nông dân {this.props.name}</b>
               <button
                 style={{
                   float: "right",
                   fontSize: "10px",
                   display: this.props.isCheckMap ? "none" : "block",
                 }}
-                className="btn btn-outline-primary  btn-sm"
+                className="btn btn-outline-success  btn-sm"
                 type="button"
                 // onClick={this.completeTheTransaction}
                 data-toggle="modal"
                 data-target="#callModal"
                 onClick={this.resetValue}
               >
-                EDIT
+                Thai đổi thông tin
               </button>
-              <i
+              <div
                 style={{
                   float: "right",
                   marginTop: "-5px",
@@ -1099,16 +1113,54 @@ class DiaryDetail extends Component {
                   display: this.props.isCheckMap ? "block" : "none",
                 }}
                 // className="btn btn-outline-primary  btn-sm"
-              ></i>
-              <Select
-                options={optionMatDo}
-                placeholder="Quan sát mật độ cây"
-                height="30px"
-                onChange={this.handleChangeMatDo}
-              />
+              >
+                <Select
+                  options={optionMatDo}
+                  placeholder="Quan sát mật độ cây"
+                  height="30px"
+                  onChange={this.handleChangeMatDo}
+                />
+              </div>
             </span>
           </div>
-          <div className="card-body " style={{ minHeight: "450px" }}>
+          <div
+            className="container-body "
+            style={{ minHeight: "450px", paddingTop: "25px" }}
+          >
+            <div>
+              <div className="row" style={{ paddingBottom: "17px" }}>
+                <div className="col-12 col-sm-6 col-lg-4">
+                  <div className="card bg-light">
+                    <div className="card-body">
+                      <h4 className="card-title">Ngày tạo</h4>
+                      <h6>
+                        {moment(this.props.dataFarmerss.createAt).format(
+                          "DD/MM/YYYY"
+                        )}
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-12 col-sm-6 col-lg-4">
+                  <div className="card bg-primary text-white">
+                    <div className="card-body">
+                      <h4 className="card-title">Diện tích đất</h4>
+                      <h6>{this.props.dataFarmerss.landArea}m²</h6>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-12 col-sm-6 col-lg-4">
+                  <div className="card bg-success">
+                    <div className="card-body">
+                      <h4 className="card-title">Tổng số cây trồng</h4>
+                      <h6>{this.props.dataFarmerss.totalTrees} cây</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             {/* changeFarmer gui tu diary manager */}
             {this.props.changeFarmerMap
               ? this.props.resBatchArray.map((e, i) => {
@@ -1184,8 +1236,10 @@ class DiaryDetail extends Component {
                               ele.arrayDiary
                             )}
                             type="heatmap"
+                            // height={250}
+                            // width={200}
                             height={250}
-                            width={200}
+                            width={150}
                           />
                         </div>
                       </div>
@@ -1194,9 +1248,9 @@ class DiaryDetail extends Component {
                   return (
                     <div key={i + 1} className="row">
                       <div className="row col-sm-12">
-                        <h1>
+                        <h2 style={{ marginLeft: "15px" }}>
                           Lô {i + 1} - số cây {e.totalTree}
-                        </h1>
+                        </h2>
                       </div>
                       {result}
                     </div>
@@ -1206,11 +1260,11 @@ class DiaryDetail extends Component {
             <div style={{ display: this.props.isCheckMap ? "none" : "block" }}>
               <button
                 style={{ float: "right", fontSize: "10px" }}
-                className="btn btn-outline-primary  btn-sm"
+                className="btn btn-outline-success  btn-sm"
                 type="button"
                 onClick={this.ConfrommMap}
               >
-                XÁC NHẬN MAPs
+                Xác nhận thông tin
               </button>
             </div>
           </div>
@@ -1401,6 +1455,7 @@ const mapStateToProps = (state) => {
     dataDiary: state.diaryReducer.dataDiary,
     changeFarmerMap: state.diaryReducer.changeFarmerMap,
     dataDiaryOfBatch: state.diaryReducer.dataDiaryOfBatch,
+    resArray: state.fmManagerReducer.resArray,
   };
 };
 const mapDispatchToProps = (dispatch, props) => ({

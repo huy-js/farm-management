@@ -15,6 +15,8 @@ import classes from "./Auth.module.css";
 import styles from "./manager-farmer.module.css";
 import { checkValidity } from "../../helpers/validation/checkValidation";
 import moment from "moment";
+
+//import { GoogleMap, LoadScript } from "@react-google-maps/api";
 class ManagerFarmer extends Component {
   state = {
     controls: {
@@ -176,19 +178,6 @@ class ManagerFarmer extends Component {
       this.buttonElement.click();
     }
   };
-  // settingData = (data, key) => {
-  //   //  console.log(data + " + " + key);
-  //   const dataReview = {
-  //     ...this.state.controls,
-  //     [key]: {
-  //       ...this.state.controls[key],
-  //       value: data,
-  //     },
-  //   };
-  //   //console.log(data);
-  //   this.setState({ controls: dataReview });
-  //   console.log(this.state.controls);
-  // };
   blockFarmer = (event) => {
     //event.preventDefault();
     //console.log("block");
@@ -203,250 +192,105 @@ class ManagerFarmer extends Component {
     }
   };
 
-  render() {
-    const styleHeader = {
-      fontSize: "15px",
-      height: "50px",
-      padding: "11px",
-      borderBottom: "2px solid #009A82",
-      color: "#fff",
-      backgroundColor: "#00483E",
-      textAlign: "left",
-    };
-    const styleRow = {
-      fontSize: "15px",
-      color: "#000",
-      textAlign: "left",
-      borderBottom: "2px solid #f78788c",
-      cursor: "pointer",
-    };
-    const columns = [
-      {
-        dataField: "stt",
-        text: "STT",
-        headerStyle: styleHeader,
-        style: styleRow,
-      },
-      {
-        dataField: "createAt",
-        text: "Ngày tạo",
-        headerStyle: styleHeader,
-        style: styleRow,
-      },
-      {
-        dataField: "farmOwner",
-        text: "Tên nông hộ",
-        headerStyle: styleHeader,
-        style: styleRow,
-        fontWeight: "bold",
-      },
-      {
-        dataField: "typeOfTree",
-        text: "Giống xoài",
-        headerStyle: styleHeader,
-        style: styleRow,
-      },
-      {
-        dataField: "address",
-        text: "Địa chỉ",
-        headerStyle: styleHeader,
-        style: styleRow,
-        width: "30%",
-      },
-      {
-        dataField: "landArea",
-        text: "Diện tích",
-        headerStyle: styleHeader,
-        style: styleRow,
-      },
-      {
-        dataField: "totalTrees",
-        text: "Tổng cây",
-        headerStyle: styleHeader,
-        style: styleRow,
-        fontWeight: "bold",
-      },
-      // {
-      //   dataField: "totalNumberQR",
-      //   text: "SỐ QR ",
-      //   headerStyle: styleHeader,
-      //   style: styleRow,
-      // },
-      {
-        dataField: "edit",
-        text: "Sửa đổi",
-        headerStyle: styleHeader,
-        style: styleRow,
-      },
-    ];
-    const products = [];
-
-    this.props.resArray.map(async (element, index) => {
-      let dates = (string) => {
-        var options = { year: "numeric", month: "long", day: "numeric" };
-        return new Date(string).toLocaleDateString([], options);
-      };
-
-      let arr = {
-        stt: index + 1,
-        // createAt: dates(element.updateAt),
-        id: element._id,
-        createAt: moment(element.updateAt).format("DD/MM/YYYY"),
-        farmOwner: element.farmOwner,
-        typeOfTree: element.typeOfTree,
-        address: element.address,
-        landArea: element.landArea,
-        totalTrees: element.totalTrees,
-        // totalNumberQR: element.totalNumberQR,
-        edit: (
-          <i
-            key={element._id}
-            data-toggle="modal"
-            data-target="#showModalUpdate"
-            className="fa fa-wrench"
-          ></i>
-        ),
-      };
-      return products.push(arr);
+  getDataTableupdate = (event, idTable) => {
+    event.preventDefault();
+    // onClick: (e, row, rowIndex) => {
+    // console.log(e);
+    console.log("table update");
+    console.log(idTable);
+    let array = this.props.resArray.filter((ele) => {
+      if (ele._id === idTable) {
+        return ele;
+      }
     });
+    let data = array[0];
+    console.log(data);
+    this.setState({
+      deleteFarmer: data.deletedAt,
+      dataFarmerUpdate: idTable,
+      controls: {
+        farmOwner: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Tên nông hộ",
+          },
+          value: data.farmOwner,
+          validation: {
+            required: true,
+            isCharacter: true,
+          },
+          valid: true,
+          touched: false,
+        },
+        address: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Nhập địa chỉ",
+          },
+          value: data.address,
+          validation: {
+            required: true,
+            isCharacter: true,
+          },
+          valid: true,
+          touched: false,
+        },
+        typeOfTree: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Nhập giống cây",
+          },
+          value: data.typeOfTree,
+          validation: {
+            required: true,
+            minLength: 4,
+          },
+          valid: true,
+          touched: false,
+        },
+        landArea: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Diện tích",
+          },
+          value: data.landArea,
+          validation: {
+            required: true,
+            minLength: 4,
+            isNumeric: true,
+          },
+          valid: true,
+          touched: false,
+        },
+      },
+    });
+    // },
+  };
 
-    let listFarmer = products.map((element, index) => (
-      <tr>
-        <td>{index+1}</td>
-        <td>{element.createAt}</td>
+  render() {
+    let listFarmer = this.props.resArray.map((element, index) => (
+      <tr key={index + 1}>
+        <td>{index + 1}</td>
+        <td>{moment(element.updateAt).format("DD/MM/YYYY")}</td>
         <td>{element.farmOwner}</td>
         <td>{element.typeOfTree}</td>
         <td>{element.address}</td>
         <td>{element.landArea}</td>
         <td>{element.totalTrees}</td>
-        <td><i
-            key={element.id}
+        <td onClick={(event) => this.getDataTableupdate(event, element._id)}>
+          <i
+            // key={element.id}
             data-toggle="modal"
             data-target="#showModalUpdate"
             className="fa fa-wrench suaNongdan"
-          ></i></td>
+          ></i>
+        </td>
       </tr>
     ));
-    const rowEvents = {
-      onClick: (e, row, rowIndex) => {
-        // console.log(e);
-        //console.log(row);
-
-        let array = this.props.resArray.filter((ele) => {
-          if (ele._id === row.edit.key) {
-            return ele;
-          }
-        });
-        let data = array[0];
-        console.log(data);
-        // let result = Object.keys(data).map((key) => {
-        //   // console.log(key);
-        //   let obj = {
-        //     [key]: data[key],
-        //   };
-        //   return obj;
-        // });
-        //let data = array[0];
-        //let key = Object.keys(data);
-        // console.log(result);
-        //console.log(array);
-        // let keyArray = [
-        //   "farmOwner",
-        //   "address",
-        //   "typeOfTree",
-        //   "landArea",
-        //   // "totalNumberQR",
-        // ];
-        // keyArray.forEach((ele) => {
-        //   result.forEach((e) => {
-        //     if (ele == Object.keys(e)) {
-        //       console.log(e);
-        //       let data = Object.values(e);
-        //       // console.log(typeof data);
-        //       this.settingData(data[0], ele);
-        //     }
-        //   });
-        // });
-        this.setState({
-          deleteFarmer: data.deletedAt,
-          dataFarmerUpdate: row.edit.key,
-          controls: {
-            farmOwner: {
-              elementType: "input",
-              elementConfig: {
-                type: "text",
-                placeholder: "Tên nông hộ",
-              },
-              value: data.farmOwner,
-              validation: {
-                required: true,
-                isCharacter: true,
-              },
-              valid: true,
-              touched: false,
-            },
-            address: {
-              elementType: "input",
-              elementConfig: {
-                type: "text",
-                placeholder: "Nhập địa chỉ",
-              },
-              value: data.address,
-              validation: {
-                required: true,
-                isCharacter: true,
-              },
-              valid: true,
-              touched: false,
-            },
-            typeOfTree: {
-              elementType: "input",
-              elementConfig: {
-                type: "text",
-                placeholder: "Nhập giống cây",
-              },
-              value: data.typeOfTree,
-              validation: {
-                required: true,
-                minLength: 4,
-              },
-              valid: true,
-              touched: false,
-            },
-            landArea: {
-              elementType: "input",
-              elementConfig: {
-                type: "text",
-                placeholder: "Diện tích",
-              },
-              value: data.landArea,
-              validation: {
-                required: true,
-                minLength: 4,
-                isNumeric: true,
-              },
-              valid: true,
-              touched: false,
-            },
-            // totalNumberQR: {
-            //   elementType: "input",
-            //   elementConfig: {
-            //     type: "text",
-            //     placeholder: "Số QR",
-            //   },
-            //   value: data.totalNumberQR,
-            //   validation: {
-            //     required: true,
-            //     // minLength: 2,
-            //   },
-            //   valid: true,
-            //   touched: false,
-            // },
-          },
-        });
-      },
-    };
-    // export file
     const fileType =
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const fileExtension = ".xlsx";
@@ -490,7 +334,7 @@ class ManagerFarmer extends Component {
         <main className="page contact-us-page" style={{ minHeight: "100vh" }}>
           <section
             className="clean-block clean-form "
-            //style={{ minheight: "240vh" }}
+            //    style={{ minWidth: "80%", minHeight: "100vh" }}
           >
             <div className="container">
               <div
@@ -526,7 +370,12 @@ class ManagerFarmer extends Component {
                   data-toggle="modal"
                   data-target="#showModalCreate"
                 ></i>
-                <h2 className={styles.tieuDe} style={{float: "none", textAlign: "center"}}>Danh sách nông hộ </h2>
+                <h2
+                  className={styles.tieuDe}
+                  style={{ float: "none", textAlign: "center" }}
+                >
+                  Danh sách nông hộ{" "}
+                </h2>
               </div>
               <div className="container-body ">
                 {this.props.resArray.length === 0 ? (
@@ -547,7 +396,7 @@ class ManagerFarmer extends Component {
                       })}
                       hover
                     /> */}
-                    <table class={styles.content_table}>
+                    <table className={styles.content_table}>
                       <thead>
                         <tr>
                           <th>STT</th>
@@ -555,14 +404,12 @@ class ManagerFarmer extends Component {
                           <th>Tên nông hộ</th>
                           <th>Giống cây</th>
                           <th>Địa chỉ</th>
-                          <th>Diện tích</th>
+                          <th>Diện tích(m²)</th>
                           <th>Số cây</th>
                           <th>Sửa đổi</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        {listFarmer}
-                      </tbody>
+                      <tbody>{listFarmer}</tbody>
                     </table>
                   </div>
                 )}
@@ -583,11 +430,16 @@ class ManagerFarmer extends Component {
           role="dialog"
           aria-labelledby="exampleModalCenterTitle"
           aria-hidden="true"
-          
         >
-          <div className="modal-dialog modal-dialog-centered" role="document" >
-            <div className="modal-content" style={{borderRadius: "30px"}}>
-              <div className="modal-header" style={{backgroundColor: "#009879", borderRadius: "30px 30px 0px 0px"}}>
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content" style={{ borderRadius: "30px" }}>
+              <div
+                className="modal-header"
+                style={{
+                  backgroundColor: "#009879",
+                  borderRadius: "30px 30px 0px 0px",
+                }}
+              >
                 <h5
                   className="modal-title"
                   id="exampleModalLongTitle"
@@ -623,14 +475,11 @@ class ManagerFarmer extends Component {
               <div className="modal-body" onMouseOver={this.showTotalTrees}>
                 {/* {authRedirect} */}
                 {errorMessage}
-                <form
-                  onSubmit={this.handleSubmit}
-                >
+                <form onSubmit={this.handleSubmit}>
                   {form}
-                  <div style={{textAlign: "center"}}>
-                  <Button btnType="Success">Cập nhật</Button>
+                  <div style={{ textAlign: "center" }}>
+                    <Button btnType="Success">Cập nhật</Button>
                   </div>
-                  
                 </form>
               </div>
             </div>

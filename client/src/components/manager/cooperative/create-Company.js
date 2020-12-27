@@ -5,6 +5,7 @@ import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
 import Spinner from "../../UI/Spinner/Spinner";
 import classes from "../../helpers/Auth.module.css";
+
 import * as actions from "../../../trainRedux/action/user/actionManagement";
 import { checkValidity } from "../../helpers/validation/checkValidation";
 class Company extends Component {
@@ -194,9 +195,19 @@ class Company extends Component {
         aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLongTitle">
+          <div className="modal-content" style={{ borderRadius: "30px" }}>
+            <div
+              className="modal-header"
+              style={{
+                backgroundColor: "#009879",
+                borderRadius: "30px 30px 0px 0px",
+              }}
+            >
+              <h5
+                className="modal-title"
+                id="exampleModalLongTitle"
+                style={{ color: "#fff" }}
+              >
                 Tạo thông tin nhà phân phối
               </h5>
               <button
@@ -205,20 +216,22 @@ class Company extends Component {
                 data-dismiss="modal"
                 aria-label="Close"
                 ref={(button) => (this.buttonElement = button)}
+                style={{ display: "none" }}
               >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body" onMouseOver={this.showTotalTrees}>
+            <div
+              className="modal-body"
+              // onMouseOver={this.showTotalTrees}
+            >
               {/* {authRedirect} */}
               {errorMessage}
-              <form
-                onSubmit={this.handleSubmit}
-                style={{ paddingBottom: "60px" }}
-              >
+              <form onSubmit={this.handleSubmit}>
                 {form}
-
-                <Button btnType="Success">Tạo</Button>
+                <div style={{ textAlign: "center" }}>
+                  <Button btnType="Success">Tạo</Button>
+                </div>
               </form>
             </div>
           </div>

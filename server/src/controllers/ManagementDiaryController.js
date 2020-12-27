@@ -32,11 +32,11 @@ let getDataFarmerProfile = async (req, res) => {
 let showListFarmer = async (req, res) => {
   try {
     let idUser = req.params.id;
-    let Limit = req.params.limit;
-    console.log(idUser + " + " + Limit);
+    // let Limit = req.params.limit;
+    // console.log(idUser + " + " + Limit);
     let idCoopera = await coopertationModel.findIdCoopera(idUser);
 
-    let getData = await farmerModel.showListFarmer(idCoopera._id, +Limit);
+    let getData = await farmerModel.showFarmer(idCoopera._id);
 
     // console.log(getData);
 
