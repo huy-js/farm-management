@@ -380,6 +380,9 @@ class ManagerFarmer extends Component {
     event.preventDefault();
     console.log(this.state.arraydataPolyson);
     let dataPolygonDb = null;
+    if (this.state.arraydataPolyson.length === 0 && !this.state.DeleteDone) {
+      return alert("bạn chưa có thao tác mới");
+    }
     if (!this.state.DeleteDone) {
       this.props.resArray.forEach((e) => {
         if (this.state.dataPolysons.id === e._id) {
@@ -602,11 +605,18 @@ class ManagerFarmer extends Component {
               <div
                 className="col-12 row"
                 style={{
-                  display: this.state.dataPolysons !== null ? "block" : "none",
-                  paddingBottom: "20px",
+                  height: "70px",
+                  paddingBottom: "10px",
                 }}
               >
-                <div className="thongtinnonghoupdatepolyson">
+                <div
+                  className="thongtinnonghoupdatepolyson"
+                  style={{
+                    display:
+                      this.state.dataPolysons !== null ? "block" : "none",
+                    // paddingBottom: "20px",
+                  }}
+                >
                   <div>
                     {this.state.dataPolysons !== null ? (
                       <div>
