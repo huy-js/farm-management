@@ -11,7 +11,7 @@ import userReducer from "./trainRedux/reducers/userReducer";
 import diaryReducer from "./trainRedux/reducers/diaryReducer";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-
+import "leaflet/dist/leaflet.css";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({

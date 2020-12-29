@@ -15,8 +15,35 @@ import classes from "./Auth.module.css";
 import styles from "./manager-farmer.module.css";
 import { checkValidity } from "../../helpers/validation/checkValidation";
 import moment from "moment";
+import Search from "react-leaflet-search";
 
-//import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import L from "leaflet";
+import {
+  // MapContainer,
+  Map,
+  TileLayer,
+  Marker,
+  Popup,
+  FeatureGroup,
+  Polygon,
+  Tooltip,
+} from "react-leaflet";
+import { EditControl } from "react-leaflet-draw";
+import "./leaflet.css";
+import "leaflet/dist/leaflet.css";
+import "leaflet-draw/dist/leaflet.draw.css";
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-icon.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-shadow.png",
+});
+
+// // initialize map
+// var map = L.map("map").setView([10.04904, 105.785103], 12);
 class ManagerFarmer extends Component {
   state = {
     controls: {
@@ -98,7 +125,32 @@ class ManagerFarmer extends Component {
     display: "none",
     dataFarmerUpdate: "",
     deleteFarmer: null,
+    position: [10.04904, 105.785103],
+    dataPolysons: null,
+    arraydataPolyson: [], //data moi
+    dataAtPolysona: null, // lay data tu db show ra
+    dataPolygonDelete: [], // sau khi soa 1 poly tu database
+    DeleteDone: false,
   };
+  // customPopup() {
+  //   return (
+  //     <Popup>
+  //       <div>
+  //         <p>I am a custom popUp</p>
+  //         <p>
+  //           latitude and longitude from search component:{" "}
+  //           {SearchInfo.latLng.toString().replace(",", " , ")}
+  //         </p>
+  //         <p>Info from search component: {SearchInfo.info}</p>
+  //         <p>
+  //           {SearchInfo.raw &&
+  //             SearchInfo.raw.place_id &&
+  //             JSON.stringify(SearchInfo.raw.place_id)}
+  //         </p>
+  //       </div>
+  //     </Popup>
+  //   );
+  // }
 
   componentDidMount() {
     this.props.showFarmerFetch(this.props.currentUser._id);
@@ -270,10 +322,116 @@ class ManagerFarmer extends Component {
     });
     // },
   };
-
+  ShowPositionMap = (event) => {
+    event.preventDefault();
+    this.setState({
+      position: [10.04904, 105.785103],
+    });
+  };
+  getIdupdateMarker = (event, data) => {
+    event.preventDefault();
+    console.log(data._id);
+    let dataAtPolysona = "";
+    this.props.resArray.map((e) => {
+      if (data._id === e._id) {
+        let dataPoly = e.dataPolyson.map((ele) => {
+          let LatLng = ele.LatLng.map((es) => {
+            return [es.lat, es.lng];
+          });
+          // return [LatLng];
+          return {
+            idpoly: ele.idpoly,
+            LatLng: [LatLng],
+          };
+        });
+        dataAtPolysona = dataPoly;
+      }
+    });
+    // console.log(dataAtPolysona);
+    let getdata = {
+      id: data._id,
+      username: data.farmOwner,
+      address: data.address,
+    };
+    this.setState({
+      dataPolysons: getdata,
+      dataAtPolysona: dataAtPolysona,
+    });
+  };
+  // up date polyson
+  updatePolyson = (data) => {
+    //console.log(data);
+    this.setState((prevState) => ({
+      arraydataPolyson: [...prevState.arraydataPolyson, data],
+    }));
+  };
+  deletePolyson = (data) => {
+    console.log(data);
+    let newArray = this.state.arraydataPolyson.filter((e) => {
+      if (e.idpoly !== data.idpoly) {
+        return e;
+      }
+    });
+    this.setState({
+      arraydataPolyson: newArray,
+    });
+  };
+  sendDataPolyson = (event) => {
+    event.preventDefault();
+    console.log(this.state.arraydataPolyson);
+    let dataPolygonDb = null;
+    if (!this.state.DeleteDone) {
+      this.props.resArray.forEach((e) => {
+        if (this.state.dataPolysons.id === e._id) {
+          dataPolygonDb = e.dataPolyson;
+        }
+      });
+    } else {
+      dataPolygonDb = this.state.dataPolygonDelete;
+    }
+    return this.props.updatePolysonFetch(
+      this.state.arraydataPolyson,
+      this.state.dataPolysons.id,
+      this.props.currentUser._id,
+      dataPolygonDb
+    );
+  };
+  // catchPolygon = (e, id) => {
+  //   console.log(id);
+  //   // let marker = e.target;
+  //   // console.log(marker.options.data); // logs position.
+  // };
+  DeletePolygon = (e, id) => {
+    console.log(id);
+    let dataPolygonDb = null;
+    this.props.resArray.forEach((e) => {
+      if (this.state.dataPolysons.id === e._id) {
+        dataPolygonDb = e.dataPolyson;
+      }
+    });
+    let dataDone = dataPolygonDb.filter((ele) => {
+      if (ele.idpoly !== id) {
+        return ele;
+      }
+    });
+    console.log(dataDone);
+    this.setState({
+      dataPolygonDelete: dataDone,
+      DeleteDone: true,
+    });
+  };
   render() {
+    // let map = L.map("map", {
+    //   center: [10.04904, 105.785103],
+    //   zoom: 13,
+    // });
+    // console.log(this.props.resArray);
     let listFarmer = this.props.resArray.map((element, index) => (
-      <tr key={index + 1}>
+      <tr
+        key={index + 1}
+        onClick={this.ShowPositionMap}
+        className="text-center"
+      >
         <td>{index + 1}</td>
         <td>{moment(element.updateAt).format("DD/MM/YYYY")}</td>
         <td>{element.farmOwner}</td>
@@ -281,9 +439,17 @@ class ManagerFarmer extends Component {
         <td>{element.address}</td>
         <td>{element.landArea}</td>
         <td>{element.totalTrees}</td>
+        <td onClick={(event) => this.getIdupdateMarker(event, element)}>
+          <i
+            className="fa fa-map-marker"
+            style={{ color: "#009879" }}
+            // data-toggle="modal"
+            // data-target="#updatePolysonModel"
+          ></i>
+        </td>
         <td onClick={(event) => this.getDataTableupdate(event, element._id)}>
           <i
-            // key={element.id}
+            style={{ color: "#009879" }}
             data-toggle="modal"
             data-target="#showModalUpdate"
             className="fa fa-wrench suaNongdan"
@@ -329,6 +495,24 @@ class ManagerFarmer extends Component {
     if (!this.state.result) {
       errorMessage = <p className={classes.error}>{this.state.error}</p>;
     }
+    // const position = [51.505, -0.09];
+    const createPosition = (e) => {
+      console.log(e);
+      let dataPolyson = {
+        LatLng: e.layer._latlngs,
+        idpoly: e.layer._leaflet_id,
+      };
+      return this.updatePolyson(dataPolyson);
+    };
+    const deletePosition = (e) => {
+      console.log(e);
+      let number = Object.keys(e.layers._layers);
+      // console.log(Object.keys(e.layers._layers));
+      let delePolyson = {
+        idpoly: parseInt(number[0]),
+      };
+      return this.deletePolyson(delePolyson);
+    };
     return (
       <div>
         <main className="page contact-us-page" style={{ minHeight: "100vh" }}>
@@ -398,7 +582,7 @@ class ManagerFarmer extends Component {
                     /> */}
                     <table className={styles.content_table}>
                       <thead>
-                        <tr>
+                        <tr className="text-center">
                           <th>STT</th>
                           <th>Ngày tạo</th>
                           <th>Tên nông hộ</th>
@@ -406,6 +590,7 @@ class ManagerFarmer extends Component {
                           <th>Địa chỉ</th>
                           <th>Diện tích(m²)</th>
                           <th>Số cây</th>
+                          <th>Vẽ vườn</th>
                           <th>Sửa đổi</th>
                         </tr>
                       </thead>
@@ -414,11 +599,163 @@ class ManagerFarmer extends Component {
                   </div>
                 )}
               </div>
+              <div
+                className="col-12 row"
+                style={{
+                  display: this.state.dataPolysons !== null ? "block" : "none",
+                  paddingBottom: "20px",
+                }}
+              >
+                <div className="thongtinnonghoupdatepolyson">
+                  <div>
+                    {this.state.dataPolysons !== null ? (
+                      <div>
+                        <i
+                          className="fa fa-times"
+                          style={{ color: "red", padding: "5px" }}
+                          onClick={() => {
+                            this.setState({
+                              dataPolysons: null,
+                              arraydataPolyson: [],
+                            });
+                          }}
+                        ></i>
+                        {"Nông hộ " + this.state.dataPolysons.username + ", "}
+                        {this.state.dataPolysons.address}
+                        {"    "}
+                        <button
+                          style={
+                            {
+                              //float: "right",
+                              //  fontSize: "10px",
+                            }
+                          }
+                          className="btn btn-outline-success  btn-sm"
+                          type="button"
+                          onClick={this.sendDataPolyson}
+                        >
+                          hoàn tắc vẽ
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+              <div className="col-12 " id="map">
+                <Map
+                  center={this.state.position}
+                  zoom={15}
+                  scrollWheelZoom={true}
+                >
+                  <Search
+                    // customProvider={this.provider}
+                    //   onChange={(info) => {
+                    //     console.log("FROM onChange: ", info);
+                    //   }}
+                    position="topleft"
+                    inputPlaceholder="Custom placeholder"
+                    // search={this.state.search}
+                    showMarker={false}
+                    zoom={15}
+                    closeResultsOnClick={true}
+                    openSearchOnLoad={false}
+                    // these searchbounds would limit results to only Turkey.
+                    // providerOptions={{
+                    //   searchBounds: [
+                    //     new LatLng(33.100745405144245, 46.48315429687501),
+                    //     new LatLng(44.55916341529184, 24.510498046875)
+                    //   ],
+                    //   region: "tr"
+                    // }}
+
+                    // default provider OpenStreetMap
+                    // provider="BingMap"
+                    // providerKey="AhkdlcKxeOnNCJ1wRIPmrOXLxtEHDvuWUZhiT4GYfWgfxLthOYXs5lUMqWjQmc27"
+                  >
+                    {/* {(info) => (
+            <Marker position={info?.latLng}>{this.customPopup(info)}</Marker>
+          )} */}
+                  </Search>
+
+                  {this.state.dataPolysons !== null ? (
+                    <FeatureGroup>
+                      <EditControl
+                        position="topright"
+                        onCreated={createPosition}
+                        onDeleted={deletePosition}
+                        draw={{
+                          polyline: false,
+                          circle: false,
+                          circlemarker: false,
+                          marker: false,
+                          //polygon: false,
+                          rectangle: false,
+                          // edit: {
+                          //   //featureGroup: new L.FeatureGroup(), //REQUIRED!!
+                          //   remove: true,
+                          // },
+                        }}
+                      />
+                    </FeatureGroup>
+                  ) : null}
+                  <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  {this.state.dataPolysons === null
+                    ? this.props.resArray.map((e, index) => {
+                        let dataPoly = e.dataPolyson.map((ele) => {
+                          let LatLng = ele.LatLng.map((es) => {
+                            return [es.lat, es.lng];
+                          });
+                          return [LatLng];
+                          // console.log(LatLng);
+                        });
+                        // L.addLayer(dataPoly);
+                        return (
+                          <Polygon
+                            pathOptions={{ color: "purple" }}
+                            positions={dataPoly}
+                            key={index}
+                          >
+                            <Tooltip sticky>{e.farmOwner}</Tooltip>
+                          </Polygon>
+                        );
+                      })
+                    : this.state.dataAtPolysona.map((e, index) => {
+                        return (
+                          <Polygon
+                            pathOptions={{ color: "purple" }}
+                            positions={e.LatLng}
+                            key={index}
+                            // data={e.dataPolyson}
+                            //  key={e._id}
+                            onClick={(event) => {
+                              this.setState({ DeleteDone: false });
+                            }}
+                          >
+                            {/* <Tooltip sticky>aaaaa</Tooltip> */}
+                            {this.state.DeleteDone ? null : (
+                              <Popup>
+                                <div>
+                                  <button
+                                    // onClick={(e) => this.DeletePolygon(e)}
+                                    onClick={(event) =>
+                                      this.DeletePolygon(event, e.idpoly)
+                                    }
+                                  >
+                                    Click Me!
+                                  </button>
+                                </div>
+                              </Popup>
+                            )}
+                          </Polygon>
+                        );
+                        // }
+                      })}
+                </Map>
+              </div>
             </div>
-            {/* <div className="container" style={{ display: this.state.display }}>
-              day la noi hien thi nhat ky : {this.state.dataFarmer} <br />
-            
-            </div> */}
           </section>
         </main>
         <CreateFarmer />
@@ -485,6 +822,7 @@ class ManagerFarmer extends Component {
             </div>
           </div>
         </div>
+        {/* update polyson */}
       </div>
     );
   }
@@ -504,6 +842,10 @@ const mapDispatchToProps = (dispatch, props) => ({
   userUpdateDataFarmer: (data, checkvail) =>
     dispatch(actions.userUpdateDataFarmer(data, checkvail)),
   deleteFarmerFetch: (data) => dispatch(actions.deleteFarmerFetch(data)),
+  updatePolysonFetch: (dataUpdate, idfarmer, iduser, PolyArray) =>
+    dispatch(
+      actions.updatePolysonFetch(dataUpdate, idfarmer, iduser, PolyArray)
+    ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManagerFarmer);

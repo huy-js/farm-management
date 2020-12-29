@@ -44,6 +44,7 @@ let initAPIs = (app) => {
   );
   router.post("/createseason", ManagementDiaryController.createSeason);
   router.post("/updateendseason", ManagementDiaryController.updateEndSeason);
+
   //goi isAuthcheck sau moi lan vao 1 duong dan trong react
   router.get("/checklogin", AuthMiddleWare.isAuthCheck);
   // kiem tra trang thai dang nhap tai server
@@ -64,6 +65,7 @@ let initAPIs = (app) => {
   router.post("/createCompany", ManagementController.createCompany);
   router.get("/showbusiness/:id", ManagementController.showBusiness);
   router.put("/deletebusiness", ManagementController.deleteBusiness);
+  router.put("/updatepolyson", ManagementController.updatePolyson);
   // diary
   // router.get("/getdiaryfarmer/:data", ManagementDiaryController.getDiaryFarmer);
   router.get("/showlistfarmer/:id", ManagementDiaryController.showListFarmer);

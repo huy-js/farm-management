@@ -88,7 +88,7 @@ class DiaryManager extends Component {
                         className="font-weight-bold"
                         style={{
                           fontSize: "20px",
-                          color: "#00483E",
+                          color: "#009879",
                           textAlign: "center",
                         }}
                       >

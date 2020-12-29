@@ -5,6 +5,7 @@ import Input from "../UI/Input/Input";
 import Button from "../UI/Button/Button";
 import { checkValidity } from "../helpers/validation/checkValidation";
 import { updataPassWordFetch } from "../../trainRedux/action/authentication/actionAuth";
+import "./profile.css";
 class Profile extends Component {
   state = {
     controls: {
@@ -103,6 +104,8 @@ class Profile extends Component {
   };
 
   render() {
+    console.log(this.props.currentUser);
+    let dataProfilecurren = this.props.currentUser;
     const formElementsArray = [];
     for (let key in this.state.controls) {
       formElementsArray.push({
@@ -136,21 +139,14 @@ class Profile extends Component {
       <div>
         <main className="page landing-page">
           <section
-            className="clean-block clean-hero"
+            className="clean-hero"
             style={{
-              backgroundImage: `url("assets/img/tech/3160620.jpg")`,
-              color: `rgba(9, 162, 255, 0.85)`,
+              backgroundImage: `url("assets/img/image0.jpg")`,
+              minHeight: "100vh",
+              //color: `rgba(225, 247, 223, 0.85)`,
             }}
           >
-            <div className="text">
-              {/* <h2>{this.props.infor.currentUser.username}</h2>
-              <p>
-              {this.props.infor.currentUser.email}
-              </p>
-              <p>
-              {this.props.infor.currentUser.phonenumber}
-              </p>
-             */}
+            {/* <div className="text">
 
               <button
                 className="btn btn-outline-light btn-lg"
@@ -160,6 +156,46 @@ class Profile extends Component {
               >
                 Đổi mật khẩu
               </button>
+            </div> */}
+
+            <div className="container" style={{ paddingTop: "100px" }}>
+              <div className="row">
+                <div className="col-12 col-sm-5 col-md-5 col-lg-3">
+                  <div className="card">
+                    <img
+                      className="card-img-top"
+                      src="assets/img/imageway.jpg"
+                      alt="Bologna"
+                    />
+                    <div className="card-body text-center">
+                      <img
+                        className="avatar rounded-circle"
+                        src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/robert.jpg"
+                        alt="Bologna"
+                      />
+                      <h4 className="card-title">
+                        {dataProfilecurren.username}
+                      </h4>
+                      <h6 className="card-subtitle mb-2 text-muted">
+                        {" "}
+                        {dataProfilecurren.phonenumber}
+                      </h6>
+                      {/* <p className="card-text">
+                        địa chỉ: {dataProfilecurren.address}
+                      </p> */}
+
+                      <button
+                        className="btn btn-outline-success"
+                        type="button"
+                        data-toggle="modal"
+                        data-target="#modelEditPass"
+                      >
+                        Đổi mật khẩu
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
         </main>

@@ -692,6 +692,16 @@ let deleteBusiness = async (req, res) => {
     return res.status(500).json({ message: "update failed" });
   }
 };
+let updatePolyson = async (req, res) => {
+  try {
+    console.log(req.body.data);
+    let data = req.body.data;
+    await farmerModel.updatePolyson(data.idFarmer, data.dataUpdate);
+    return res.status(200).json({ message: "success update" });
+  } catch (error) {
+    return res.status(500).json({ message: "update failed" });
+  }
+};
 
 module.exports = {
   showListUser: showListUser,
@@ -715,4 +725,5 @@ module.exports = {
   deleteBusiness: deleteBusiness,
   updateDataFarmer: updateDataFarmers,
   deleteFarmer: deleteFarmer,
+  updatePolyson: updatePolyson,
 };
