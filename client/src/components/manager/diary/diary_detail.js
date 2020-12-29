@@ -157,7 +157,7 @@ class DiaryDetail extends Component {
     dateSelectedDMY: new Date(),
     dateSelectedMY: new Date(),
     changeDate: "MY",
-    // dataFarmerShowMap: null,
+    dataDetaiView: "",
   };
   HanddleDateSelected = (date, value) => {
     console.log(value);
@@ -300,6 +300,9 @@ class DiaryDetail extends Component {
   getdataDiary = async (data) => {
     //console.log(data);
     await this.props.getDataDiaryFetch(data);
+    this.setState({
+      dataDetaiView: "",
+    });
     this.buttonElements.click();
   };
   // xem mat do
@@ -307,14 +310,18 @@ class DiaryDetail extends Component {
     this.setState({
       XemMatdo: selectedOption.value,
       //changeSreen: false,
+      // dataDetaiView: "",
     });
     this.props.changeScreenMap(false);
   };
-  // screenMap = () => {
-  //   this.setState({
-  //     changeSreen: this.props.changeFarmer,
-  //   });
-  // };
+  ShowDetail = (event, data) => {
+    event.preventDefault();
+    console.log(data);
+    this.setState({
+      dataDetaiView: data,
+      //  displayDetaildiary: "block",
+    });
+  };
   render() {
     console.log(this.state.dataFarmerShowMap);
     // {
@@ -339,81 +346,79 @@ class DiaryDetail extends Component {
         )
       );
     }
-    const dates = (string) => {
-      var options = { year: "numeric", month: "long", day: "numeric" };
-      return new Date(string).toLocaleDateString([], options);
-    };
+    // const dates = (string) => {
+    //   var options = { year: "numeric", month: "long", day: "numeric" };
+    //   return new Date(string).toLocaleDateString([], options);
+    // };
     const dateMY = (string) => {
       var options = { year: "numeric", month: "long" };
       return new Date(string).toLocaleDateString([], options);
     };
 
-    let dataNow = dates(this.state.dateSelectedDMY.getTime());
+    // let dataNow = dates(this.state.dateSelectedDMY.getTime());
     let dateMYY = dateMY(this.state.dateSelectedMY.getTime());
     //console.log(dataNow);
     //console.log(dateMYY);
 
     let SelectBonphanBaoTrai = (data) => {
       return (
-        <div
-          className="dropdown-menu"
-          aria-labelledby="dropdownMenuButton"
-          style={{ border: "none" }}
-        >
-          <h6
-            style={{
-              fontWeight: "bold",
-              display: data.work === "Baotrai" ? "none" : "block",
-            }}
-          >
-            Tên phân Bón : {" " + data.ferTiLizer}
-          </h6>
-          <h6
-            style={{
-              fontWeight: "bold",
-              // display: e.files.length === 0 ? "none" : "block",
-            }}
-          >
-            {data.work === "Baotrai" ? `Hình ảnh Bao trái` : `Hình sản phẩm`}
-          </h6>
-          <div className="row" style={{ width: "900px" }}>
-            <div className="col-sm-12" style={{ padding: "20px" }}>
+        <div className="col-12 col-md-4 mt-4">
+          <div className="card profile-card-5">
+            <div className="card-img-block" style={{ paddingLeft: "0px" }}>
               <img
+                className="card-img-top"
                 src={`data:${data.files[0].contentType};base64,${bufferToBase64(
                   data.files[0].data.data
                 )}`}
-                style={{ width: "250px", height: "250px" }}
-                // key={index}
+                alt="Card image cap"
+                style={{ width: "230px", height: "230px" }}
               />
             </div>
+            <div className="card-body pt-0">
+              <h5 className="card-title">
+                {" "}
+                {data.work === "Baotrai"
+                  ? `Hình ảnh Bao trái`
+                  : `Hình bón phân`}
+              </h5>
+              {/* <p className="card-text">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </p> */}
+            </div>
           </div>
+          {/* <p className="mt-3 w-100 float-left text-center">
+            <strong>Card with Floting Picture</strong>
+          </p> */}
         </div>
       );
     };
     let SelectPhunthuoc = (data) => {
       let dataThuoc = data.preparation.map((ele, inx) => {
         return (
-          <div key={inx}>
-            <p>
-              Ten thuoc: {" " + ele.thuoc}, Loai: {" " + ele.loai}, Dung tich:
-              {" " + ele.dungtich} lit, So luong: {" " + ele.soluong}, Luong
-              nuoc dung de pha: {" " + ele.luongnuoc} ml
-            </p>
-            <h6
-              style={{
-                fontWeight: "bold",
-              }}
-            >
-              Hình sản phẩm
-            </h6>
-            <div className="row" style={{ width: "900px" }}>
-              <div className="col-sm-12" style={{ padding: "20px" }}>
-                <img
-                  src={`data:${
-                    data.files[inx].contentType
-                  };base64,${bufferToBase64(data.files[inx].data.data)}`}
-                  style={{ width: "250px", height: "250px" }}
-                />
+          <div key={inx} className="row">
+            <div className="col-12 col-md-4 mt-4">
+              <div className="card profile-card-5">
+                <div className="card-img-block">
+                  <img
+                    className="card-img-top"
+                    src={`data:${
+                      data.files[0].contentType
+                    };base64,${bufferToBase64(data.files[0].data.data)}`}
+                    alt="Card image cap"
+                    style={{ width: "230px", height: "230px" }}
+                  />
+                </div>
+                <div className="card-body pt-0">
+                  <h5 className="card-title">
+                    {" " + ele.thuoc + "(" + ele.loai + ")"}
+                  </h5>
+                  <p>
+                    Dung tích:
+                    {" " + ele.dungtich} ml, Số lượng: {" " + ele.soluong},
+                    Lượng nước pha chế: {" " + ele.luongnuoc} lit
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -422,8 +427,8 @@ class DiaryDetail extends Component {
 
       return (
         <div
-          className="dropdown-menu"
-          aria-labelledby="dropdownMenuButton"
+          // className="dropdown-menu"
+          // aria-labelledby="dropdownMenuButton"
           style={{ border: "none" }}
         >
           <h6
@@ -440,119 +445,116 @@ class DiaryDetail extends Component {
     };
     let SelectSauHai = (data) => {
       let readFile = data.files.map((eles, indx) => {
-        if (indx !== 0) {
-          return (
-            <div key={indx} className="col-sm-4" style={{ padding: "20px" }}>
-              <img
-                src={`data:${eles.contentType};base64,${bufferToBase64(
-                  eles.data.data
-                )}`}
-                style={{ width: "250px", height: "250px" }}
-              />
+        return (
+          <div key={indx} className="col-12 col-md-4 mt-4">
+            <div className="card profile-card-5">
+              <div className="card-img-block">
+                <img
+                  className="card-img-top"
+                  src={`data:${eles.contentType};base64,${bufferToBase64(
+                    eles.data.data
+                  )}`}
+                  alt="Card image cap"
+                  style={{ width: "230px", height: "230px" }}
+                />
+              </div>
+              <div className="card-body pt-0">
+                <h5 className="card-title">
+                  {indx === 0 ? "Ảnh sâu hại" : indx === 1 ? "cách trị" : ""}
+                </h5>
+                <p>{indx === 0 ? data.worm.type : data.worm.theCure}</p>
+              </div>
             </div>
-          );
-        }
+          </div>
+        );
       });
 
       let dataThuoc = data.preparation.map((ele, inx) => {
         return (
-          <div key={inx}>
-            <p>
-              Ten thuoc: {" " + ele.thuoc}, Loai: {" " + ele.loai}, Dung tich:
-              {" " + ele.dungtich} lit, So luong: {" " + ele.soluong}, Luong
-              nuoc dung de pha: {" " + ele.luongnuoc} ml
-            </p>
+          <div
+            className="col-12 col-sm-6 col-lg-4"
+            //  style={{ marginBottom: "20px" }}
+            key={inx}
+          >
+            <div
+              className="card"
+              style={{
+                border: " 1px solid #009879",
+              }}
+            >
+              <div
+                className="card-body"
+                style={{
+                  padding: "5px",
+                  color: "black",
+                }}
+              >
+                <h6 className="card-title">
+                  {"tên thuốc " + ele.thuoc + " dạng " + ele.loai}
+                </h6>
+                <p>
+                  Dung tích:
+                  {" " + ele.dungtich} ml, Số lượng: {" " + ele.soluong}, Lượng
+                  nước pha chế: {" " + ele.luongnuoc} lit
+                </p>
+              </div>
+            </div>
           </div>
         );
       });
 
       return (
-        <div
-          className="dropdown-menu"
-          aria-labelledby="dropdownMenuButton"
-          style={{ border: "none" }}
-        >
-          <h6
-            style={{
-              fontWeight: "bold",
-            }}
-          >
-            Thông tin bệnh {" " + data.worm.type}
-          </h6>
-          <h6
-            style={{
-              fontWeight: "bold",
-            }}
-          >
-            Hình ảnh bệnh
-          </h6>
-          <div className="col-sm-12" style={{ padding: "20px" }}>
-            <img
-              src={`data:${data.files[0].contentType};base64,${bufferToBase64(
-                data.files[0].data.data
-              )}`}
-              style={{ width: "250px", height: "250px" }}
-            />
+        <div>
+          <div className="row">{readFile}</div>
+          <div className="row" style={{ paddingTop: "20px" }}>
+            <div className="col-12" style={{ paddingBottom: "10px" }}>
+              <h4>các loại thuốc đã dùng</h4>
+            </div>
+            {dataThuoc}
           </div>
-          <h6
-            style={{
-              fontWeight: "bold",
-            }}
-          >
-            Cách trị : {data.worm.theCure}
-          </h6>
-          {readFile}
-          <h6
-            style={{
-              fontWeight: "bold",
-            }}
-          >
-            Thông tin thuốc điều trị
-          </h6>
-          {dataThuoc}
         </div>
       );
     };
 
-    const ShowDiaryDMY = this.props.dataDiary.map((e, index) => {
-      // console.log(dates(new Date(e.createAt)));
-      let dateServer = new Date(e.createAt).getTime();
-      if (dataNow == dates(dateServer)) {
-        let viewSelect = "";
-        let doWork = "Tưới nước";
-        if (e.work === "bonphan") {
-          doWork = "Bón phân ";
-          viewSelect = SelectBonphanBaoTrai(e);
-        }
-        if (e.work === "Baotrai") {
-          doWork = "Bao trái";
-          viewSelect = SelectBonphanBaoTrai(e);
-        }
-        if (e.work === "phunthuoc") {
-          doWork = "Phun thuốc";
-          viewSelect = SelectPhunthuoc(e);
-        }
-        if (e.work === "sauhai") {
-          doWork = "Sâu hại";
-          viewSelect = SelectSauHai(e);
-        }
-        return (
-          <li key={index + 1} style={{ width: "100%", float: "left" }}>
-            <span>
-              {/* {dates(new Date(e.createAt).getTime())} -- {e.work}{" "} */}
-              {moment(e.createAt).format("DD/MM/YYYY")} công việc {doWork}
-            </span>
-            <button
-              className="btn dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-            ></button>
-            <div className="col-12"> {viewSelect}</div>
-          </li>
-        );
-      }
-    });
+    // const ShowDiaryDMY = this.props.dataDiary.map((e, index) => {
+    //   // console.log(dates(new Date(e.createAt)));
+    //   let dateServer = new Date(e.createAt).getTime();
+    //   if (dataNow == dates(dateServer)) {
+    //     let viewSelect = "";
+    //     let doWork = "Tưới nước";
+    //     if (e.work === "bonphan") {
+    //       doWork = "Bón phân ";
+    //       viewSelect = SelectBonphanBaoTrai(e);
+    //     }
+    //     if (e.work === "Baotrai") {
+    //       doWork = "Bao trái";
+    //       viewSelect = SelectBonphanBaoTrai(e);
+    //     }
+    //     if (e.work === "phunthuoc") {
+    //       doWork = "Phun thuốc";
+    //       viewSelect = SelectPhunthuoc(e);
+    //     }
+    //     if (e.work === "sauhai") {
+    //       doWork = "Sâu hại";
+    //       viewSelect = SelectSauHai(e);
+    //     }
+    //     return (
+    //       <li key={index + 1} style={{ width: "100%", float: "left" }}>
+    //         <span>
+    //           {/* {dates(new Date(e.createAt).getTime())} -- {e.work}{" "} */}
+    //           {moment(e.createAt).format("DD/MM/YYYY")} công việc {doWork}
+    //         </span>
+    //         <button
+    //           className="btn dropdown-toggle"
+    //           type="button"
+    //           id="dropdownMenuButton"
+    //           data-toggle="dropdown"
+    //         ></button>
+    //         <div className="col-12"> {viewSelect}</div>
+    //       </li>
+    //     );
+    //   }
+    // });
 
     const ShowDiaryMY = this.props.dataDiary.map((e, index) => {
       let dateServer = new Date(e.createAt).getTime();
@@ -576,22 +578,89 @@ class DiaryDetail extends Component {
           viewSelect = SelectSauHai(e);
         }
         return (
-          <li key={index + 1} style={{ width: "100%", float: "left" }}>
-            <span>
-              {/* {dates(new Date(e.createAt).getTime())} -- {e.work}{" "} */}
-              {moment(e.createAt).format("DD/MM/YYYY")} công việc {doWork}
-            </span>
-            <button
-              className="btn dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-            ></button>
-            <div className="col-12"> {viewSelect}</div>
-          </li>
+          <div
+            className="col-12 col-sm-6 col-lg-3"
+            //  style={{ marginBottom: "20px" }}
+            key={index + 1}
+          >
+            <div
+              className="card"
+              style={{
+                border: " 1px solid #009879",
+                cursor: "pointer",
+              }}
+              onClick={(event) => this.ShowDetail(event, e)}
+            >
+              <div
+                className="card-body"
+                style={{
+                  padding: "5px",
+                  color: "#009879",
+                }}
+              >
+                <h6 className="card-title">
+                  {moment(e.createAt).format("DD/MM/YYYY,h:mm a")}
+                </h6>
+                <b>{doWork}</b>
+              </div>
+            </div>
+          </div>
         );
       }
     });
+    const DetailDiary = () => {
+      if (this.state.dataDetaiView === "") return <div></div>;
+      let viewSelect = "";
+      let doWork = "Tưới nước";
+      if (this.state.dataDetaiView.work === "bonphan") {
+        doWork = "Bón phân ";
+        viewSelect = SelectBonphanBaoTrai(this.state.dataDetaiView);
+      }
+      if (this.state.dataDetaiView.work === "Baotrai") {
+        doWork = "Bao trái";
+        viewSelect = SelectBonphanBaoTrai(this.state.dataDetaiView);
+      }
+      if (this.state.dataDetaiView.work === "phunthuoc") {
+        doWork = "Phun thuốc";
+        viewSelect = SelectPhunthuoc(this.state.dataDetaiView);
+      }
+      if (this.state.dataDetaiView.work === "sauhai") {
+        doWork = "Sâu hại";
+        viewSelect = SelectSauHai(this.state.dataDetaiView);
+      }
+      return (
+        <div
+          className="col-12 "
+          style={{
+            marginBottom: "20px",
+          }}
+          //  key={index + 1}
+        >
+          <div style={{ paddingBottom: "10px" }}>
+            <b>{doWork}</b>--{" "}
+            {moment(this.state.dataDetaiView.createAt).format(
+              "DD/MM/YYYY,h:mm a"
+            )}
+          </div>
+          <div
+            className="card"
+            // style={{
+            //   border: " 1px solid #009879",
+            // }}
+          >
+            <div
+              className="card-body"
+              style={{
+                // padding: "5px",
+                color: "#009879",
+              }}
+            >
+              <h6 className="card-title">{viewSelect}</h6>
+            </div>
+          </div>
+        </div>
+      );
+    };
 
     const HandleShowDiary = (isStump, Row, Col, isBatch) => {
       console.log("get data send server");
@@ -1075,7 +1144,25 @@ class DiaryDetail extends Component {
       console.log(countMax + count);
       return countMax + count;
     }
-
+    const Calander = () => {
+      const ExampleCustomInput = ({ onClick }) => (
+        <i
+          className="fa fa-calendar"
+          style={{ fontSize: "18px", color: "#009879" }}
+          onClick={onClick}
+        ></i>
+      );
+      return (
+        <DatePicker
+          selected={this.state.dateSelectedMY}
+          onChange={(date) => this.HanddleDateSelected(date, "MY")}
+          dateFormat="MM/yyyy"
+          showMonthYearPicker
+          showFullMonthYearPicker
+          customInput={<ExampleCustomInput />}
+        />
+      );
+    };
     return (
       <div>
         <div className="container ">
@@ -1088,7 +1175,10 @@ class DiaryDetail extends Component {
             }}
           >
             <span className="m-0 ">
-              <b> Thông tin chi tiết nông dân {this.props.name}</b>
+              <b style={{ color: "#009879" }}>
+                {" "}
+                Thông tin chi tiết nông dân {this.props.name}
+              </b>
               <button
                 style={{
                   float: "right",
@@ -1348,23 +1438,30 @@ class DiaryDetail extends Component {
         <div
           className="modal fade"
           id="exampleModalCenter"
-          aria-labelledby="exampleModalCenterTitle"
-          aria-hidden="true"
+          // aria-labelledby="exampleModalCenterTitle"
+          //  aria-hidden="true"
         >
           <div
             className="diary modal-dialog"
             role="document"
             // style={{ maxWidth: `1000px !important` }}
           >
-            <div className="modal-content">
-              <div className="modal-header">
+            <div className="modal-content" style={{ borderRadius: "30px" }}>
+              <div
+                className="modal-header"
+                style={{
+                  backgroundColor: "#009879",
+                  borderRadius: "30px 30px 0px 0px",
+                }}
+              >
                 <h5
                   className="modal-title"
                   id="exampleModalLongTitle"
-                  style={{ color: "#3483eb" }}
+                  style={{ color: "#fff" }}
                 >
                   Nhật ký sản xuất
                 </h5>
+
                 <button
                   type="button"
                   className="close"
@@ -1374,67 +1471,38 @@ class DiaryDetail extends Component {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              {/* <div className="col-12" style={{ marginTop: "10px" }}>
-                <h2
-                  className="text-info text-center"
-                  style={{ textAlign: "center" }}
-                >
-                  Thông tin chi tiết
-                </h2>
-                <ul>
-                  {this.state.changeDate === "DMY" ? ShowDiaryDMY : ShowDiaryMY}
-                </ul>
-              </div> */}
-              <div className="modal-body">
+              <div className="modal-body" style={{ paddingLeft: "50px" }}>
                 <div className="dropdown row">
-                  <h2
-                    className=" col-12 text-info text-center"
-                    // style={{ textAlign: "center" }}
-                  >
-                    Thông tin chi tiết
-                  </h2>
                   <div className="col-12 row showDiarydate">
-                    <div className="col-sm-6 d-flex justify-content-center">
-                      <p style={{ paddingTop: "5px" }}>
-                        {" "}
-                        Chọn ngày chi tiết:&nbsp;
-                      </p>
-                      <DatePicker
-                        selected={this.state.dateSelectedDMY}
-                        onChange={(date) =>
-                          this.HanddleDateSelected(date, "DMY")
-                        }
-                      />
+                    <div className="col-sm-4">
+                      <Calander />{" "}
                     </div>
-                    <div className="col-sm-6 d-flex justify-content-center">
-                      <p style={{ paddingTop: "5px" }}>
-                        {" "}
-                        Chọn theo tháng:&nbsp;{" "}
-                      </p>
-                      <DatePicker
-                        selected={this.state.dateSelectedMY}
-                        onChange={(date) =>
-                          this.HanddleDateSelected(date, "MY")
-                        }
-                        dateFormat="MM/yyyy"
-                        showMonthYearPicker
-                        showFullMonthYearPicker
-                      />
+                    <div className="col-sm-8">
+                      <div className="col">
+                        <h1>Thông tin chi tiết</h1>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="col-12 " style={{ marginTop: "10px" }}>
-                    {/* <h2
-                      className="text-info text-center"
-                      style={{ textAlign: "center" }}
-                    >
-                      Thông tin chi tiết
-                    </h2> */}
-                    <ul>
-                      {this.state.changeDate === "DMY"
-                        ? ShowDiaryDMY
-                        : ShowDiaryMY}
-                    </ul>
+                  <div className="col-12 text-center">
+                    <b>
+                      {" "}
+                      {moment(this.state.dateSelectedMY).format("MM/YYYY")}
+                    </b>
+                  </div>
+                  <div
+                    className=" col-12 row"
+                    style={{ paddingBottom: "17px" }}
+                  >
+                    {ShowDiaryMY}
+                  </div>
+                  <div
+                    className=" col-12 row"
+                    style={{
+                      paddingBottom: "17px",
+                    }}
+                  >
+                    <DetailDiary />
                   </div>
                 </div>
               </div>

@@ -327,3 +327,65 @@ export const deleteFarmerFetch = (data) => {
       });
   };
 };
+export const updatePolysonFetch = (dataUpdate, idFarmer, idUser, PolyArray) => {
+  console.log(dataUpdate);
+
+  let dataUp = dataUpdate.map((e) => {
+    let LatLngs = e.LatLng.map((ele) => {
+      // console.log(ele);
+      let ls = ele.map((els) => {
+        return {
+          lat: els.lat,
+          lng: els.lng,
+        };
+      });
+      return ls;
+    });
+    e.LatLng = LatLngs[0];
+    return e;
+  });
+  // console.log(dataUp);
+  // console.log(PolyArray);
+  let arrayNew = dataUp.concat(PolyArray);
+  // xoa trung neu co :v
+  const seen = new Set();
+  const LastArray = arrayNew.filter((el) => {
+    const duplicate = seen.has(el.idpoly);
+    seen.add(el.idpoly);
+    return !duplicate;
+  });
+
+  console.log(LastArray);
+
+  // console.log(arrayNew);
+  let data = {
+    idFarmer: idFarmer,
+    dataUpdate: LastArray,
+  };
+  return (dispatch) => {
+    const token = localStorage.userToken;
+    const accessToken = JSON.parse(token).accessToken;
+    // console.log(accessToken);
+    return axios
+      .put(
+        "http://localhost:3456/updatepolyson",
+        {
+          data,
+        },
+        {
+          headers: { Authorization: `${accessToken}` },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        dispatch(showFarmerFetch(idUser));
+        //return true;
+      })
+      .catch((error) => {
+        console.log(error);
+        // localStorage.clear();
+        return false;
+        //dispatch(actions.authFail("thong tin dang ky khong hop le"));
+      });
+  };
+};

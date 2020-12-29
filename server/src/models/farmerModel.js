@@ -10,9 +10,14 @@ let farmerSchema = new Schema(
     typeOfTree: { type: String }, // giống cây
     totalTrees: { type: Number },
     CooperativeId: { type: String },
-    // totalNumberQR: { type: Number, default: 0 },
     password: { type: String, default: "" },
     deletedAt: { type: Boolean, default: false },
+    dataPolyson: [
+      {
+        idpoly: { type: String },
+        LatLng: [{ lat: { type: Number }, lng: { type: Number } }],
+      },
+    ],
   },
   {
     timestamps: {
@@ -51,6 +56,9 @@ farmerSchema.statics = {
     return this.findByIdAndUpdate(idfarmer, {
       deletedAt: booleanDelete,
     }).exec();
+  },
+  updatePolyson(idfarmer, dataUpdate) {
+    return this.findByIdAndUpdate(idfarmer, { dataPolyson: dataUpdate });
   },
 };
 farmerSchema.methods = {
