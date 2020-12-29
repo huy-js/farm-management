@@ -22,17 +22,17 @@ export class Header extends Component {
         showManage = (
           <ul className="nav navbar-nav ml-auto">
             <li className="nav-item" role="presentation">
-              <NavLink to={"/list-user"} className="nav-link">
+              <NavLink to={"/list-user"} className="nav-link" activeStyle={{ color: "#fff"}}>
                 Danh sách người dùng
               </NavLink>
             </li>
             <li className="nav-item" role="presentation">
-              <NavLink to={"/manager-order"} className="nav-link">
+              <NavLink to={"/manager-order"} className="nav-link" activeStyle={{ color: "#fff"}}>
                 Quản lý đơn hàng
               </NavLink>
             </li>
             <li className="nav-item" role="presentation">
-              <NavLink to={"/manager-cooperative"} className="nav-link">
+              <NavLink to={"/manager-cooperative"} className="nav-link" activeStyle={{ color: "#fff"}}>
                 Quản lý Hợp tác xã
               </NavLink>
             </li>
@@ -43,22 +43,22 @@ export class Header extends Component {
         showManage = (
           <ul className="nav navbar-nav ml-auto">
             <li className="nav-item" role="presentation">
-              <NavLink to={"/manager-farmer"} className="nav-link">
+              <NavLink to={"/manager-farmer"} className="nav-link" activeStyle={{ color: "#fff"}}>
                 Quản lý Nông dân
               </NavLink>
             </li>
             <li className="nav-item" role="presentation">
-              <NavLink to={"/diary-manager"} className="nav-link">
+              <NavLink to={"/diary-manager"} className="nav-link" activeStyle={{ color: "#fff"}} >
                 Quản lý nhật ký nông hộ
               </NavLink>
             </li>
             <li className="nav-item" role="presentation">
-              <NavLink to={"/order-customer"} className="nav-link">
+              <NavLink to={"/order-customer"} className="nav-link" activeStyle={{ color: "#fff"}} >
                 Đặt QR
               </NavLink>
             </li>
             <li className="nav-item" role="presentation">
-              <NavLink to={"/business-cooperation"} className="nav-link">
+              <NavLink to={"/business-cooperation"} className="nav-link" activeStyle={{ color: "#fff"}}>
                 Quản lý phân phối
               </NavLink>
             </li>
@@ -71,7 +71,7 @@ export class Header extends Component {
     if (isLogin) {
       logButton = (
         <li className="nav-item" role="presentation">
-          <Link to="/logout" className="nav-link">
+          <Link to="/logout" className="nav-link" activeStyle={{ color: "#fff"}}>
             Đăng Xuất
           </Link>
         </li>
@@ -79,7 +79,7 @@ export class Header extends Component {
     } else {
       logButton = (
         <li className="nav-item" role="presentation">
-          <NavLink to={"/login"} className="nav-link">
+          <NavLink to={"/login"} className="nav-link" activeStyle={{ color: "#fff"}}>
             Đăng Nhập
           </NavLink>
         </li>
@@ -94,14 +94,14 @@ export class Header extends Component {
           <span className="navbar-brand logo">
             <ul className="nav navbar-nav ml-auto">
               <li className="nav-item" role="presentation">
-                <Link to={"/profile"} className="nav-link">
+                <NavLink to={"/profile"} className="nav-link" activeStyle={{ color: "#fff"}} >
                   {this.props.currentUser.username}
                   {role === "admin"
                     ? " (Admin)"
                     : role === "customer"
                     ? " (Customer)"
                     : null}
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </span>
@@ -116,9 +116,9 @@ export class Header extends Component {
           <div className="collapse navbar-collapse" id="navcol-1">
             <ul className="nav navbar-nav ml-auto">
               <li className="nav-item" role="presentation">
-                <Link to={"/"} className="nav-link">
+                <NavLink to={"/"} className="nav-link" activeStyle={{ color: "#fff"}} exact>
                   Trang chủ
-                </Link>
+                </NavLink>
               </li>
               <div style={{ display: this.props.display }}>{showManage}</div>
               {logButton}
@@ -127,7 +127,7 @@ export class Header extends Component {
                 role="presentation"
                 style={{ display: this.props.displayRegister }}
               >
-                <NavLink to={"/register"} className="nav-link">
+                <NavLink to={"/register"} className="nav-link" activeStyle={{ color: "#fff"}}>
                   Đăng ký
                 </NavLink>
               </li>

@@ -5,6 +5,12 @@ import ReactApexChart from "react-apexcharts";
 import { connect } from "react-redux";
 import * as actions from "../../../trainRedux/action/diary/actionDiaryMap";
 import Select from "react-select";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTable,
+  faTree,
+  faSolarPanel,
+} from "@fortawesome/free-solid-svg-icons";
 //import { assign } from "nodemailer/lib/shared";
 import "./diary.css";
 // function generateData(count, yrange) {
@@ -1220,9 +1226,19 @@ class DiaryDetail extends Component {
             <div>
               <div className="row" style={{ paddingBottom: "17px" }}>
                 <div className="col-12 col-sm-6 col-lg-4">
-                  <div className="card bg-light">
+                  <div className="card bg-light shadow bg-white rounded">
                     <div className="card-body">
-                      <h4 className="card-title">Ngày tạo</h4>
+                      <h4
+                        className="card-title"
+                        style={{ display: "inline-block" }}
+                      >
+                        Ngày tạo
+                      </h4>
+                      <FontAwesomeIcon
+                        className="fa-2x"
+                        icon={faTable}
+                        style={{ display: "inline-block", float: "right" }}
+                      />
                       <h6>
                         {moment(this.props.dataFarmerss.createAt).format(
                           "DD/MM/YYYY"
@@ -1233,18 +1249,38 @@ class DiaryDetail extends Component {
                 </div>
 
                 <div className="col-12 col-sm-6 col-lg-4">
-                  <div className="card bg-primary text-white">
+                  <div className="card bg-primary text-white shadow rounded">
                     <div className="card-body">
-                      <h4 className="card-title">Diện tích đất</h4>
+                      <h4
+                        className="card-title"
+                        style={{ display: "inline-block" }}
+                      >
+                        Diện tích đất
+                      </h4>
+                      <FontAwesomeIcon
+                        className="fa-2x"
+                        icon={faSolarPanel}
+                        style={{ display: "inline-block", float: "right" }}
+                      />
                       <h6>{this.props.dataFarmerss.landArea}m²</h6>
                     </div>
                   </div>
                 </div>
 
                 <div className="col-12 col-sm-6 col-lg-4">
-                  <div className="card bg-success">
+                  <div className="card bg-success shadow rounded">
                     <div className="card-body">
-                      <h4 className="card-title">Tổng số cây trồng</h4>
+                      <h4
+                        className="card-title"
+                        style={{ display: "inline-block" }}
+                      >
+                        Tổng số cây
+                      </h4>
+                      <FontAwesomeIcon
+                        className="fa-2x"
+                        icon={faTree}
+                        style={{ display: "inline-block", float: "right" }}
+                      />
                       <h6>{this.props.dataFarmerss.totalTrees} cây</h6>
                     </div>
                   </div>

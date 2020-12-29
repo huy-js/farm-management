@@ -1,6 +1,9 @@
 .nav-item .active {
-    border: 3px solid #00483E;
-    border-radius: 15px;
-    color:#00483E ;
-    font-weight:bold;
+    background-color: #00483E;
+    border-radius: 10px;
  }
+
+ .navbar-nav .nav-item:hover .nav-link {
+    border: 1px solid #00483E; 
+    border-radius: 10px; 
+}
