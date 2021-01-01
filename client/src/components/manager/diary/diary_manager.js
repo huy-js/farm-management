@@ -45,6 +45,15 @@ class DiaryManager extends Component {
     });
     this.props.showListBatch(id);
   };
+  // // show nhat ky
+  // getdataDiary = async (data) => {
+  //   //console.log(data);
+  //   await this.props.getDataDiaryFetch(data);
+  //   this.setState({
+  //     dataDetaiView: "",
+  //   });
+  //   this.buttonElements.click();
+  // };
   render() {
     console.log(this.props.resArray);
     let name = "";
@@ -60,19 +69,19 @@ class DiaryManager extends Component {
     return (
       <main
         className="page landing-page "
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: "100%", width: "100%", paddingTop: "0px" }}
       >
-        <div
-          className="block-heading text-center"
-          style={{ marginTop: "50px", marginRight: "0px" }}
-        >
-          <h2 className={styles.tieuDe}>Nhật ký sản xuất</h2>
-        </div>
-
         <section
           className="clean-block"
-          style={{ minHeight: "100vh", paddingTop: "30px" }}
+          style={{ minHeight: "100vh", paddingTop: "0px" }}
         >
+          <div
+            className="block-heading text-center"
+            style={{ marginRight: "0px" }}
+          >
+            <h2 className={styles.tieuDe}>Nhật ký sản xuất</h2>
+          </div>
+
           {this.props.resArray.length === 0 ? (
             <div className="text-center">
               Chưa có thông tin nông dân mời bạn thêm thông tin ở phần quản lý
@@ -146,6 +155,31 @@ class DiaryManager extends Component {
                           ) : null}
                         </div> */}
                       </div>
+                    </div>
+                    <div
+                      style={{
+                        padding: "5px",
+                        margin: "0px auto",
+                        textAlign: "center",
+                      }}
+                    >
+                      <button
+                        className="btn btn-outline-success  btn-sm"
+                        type="button"
+                        // style={{
+                        //  // float: "left",
+                        //   fontSize: "11px",
+                        //   marginTop: "5px",
+                        //   //  display:
+                        //   //   this.props.resArray.length === 0 ? "none" : "block",
+                        // }}
+                        onClick={(e) => {
+                          const data = new Date().getTime();
+                          //  exportToCSV(this.props.dataPWFarmer, `Password-${data}`);
+                        }}
+                      >
+                        Xuất file danh sach Qr nhật ký
+                      </button>
                     </div>
                   </div>
                 </div>

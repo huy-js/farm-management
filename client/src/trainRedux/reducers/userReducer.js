@@ -4,12 +4,13 @@ import { updateObject } from "../utility";
 const initialState = {
   resArray: [],
   dataCooper: "",
+  resArrayListUser: [],
 };
 
 //ARRAY LIST USER
 const fetchListUserData = (state, action) => {
   return updateObject(state, {
-    resArray: action.payload,
+    resArrayListUser: action.payload,
   });
 };
 

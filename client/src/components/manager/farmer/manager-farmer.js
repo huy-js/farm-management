@@ -15,6 +15,7 @@ import classes from "./Auth.module.css";
 import styles from "./manager-farmer.module.css";
 import { checkValidity } from "../../helpers/validation/checkValidation";
 import moment from "moment";
+
 import Search from "react-leaflet-search";
 
 import L from "leaflet";
@@ -518,51 +519,66 @@ class ManagerFarmer extends Component {
     };
     return (
       <div>
-        <main className="page contact-us-page" style={{ minHeight: "100vh" }}>
+        <main
+          className="page contact-us-page"
+          style={{ minHeight: "100vh", paddingTop: "0px" }}
+        >
           <section
             className="clean-block clean-form "
-            //    style={{ minWidth: "80%", minHeight: "100vh" }}
+            style={{ paddingTop: "0px" }}
           >
             <div className="container">
               <div
-                className="block-heading text-center"
-                style={{ marginTop: "50px", marginRight: "0px" }}
+                className="block-heading text-center col-12 row"
+                style={{
+                  marginBottom: "-15px",
+                  // marginRight: "0px",
+                  // paddingTop: "10px",
+                  width: "100%",
+                  //  paddingBottom: "-35px",
+                }}
               >
-                <button
-                  className="btn btn-outline-primary  btn-sm"
-                  type="button"
-                  style={{
-                    float: "left",
-                    fontSize: "11px",
-                    marginTop: "5px",
-                    display:
-                      this.props.resArray.length === 0 ? "none" : "block",
-                  }}
-                  onClick={(e) => {
-                    const data = new Date().getTime();
-                    exportToCSV(this.props.dataPWFarmer, `Password-${data}`);
-                  }}
-                >
-                  Xuất file password nông hộ
-                </button>
-                <i
-                  className="fa fa-plus-circle btn-outline-secondary btn-sm"
-                  style={{
-                    fontSize: "25px",
-                    float: "right",
-                    padding: "10px",
-                    borderRadius: "50px",
-                    cursor: "pointer",
-                  }}
-                  data-toggle="modal"
-                  data-target="#showModalCreate"
-                ></i>
-                <h2
-                  className={styles.tieuDe}
-                  style={{ float: "none", textAlign: "center" }}
-                >
-                  Danh sách nông hộ{" "}
-                </h2>
+                <div className="col-sm-4">
+                  <button
+                    className="btn btn-outline-success  btn-sm"
+                    type="button"
+                    style={{
+                      float: "left",
+                      fontSize: "13px",
+                      marginTop: "5px",
+                      display:
+                        this.props.resArray.length === 0 ? "none" : "block",
+                    }}
+                    onClick={(e) => {
+                      const data = new Date().getTime();
+                      exportToCSV(this.props.dataPWFarmer, `Password-${data}`);
+                    }}
+                  >
+                    Xuất file danh sách mật khẩu nông hộ
+                  </button>
+                </div>
+                <div className="col-sm-4">
+                  <h2
+                    className={styles.tieuDe}
+                    style={{ float: "none", textAlign: "center" }}
+                  >
+                    Danh sách nông hộ{" "}
+                  </h2>
+                </div>
+                <div className="col-sm-4">
+                  <i
+                    className="fa fa-plus-circle btn-outline-secondary btn-sm"
+                    style={{
+                      fontSize: "25px",
+                      float: "right",
+                      //padding: "10px",
+                      borderRadius: "50px",
+                      cursor: "pointer",
+                    }}
+                    data-toggle="modal"
+                    data-target="#showModalCreate"
+                  ></i>
+                </div>
               </div>
               <div className="container-body ">
                 {this.props.resArray.length === 0 ? (
@@ -605,24 +621,24 @@ class ManagerFarmer extends Component {
               <div
                 className="col-12 row"
                 style={{
-                  height: "70px",
-                  paddingBottom: "10px",
+                  height: "50px",
+                  paddingBottom: "5px",
                 }}
               >
                 <div
-                  className="thongtinnonghoupdatepolyson"
+                  className="col-12"
                   style={{
                     display:
                       this.state.dataPolysons !== null ? "block" : "none",
                     // paddingBottom: "20px",
                   }}
                 >
-                  <div>
-                    {this.state.dataPolysons !== null ? (
-                      <div>
+                  {this.state.dataPolysons !== null ? (
+                    <div className="col-12 row">
+                      <div className="btn btn-outline-success  btn-sm ">
                         <i
                           className="fa fa-times"
-                          style={{ color: "red", padding: "5px" }}
+                          style={{ padding: "5px", margin: "0px auto" }}
                           onClick={() => {
                             this.setState({
                               dataPolysons: null,
@@ -630,28 +646,27 @@ class ManagerFarmer extends Component {
                             });
                           }}
                         ></i>
+                      </div>
+                      <div className=" txt-outline-success  btn-sm ">
                         {"Nông hộ " + this.state.dataPolysons.username + ", "}
                         {this.state.dataPolysons.address}
-                        {"    "}
-                        <button
-                          style={
-                            {
-                              //float: "right",
-                              //  fontSize: "10px",
-                            }
-                          }
-                          className="btn btn-outline-success  btn-sm"
-                          type="button"
-                          onClick={this.sendDataPolyson}
-                        >
-                          hoàn tắc vẽ
-                        </button>
                       </div>
-                    ) : null}
-                  </div>
+                      <div
+                        className="btn btn-outline-success  btn-sm "
+                        onClick={this.sendDataPolyson}
+                        style={{ float: "right" }}
+                      >
+                        hoàn tắc vẽ
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               </div>
-              <div className="col-12 " id="map">
+              <div
+                className="col-12 shadow"
+                id="map"
+                style={{ padding: "5px" }}
+              >
                 <Map
                   center={this.state.position}
                   zoom={15}
@@ -754,7 +769,7 @@ class ManagerFarmer extends Component {
                                       this.DeletePolygon(event, e.idpoly)
                                     }
                                   >
-                                    Click Me!
+                                    Xóa
                                   </button>
                                 </div>
                               </Popup>

@@ -2,7 +2,7 @@ import * as actionTypes from "../action/actionType";
 import { updateObject } from "../utility";
 
 const initialState = {
-  resArray: [],
+  resArrayOrder: [],
   dataCooper: "",
   purchase: null,
   error: null,
@@ -27,7 +27,7 @@ const fetchCoopareData = (state, action) => {
 // ARRAY ORDER
 const fetchOrderData = (state, action) => {
   return updateObject(state, {
-    resArray: action.payload,
+    resArrayOrder: action.payload,
   });
 };
 

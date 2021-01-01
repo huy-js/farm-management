@@ -229,8 +229,11 @@ let showCooperaTion = async (req, res) => {
       return ele;
     });
     let convertDataCoopera = await Promise.all(arrayConvert);
-    console.log(convertDataCoopera);
-    return res.status(200).json({ convertDataCoopera });
+    console.log(convertDataCoopera[0]._id);
+    let getData = await farmerModel.showFarmer(convertDataCoopera[0]._id);
+    return res
+      .status(200)
+      .json({ convertDataCoopera: convertDataCoopera, listFarmer: getData });
   } catch (error) {
     return res.status(500).json({ message: "get data farmer" });
   }
@@ -686,7 +689,11 @@ let deleteBusiness = async (req, res) => {
         .json({ message: "ban khong co thong tin trong htx" });
     }
     //console.log(getdataUser);
-    await coopertationModel.deleteBusiness(getdataUser._id, req.body.data.id);
+    await coopertationModel.deleteBusiness(
+      getdataUser._id,
+      req.body.data.id,
+      req.body.data.exchange
+    );
     return res.status(200).json({ message: "success update" });
   } catch (error) {
     return res.status(500).json({ message: "update failed" });
@@ -702,7 +709,45 @@ let updatePolyson = async (req, res) => {
     return res.status(500).json({ message: "update failed" });
   }
 };
+let updateMarker = async (req, res) => {
+  try {
+    console.log(req.body.data);
+    let data = req.body.data;
+    let getdataUser = await coopertationModel.findIdCoopera(data.idUser);
+    //console.log(getdataUser);
+    await coopertationModel.updateMarker(
+      getdataUser._id,
+      data.idBusiness,
+      data.dataUpdate
+    );
+    return res.status(200).json({ message: "success update" });
+  } catch (error) {
+    return res.status(500).json({ message: "update failed" });
+  }
+};
+let updateDataBusiness = async (req, res) => {
+  try {
+    console.log("update data business");
+    let data = req.body.dataFamer;
+    console.log(data);
+    console.log(data.idBusiness);
+    let updateData = {
+      nameCompany: data.nameCompany,
+      address: data.address,
+      typeOfTree: data.typeOfTree,
+    };
+    let idCoopera = await coopertationModel.findIdCoopera(data.idUser);
 
+    await coopertationModel.updateDatabusi(
+      idCoopera._id,
+      data.idBusiness,
+      updateData
+    );
+    return res.status(200).json({ message: "create succession." });
+  } catch (error) {
+    return res.status(500).json({ message: "update failed" });
+  }
+};
 module.exports = {
   showListUser: showListUser,
   updateActiveUser: updateActiveUser,
@@ -726,4 +771,6 @@ module.exports = {
   updateDataFarmer: updateDataFarmers,
   deleteFarmer: deleteFarmer,
   updatePolyson: updatePolyson,
+  updateMarker: updateMarker,
+  updateDataBusiness: updateDataBusiness,
 };

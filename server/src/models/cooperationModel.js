@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 let cooperationSchema = new Schema(
   {
-    Owner: { type: String, default: "" }, // chủ nông trại
-    phoneOwner: { type: String, default: "" },
+    // Owner: { type: String, default: "" }, // chủ nông trại
+    // phoneOwner: { type: String, default: "" },
     nameOfCooperative: { type: String },
     technicalStaff: { type: String, default: null }, // cán bộ kỹ thuật
     address: { type: String },
@@ -21,6 +21,14 @@ let cooperationSchema = new Schema(
         createdAT: { type: Number, default: Date.now },
         typeOfTree: String,
         address: String,
+        marker: [
+          {
+            lat: Number,
+            lng: Number,
+            idpoly: String,
+          },
+        ],
+        exchange: { type: Boolean, default: true },
       },
     ],
   },
@@ -88,13 +96,50 @@ cooperationSchema.statics = {
   getAllCooperative() {
     return this.find().exec();
   },
-  deleteBusiness(idCoopare, id) {
-    return this.update(
-      { _id: idCoopare },
+  deleteBusiness(idCoopare, id, bl) {
+    return this.findOneAndUpdate(
+      { $and: [{ _id: idCoopare }, { "business._id": id }] },
       {
-        $pull: { business: { _id: id } },
+        $set: { "business.$.exchange": !bl },
       }
     ).exec();
+  },
+  updateMarker(idCoopare, idBusiness, dataUpdate) {
+    return this.findOneAndUpdate(
+      { $and: [{ _id: idCoopare }, { "business._id": idBusiness }] },
+      {
+        $set: { "business.$.marker": dataUpdate },
+      }
+    ).exec();
+  },
+  updateDatabusi(idCoopare, idBusiness, dataUpdate) {
+    return this.findOneAndUpdate(
+      { $and: [{ _id: idCoopare }, { "business._id": idBusiness }] },
+      {
+        $set: {
+          "business.$.nameCompany": dataUpdate.nameCompany,
+          "business.$.address": dataUpdate.address,
+          "business.$.typeOfTree": dataUpdate.typeOfTree,
+        },
+      }
+    ).exec();
+    // this.findOneAndUpdate(
+    //   { $and: [{ _id: idCoopare }, { "business._id": idBusiness }] },
+    //   {
+    //     $set: {
+    //       "business.$.address": dataUpdate.address,
+    //     },
+    //   }
+    // ).exec();
+    // this.findOneAndUpdate(
+    //   { $and: [{ _id: idCoopare }, { "business._id": idBusiness }] },
+    //   {
+    //     $set: {
+    //       "business.$.typeOfTree": dataUpdate.typeOfTree,
+    //     },
+    //   }
+    // ).exec();
+    // return true;
   },
 };
 module.exports = mongoose.model("cooperation", cooperationSchema);

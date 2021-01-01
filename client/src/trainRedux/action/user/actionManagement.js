@@ -389,3 +389,111 @@ export const updatePolysonFetch = (dataUpdate, idFarmer, idUser, PolyArray) => {
       });
   };
 };
+
+export const updateMarkerFetch = (
+  dataUpdate,
+  idBusiness,
+  idUser,
+  PolyArray
+) => {
+  console.log(dataUpdate);
+
+  let dataUp = dataUpdate.map((e) => {
+    //  let LatLng = [e.LatLng.lat, e.LatLng.lng];
+    return {
+      lat: e.LatLng.lat,
+      lng: e.LatLng.lng,
+      idpoly: e.idpoly,
+    };
+  });
+  console.log(dataUp);
+  // console.log(PolyArray);
+  let arrayNew = dataUp.concat(PolyArray);
+  // xoa trung neu co :v
+  const seen = new Set();
+  const LastArray = arrayNew.filter((el) => {
+    const duplicate = seen.has(el.idpoly);
+    seen.add(el.idpoly);
+    return !duplicate;
+  });
+
+  console.log(LastArray);
+
+  // // console.log(arrayNew);
+  let data = {
+    idUser: idUser,
+    idBusiness: idBusiness,
+    dataUpdate: LastArray,
+  };
+  return (dispatch) => {
+    const token = localStorage.userToken;
+    const accessToken = JSON.parse(token).accessToken;
+    // console.log(accessToken);
+    return axios
+      .put(
+        "http://localhost:3456/updatemarker",
+        {
+          data,
+        },
+        {
+          headers: { Authorization: `${accessToken}` },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        dispatch(showBusiness(idUser));
+        //return true;
+      })
+      .catch((error) => {
+        console.log(error);
+        // localStorage.clear();
+        return false;
+        //dispatch(actions.authFail("thong tin dang ky khong hop le"));
+      });
+  };
+};
+export const userUpdateDataBusiness = (dataFamer, checkVali) => {
+  console.log(dataFamer);
+  let check = true;
+  checkVali.forEach((e) => {
+    if (!e) check = false;
+  });
+  return (dispatch) => {
+    // dispatch(actions.authStart());
+    const token = localStorage.userToken;
+    console.log(check);
+    //console.log(dataFamer);
+    if (token && check) {
+      // console.log(check);
+      // dispatch(actions.authFail(""));
+      const accessToken = JSON.parse(token).accessToken;
+      // console.log(accessToken);
+      return axios
+        .put(
+          "http://localhost:3456/updatedatabusiness",
+          {
+            dataFamer,
+          },
+          {
+            headers: { Authorization: `${accessToken}` },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          dispatch(showBusiness(dataFamer.idUser));
+          return true;
+        })
+        .catch((error) => {
+          console.log(error);
+          // localStorage.clear();
+          return false;
+          //dispatch(actions.authFail("thong tin dang ky khong hop le"));
+        });
+    } else {
+      console.log("co loi luc cap nhat");
+      //localStorage.removeItem("userToken");
+      // dispatch(actions.authFail("thong tin dang ky khong hop le"));
+      return false;
+    }
+  };
+};

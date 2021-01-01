@@ -8,12 +8,12 @@ const userSchema = new Schema(
     email: { type: String },
     password: { type: String, default: "" },
     phonenumber: { type: String, default: "" },
-    profile: {
-      fullName: { type: String, default: "" },
-      avatar: { type: String, default: "" },
-      gender: { type: String, default: "" },
-      address: { type: String, default: "" },
-    },
+    // profile: {
+    //   fullName: { type: String, default: "" },
+    //   avatar: { type: String, default: "" },
+    //   gender: { type: String, default: "" },
+    //   address: { type: String, default: "" },
+    // },
     dataFarmer: [
       {
         idFarmer: { type: String },

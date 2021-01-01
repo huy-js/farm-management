@@ -4,6 +4,7 @@ import axios from "axios";
 import { token } from "../../../components/helpers/checkLogin";
 import * as actionTypes from "../actionType";
 import { showListOrderFetch } from "../order/actionOrder";
+import * as actions from "../user/actionManagement";
 export const fetchListUserData = (ListUserdata) => ({
   type: actionTypes.FETCH_LIST_USER_DATA,
   payload: ListUserdata,
@@ -122,8 +123,9 @@ export const showCooperativeFetch = (iduser) => {
           headers: { Authorization: `${accessToken}` },
         })
         .then((res) => {
-          console.log(res.data.convertDataCoopera);
+          // console.log(res.data);
           dispatch(fetchListCooperaData(res.data.convertDataCoopera));
+          dispatch(actions.fetchFarmerData(res.data.listFarmer));
         })
         .catch((error) => {
           console.log(error);

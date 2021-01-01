@@ -61,10 +61,10 @@ var reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.FETCH_FARMER_DATA:
       return fetchFarmerData(state, action);
-    case actionTypes.FETCH_ORDER_DATA:
-      return fetchOrderData(state, action);
-    case actionTypes.FETCH_LIST_USER_DATA:
-      return fetchListUserData(state, action);
+    // case actionTypes.FETCH_ORDER_DATA:
+    //   return fetchOrderData(state, action);
+    // case actionTypes.FETCH_LIST_USER_DATA:
+    //   return fetchListUserData(state, action);
     case actionTypes.FETCH_COOPARE_DATA:
       return fetchCoopareData(state, action);
     case actionTypes.FETCH__LIST_USER_ORDER:

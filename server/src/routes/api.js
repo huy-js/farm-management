@@ -66,6 +66,8 @@ let initAPIs = (app) => {
   router.get("/showbusiness/:id", ManagementController.showBusiness);
   router.put("/deletebusiness", ManagementController.deleteBusiness);
   router.put("/updatepolyson", ManagementController.updatePolyson);
+  router.put("/updatemarker", ManagementController.updateMarker);
+  router.put("/updatedatabusiness", ManagementController.updateDataBusiness);
   // diary
   // router.get("/getdiaryfarmer/:data", ManagementDiaryController.getDiaryFarmer);
   router.get("/showlistfarmer/:id", ManagementDiaryController.showListFarmer);
