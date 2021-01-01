@@ -234,12 +234,18 @@ class OrderCustomer extends Component {
       </tr>
     ));
     return (
-      <main className="page landing-page" style={{ height: "100%" }}>
-        <section className="clean-block" style={{ minHeight: "90vh" }}>
+      <main
+        className="page landing-page"
+        style={{ height: "100%", padding: "0px" }}
+      >
+        <section
+          className="clean-block"
+          style={{ paddingTop: "30px", minWidth: "100vh" }}
+        >
           <div className="container">
             <div
               className="block-heading text-center"
-              style={{ marginRight: "0px", paddingTop: "50px" }}
+              style={{ paddingTop: "50px" }}
             >
               <h2 className={styles.tieuDe}>Giao dịch QR Code</h2>
             </div>
@@ -358,7 +364,7 @@ class OrderCustomer extends Component {
                   <tbody>{listPurchase}</tbody>
                   {/* <tr>
                     <td colSpan="3"> */}
-                      {/* <button
+                  {/* <button
                         className="btn btn-outline-primary btn-sm"
                         type="button"
                         onClick={this.submitInputOrder}
@@ -369,7 +375,7 @@ class OrderCustomer extends Component {
                       >
                         HOÀN TẤT THANH TOÁN
                       </button> */}
-                      {/* <div style={{ textAlign: "center" }}>
+                  {/* <div style={{ textAlign: "center" }}>
                         <Button
                           btnType="Success"
                           clicked={this.submitInputOrder}
@@ -377,7 +383,7 @@ class OrderCustomer extends Component {
                           Hoàn tất thanh toán
                         </Button>
                       </div> */}
-                    {/* </td>
+                  {/* </td>
                   </tr> */}
                 </table>
               </div>
@@ -431,20 +437,16 @@ class OrderCustomer extends Component {
                       />
                     </td>
                   </tr>
-                  
                 </tbody>
                 <tr>
-                    <td>
-                      <div style={{ textAlign: "center" }}>
-                        <Button
-                          btnType="Success"
-                          clicked={this.submitSendserver}
-                        >
-                          Hoàn tất
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
+                  <td>
+                    <div style={{ textAlign: "center" }}>
+                      <Button btnType="Success" clicked={this.submitSendserver}>
+                        Hoàn tất
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
               </table>
             </div>
           </div>
