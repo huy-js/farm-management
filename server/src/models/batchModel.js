@@ -30,7 +30,7 @@ BatchSchema.statics = {
     return this.create(item);
   },
   showListBatch(id) {
-    return this.find({ idFarmOwner: id }).exec();
+    return this.find({ idFarmOwner: id }).sort({ numberbatch: 1 }).exec();
   },
   getDataBatch(iduser, numberbatch) {
     return this.findOne({
@@ -113,6 +113,15 @@ BatchSchema.statics = {
       }
       //  { safe: true, upsert: true, new: true }
     ).exec();
+  },
+  updateOneBatch(idBatch, idDiary) {
+    return this.findByIdAndUpdate(idBatch, {
+      $push: {
+        arrayDiaryForAll: {
+          idDiary: idDiary,
+        },
+      },
+    });
   },
   // getDataIdDiaryAllStump(idBatch) {
   //   return this.findById(idBatch, { arrayDiaryForAll: 1 }).exec();

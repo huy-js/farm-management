@@ -9,7 +9,7 @@ import { showFarmerFetch } from "../../../trainRedux/action/user/actionManagemen
 import BootstrapTable from "react-bootstrap-table-next";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import Button from "../../../components/UI/Button/Button";
-
+import moment from "moment";
 class OrderCustomer extends Component {
   state = {
     isMail: "",
@@ -33,30 +33,30 @@ class OrderCustomer extends Component {
     });
   };
 
-  completeTheTransaction = (event) => {
-    event.preventDefault();
-    console.log(this.state);
-    let dataOrder = {
-      idcustomer: this.props.currentUser._id,
-      numberQR: this.props.dataCooper.totalNumberQR,
-      // this.state.totalTrees === 0
-      //   ? this.props.dataCooper.totalNumberQR
-      //   : this.state.totalTrees,
-      memberfarmer: this.props.dataCooper.memberfarmer,
-      totalTrees: this.props.dataCooper.totalTrees, // tông cay trong htx
-      landArea: this.props.dataCooper.landArea, // diện tích
-      email:
-        this.state.email === ""
-          ? this.props.currentUser.email
-          : this.state.email,
-      totalpay: this.props.dataCooper.totalNumberQR * 1000,
-      payments: "",
-    };
-    this.props.saveDataOrderFetch(dataOrder);
-  };
+  // completeTheTransaction = (event) => {
+  //   event.preventDefault();
+  //   console.log(this.state);
+  //   let dataOrder = {
+  //     idcustomer: this.props.currentUser._id,
+  //     numberQR: this.props.dataCooper.totalNumberQR,
+  //     // this.state.totalTrees === 0
+  //     //   ? this.props.dataCooper.totalNumberQR
+  //     //   : this.state.totalTrees,
+  //     memberfarmer: this.props.dataCooper.memberfarmer,
+  //     totalTrees: this.props.dataCooper.totalTrees, // tông cay trong htx
+  //     landArea: this.props.dataCooper.landArea, // diện tích
+  //     email:
+  //       this.state.email === ""
+  //         ? this.props.currentUser.email
+  //         : this.state.email,
+  //     totalpay: this.props.dataCooper.totalNumberQR * 1000,
+  //     payments: "",
+  //   };
+  //   this.props.saveDataOrderFetch(dataOrder);
+  // };
 
   componentDidMount = async () => {
-    //  this.props.showCoopareFetch(this.props.currentUser._id);
+    await this.props.showCoopareFetch(this.props.currentUser._id);
     await this.props.showFarmerFetch(this.props.currentUser._id);
 
     let array = this.props.resArray.map((e) => {
@@ -129,10 +129,10 @@ class OrderCustomer extends Component {
     if (t === 0) {
       return alert("Bạn cần nhập số QR cho nông hộ");
     }
-    this.setState({
-      tongNongdan: t,
-      tongQR: TongQr,
-    });
+    // this.setState({
+    //   tongNongdan: t,
+    //   tongQR: TongQr,
+    // });
     if (this.state.isMail === "") {
       return alert("Bạn chưa nhập địa chỉ mail nhận QR");
     }
@@ -142,8 +142,8 @@ class OrderCustomer extends Component {
     let dataCreate = {
       idcustomer: this.props.currentUser._id,
       email: this.state.isMail,
-      tongNongdan: this.state.tongNongdan,
-      tongQR: this.state.tongQR,
+      memberfarmer: t, //this.state.tongNongdan,
+      numberQR: TongQr, //this.state.tongQR,
     };
     this.props.saveDataOrderFetch(dataOrder, dataCreate);
 
@@ -161,6 +161,7 @@ class OrderCustomer extends Component {
       displayInputTT: "block",
       displaySendserver: "none",
     });
+    this.props.showCoopareFetch(this.props.currentUser._id);
     return alert("đăng ký mua thành công, đợi nhận mail sớm nhất trong ngày");
   };
 
@@ -172,34 +173,71 @@ class OrderCustomer extends Component {
   };
   render() {
     console.log("alo");
-    console.log(this.state.dataQROrder);
+    console.log(this.props.dataListOrderUser);
     let t = 0;
     let tongQR = 0;
     const styleHeader = {
-      padding: "0px",
-      paddingTop: "5px",
-      marginRight: "10px",
+      backgroundColor: "#009879",
+      color: "#fff",
+      textAlign: "center",
+      border: "none",
     };
+    const styleRow = {
+      textAlign: "center",
+      border: "none",
+    };
+    const arrayOrder = [];
     const columns = [
       {
         dataField: "stt",
-        text: "STT",
-        // headerStyle: styleHeader,
-        // style: styleRow,
+        text: "Stt",
+        headerStyle: styleHeader,
+        style: styleRow,
       },
       {
-        dataField: "farmOwner",
-        text: "TÊN NÔNG HỘ",
-        // headerStyle: styleHeader,
-        filter: textFilter(),
+        dataField: "createAt",
+        text: "Ngày Tạo",
+        headerStyle: styleHeader,
+        //filter: textFilter(),
+        style: styleRow,
       },
       {
-        dataField: "qrForFarmer",
-        text: "NHẬP SỐ LƯỢNG QR CHO NÔNG DÂN",
-        // headerStyle: styleHeader,
-        // style: styleRow,
+        dataField: "numberQR",
+        text: "Số lượng Qr yêu cầu",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "memberfarmer",
+        text: "Số nông hộ tương ứng",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "email",
+        text: "Địa chỉ mail nhận Qr",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "createQR",
+        text: "Tình Trạng gửi Qr",
+        headerStyle: styleHeader,
+        style: styleRow,
       },
     ];
+    this.props.dataListOrderUser.map(async (element, index) => {
+      let arr = {
+        stt: index + 1,
+        createAt: moment(element.createAt).format("DD/MM/YYYY"),
+        numberQR: element.numberQR,
+        memberfarmer: element.memberfarmer,
+        email: element.email,
+        createQR: element.createQR ? "done" : "wait",
+      };
+      return arrayOrder.push(arr);
+    });
+
     const products = [];
 
     this.state.dataQROrder.map(async (element, index) => {
@@ -240,9 +278,9 @@ class OrderCustomer extends Component {
       >
         <section
           className="clean-block"
-          style={{ paddingTop: "30px", minWidth: "100vh" }}
+          style={{ paddingTop: "30px", minHeight: "120vh", minWidth: "80%" }}
         >
-          <div className="container">
+          <div className="container" style={{ minWidth: "90%" }}>
             <div
               className="block-heading text-center"
               style={{ paddingTop: "50px" }}
@@ -349,7 +387,10 @@ class OrderCustomer extends Component {
                 justifyContent: "space-between",
               }}
             >
-              <div>
+              <div class="col-sm-4">
+                <div>
+                  <h3>Chọn Qr cho nông hộ</h3>
+                </div>
                 <table
                   className={styles.content_table}
                   style={{ width: "100%" }}
@@ -387,20 +428,88 @@ class OrderCustomer extends Component {
                   </tr> */}
                 </table>
               </div>
-
-              <table className={styles.content_table} style={{ width: "55%" }}>
+              <div className="col-sm-8 ">
+                <div
+                  style={{
+                    paddingBottom: "10px",
+                  }}
+                >
+                  <h3>Thông tin đặt Qr</h3>
+                </div>
+                <div
+                  className="card shadow"
+                  style={{ padding: "20px", margin: "6px" }}
+                >
+                  <div
+                    className="row "
+                    style={{
+                      //  marginTop: "8px",
+                      padding: "6px",
+                      //borderTop: "1px solid #26853c",
+                    }}
+                  >
+                    <div className="col-sm-3">
+                      <b>Tổng nông hộ:</b>
+                      {this.state.dataQROrder.forEach((e) => {
+                        if (e.numberQR != "0") {
+                          t++;
+                          tongQR = tongQR + +e.numberQR;
+                        }
+                      })}
+                      <span style={{ float: "right" }}> {t} </span>
+                    </div>
+                    <div className="col-sm-3">
+                      <b>Tổng số Qr:</b>
+                      <span style={{ float: "right" }}> {tongQR} </span>
+                    </div>
+                    <div className="col-sm-5">
+                      <b>Địa chỉ Mail nhận</b>
+                      <input
+                        type="email"
+                        value={this.state.isMail}
+                        name="isMail"
+                        onChange={this.ChangeMail}
+                        style={{
+                          textAlign: "center",
+                          border: "none",
+                          borderBottom: "1px solid #dcdfe3",
+                          outline: "none",
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "center", paddingTop: "10px" }}>
+                    <Button btnType="Success" clicked={this.submitSendserver}>
+                      Hoàn tất
+                    </Button>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    padding: "5px",
+                  }}
+                >
+                  <h3>Lịch sử giao dịch</h3>
+                </div>
+                <div className="shadow">
+                  <BootstrapTable
+                    keyField="stt"
+                    data={arrayOrder}
+                    columns={columns}
+                    hover
+                    // filter={filterFactory()}
+                    // rowEvents={rowEvents}
+                  />
+                </div>
+              </div>
+              {/* <table className={styles.content_table} style={{ width: "70%" }}>
                 <thead>
                   <tr>
                     <th>Thông tin thanh toán</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {/* <div
-                      style={{
-                        display: this.state.displaySendserver,
-                        width: "100%",
-                      }}
-                    > */}
+                
                   <tr>
                     <td>
                       <b>Tổng nông hộ mua QR : </b>
@@ -423,8 +532,8 @@ class OrderCustomer extends Component {
                     <td>
                       <b>Nhập mail nhận QR :</b>
                       <input
-                        type="text"
-                        // className="btn-outline-primary"
+                        type="email"
+                       
                         value={this.state.isMail}
                         name="isMail"
                         onChange={this.ChangeMail}
@@ -447,7 +556,7 @@ class OrderCustomer extends Component {
                     </div>
                   </td>
                 </tr>
-              </table>
+              </table> */}
             </div>
           </div>
         </section>

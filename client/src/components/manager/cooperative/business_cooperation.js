@@ -14,6 +14,7 @@ import Spinner from "../../UI/Spinner/Spinner";
 import classes from "./Auth.module.css";
 import { checkValidity } from "../../helpers/validation/checkValidation";
 import styles from "./manager-coopera.module.css";
+import "../../helpers/table2.css";
 // osp map
 import Search from "react-leaflet-search";
 
@@ -349,49 +350,163 @@ class BusinessCooperation extends Component {
   //   }
   // };
   render() {
-    let dataBusiness = this.props.dataCompany.map((element, index) => (
-      <tr key={index + 1}>
-        <td>{index + 1}</td>
-        <td>{moment(element.updateAt).format("DD/MM/YYYY")}</td>
-        <td>{element.nameCompany}</td>
-        <td>{element.typeOfTree}</td>
-        <td>{element.address}</td>
-        <td onClick={(event) => this.getIdupdateMarker(event, element)}>
+    const styleHeader = {
+      backgroundColor: "#009879",
+      color: "#fff",
+      textAlign: "center",
+      border: "none",
+    };
+    const styleRow = {
+      textAlign: "center",
+      border: "none",
+      //width: "200px",
+    };
+    const columns = [
+      {
+        dataField: "stt",
+        text: "Stt",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "createAt",
+        text: "Ngày tạo",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "nameCompany",
+        text: "Tên Công ty",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "typeOfTree",
+        text: "Giống Cây Phân Phối",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "address",
+        text: "Địa chỉ",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "marker",
+        text: "Địa điểm kinh doanh",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "updateData",
+        text: "Cập nhật thông tin",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "updateDele",
+        text: "Trạng thái giao dịch",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+    ];
+    const products = [];
+
+    this.props.dataCompany.map(async (element, index) => {
+      // let dates = (string) => {
+      //   var options = { year: "numeric", month: "long", day: "numeric" };
+      //   return new Date(string).toLocaleDateString([], options);
+      // };
+
+      let arr = {
+        stt: index + 1,
+        //createAt: dates(element.createAt),
+        createAt: moment(element.updateAt).format("DD/MM/YYYY"),
+        nameCompany: element.nameCompany,
+        typeOfTree: element.typeOfTree,
+        address: element.address,
+        marker: (
           <i
             className="fa fa-map-marker"
             style={{ color: "#009879" }}
-            // data-toggle="modal"
-            // data-target="#updatePolysonModel"
+            onClick={(event) => this.getIdupdateMarker(event, element)}
           ></i>
-        </td>
-        <td onClick={(event) => this.getDataTableupdate(event, element._id)}>
+        ),
+        updateData: (
           <i
             style={{ color: "#009879" }}
             data-toggle="modal"
             data-target="#showModalUpdate"
             className="fa fa-wrench suaNongdan"
+            onClick={(event) => this.getDataTableupdate(event, element._id)}
           ></i>
-        </td>
-        <td
-          onClick={(e) =>
-            this.deleteBusiness(this.props.currentUser._id, element, e)
-          }
-        >
-          {element.exchange ? (
-            <i
-              class="fa fa-link btn-outline-success"
-              style={{ borderRadius: "100%" }}
-            ></i>
-          ) : (
-            <i
-              // key={element.id}
-              className="fa fa-ban  btn-outline-danger"
-              style={{ borderRadius: "100%" }}
-            ></i>
-          )}
-        </td>
-      </tr>
-    ));
+        ),
+        updateDele: element.exchange ? (
+          <i
+            className="fa fa-link btn-outline-success"
+            style={{ borderRadius: "100%" }}
+            onClick={(e) =>
+              this.deleteBusiness(this.props.currentUser._id, element, e)
+            }
+          ></i>
+        ) : (
+          <i
+            // key={element.id}
+            className="fa fa-ban  btn-outline-danger"
+            style={{ borderRadius: "100%" }}
+            onClick={(e) =>
+              this.deleteBusiness(this.props.currentUser._id, element, e)
+            }
+          ></i>
+        ),
+      };
+      return products.push(arr);
+    });
+
+    // let dataBusiness = this.props.dataCompany.map((element, index) => (
+    //   <tr key={index + 1}>
+    //     <td>{index + 1}</td>
+    //     <td>{moment(element.updateAt).format("DD/MM/YYYY")}</td>
+    //     <td>{element.nameCompany}</td>
+    //     <td>{element.typeOfTree}</td>
+    //     <td>{element.address}</td>
+    //     <td onClick={(event) => this.getIdupdateMarker(event, element)}>
+    //       <i
+    //         className="fa fa-map-marker"
+    //         style={{ color: "#009879" }}
+    //         // data-toggle="modal"
+    //         // data-target="#updatePolysonModel"
+    //       ></i>
+    //     </td>
+    //     <td onClick={(event) => this.getDataTableupdate(event, element._id)}>
+    //       <i
+    //         style={{ color: "#009879" }}
+    //         data-toggle="modal"
+    //         data-target="#showModalUpdate"
+    //         className="fa fa-wrench suaNongdan"
+    //       ></i>
+    //     </td>
+    //     <td
+    //       onClick={(e) =>
+    //         this.deleteBusiness(this.props.currentUser._id, element, e)
+    //       }
+    //     >
+    //       {element.exchange ? (
+    //         <i
+    //           class="fa fa-link btn-outline-success"
+    //           style={{ borderRadius: "100%" }}
+    //         ></i>
+    //       ) : (
+    //         <i
+    //           // key={element.id}
+    //           className="fa fa-ban  btn-outline-danger"
+    //           style={{ borderRadius: "100%" }}
+    //         ></i>
+    //       )}
+    //     </td>
+    //   </tr>
+    // ));
     // setting osp
     const createPosition = (e) => {
       console.log(e.layer._latlng);
@@ -443,7 +558,7 @@ class BusinessCooperation extends Component {
         style={{ minHeight: "100vh", paddingTop: "0px" }}
       >
         <section className="clean-block ">
-          <div className="container">
+          <div className="container" style={{ minWidth: "80%" }}>
             <div className="block-heading">
               <i
                 className="fa fa-plus-circle btn-outline-secondary btn-sm"
@@ -466,30 +581,48 @@ class BusinessCooperation extends Component {
                   hien tai chua co thong tin moi ban them thong tin
                 </div>
               ) : (
-                <table
-                  className={styles.content_table}
-                  style={{ textAlign: "center" }}
-                >
-                  <thead>
-                    <tr style={{ textAlign: "center" }}>
-                      <th>STT</th>
-                      <th>Ngày tạo</th>
-                      <th>Tên Công ty</th>
-                      <th>Giống cây</th>
-                      <th>Địa chỉ</th>
-                      <th>Địa điểm kinh doanh</th>
-                      <th>Cập nhật thông tin</th>
-                      <th>Trạng thái giao dịch</th>
-                    </tr>
-                  </thead>
-                  <tbody>{dataBusiness}</tbody>
-                </table>
+                <div className="tableis" style={{ minWidth: "100%" }}>
+                  <BootstrapTable
+                    keyField="stt"
+                    data={products}
+                    columns={columns}
+                    // loading={this.state.loading}
+                    pagination={paginationFactory({
+                      sizePerPage: 5,
+                      hideSizePerPage: true,
+                      // hidePageListOnlyOnePage: true
+                    })}
+                    striped
+                    hover
+                    condensed
+                    shadow
+                  />
+                </div>
+                // <table
+                //   className={styles.content_table}
+                //   style={{ textAlign: "center" }}
+                // >
+                //   <thead>
+                //     <tr style={{ textAlign: "center" }}>
+                //       <th>STT</th>
+                //       <th>Ngày tạo</th>
+                //       <th>Tên Công ty</th>
+                //       <th>Giống cây</th>
+                //       <th>Địa chỉ</th>
+                //       <th>Địa điểm kinh doanh</th>
+                //       <th>Cập nhật thông tin</th>
+                //       <th>Trạng thái giao dịch</th>
+                //     </tr>
+                //   </thead>
+                //   <tbody>{dataBusiness}</tbody>
+                // </table>
               )}
               <div
-                className="col-12 row"
+                className="col-6 row"
                 style={{
                   height: "50px",
                   paddingBottom: "5px",
+                  marginTop: "-50px",
                 }}
               >
                 <div

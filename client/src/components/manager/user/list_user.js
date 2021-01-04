@@ -4,6 +4,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import { connect } from "react-redux";
 import * as actions from "../../../trainRedux/action/admin/actionManagement";
 import styles from "../../helpers/desgin-table.module.css";
+import "../../helpers/table2.css";
 import moment from "moment";
 class ListUser extends Component {
   state = {
@@ -45,152 +46,148 @@ class ListUser extends Component {
     await this.props.createPwAndSendFetch(data);
   };
   render() {
-    // const styleHeader = {
-    //   fontSize: "15px",
-    //   height: "50px",
-    //   padding: "11px",
-    //   borderBottom: "2px solid #f78788c",
-    //   color: "black",
-    //   textAlign: "center",
-    // };
-    // const styleRow = {
-    //   fontSize: "15px",
-    //   color: "#000",
-    //   textAlign: "center",
-    //   borderBottom: "2px solid #f78788c",
-    //   cursor: "pointer",
-    // };
-    // const columns = [
-    //   {
-    //     dataField: "stt",
-    //     text: "STT",
-    //     headerStyle: styleHeader,
-    //     style: styleRow,
-    //   },
-    //   {
-    //     dataField: "createAt",
-    //     text: "NGÀY TẠO",
-    //     headerStyle: styleHeader,
-    //     style: styleRow,
-    //   },
-    //   {
-    //     dataField: "username",
-    //     text: "TÊN",
-    //     headerStyle: styleHeader,
-    //     style: styleRow,
-    //   },
-    //   {
-    //     dataField: "email",
-    //     text: "EMAIL",
-    //     headerStyle: styleHeader,
-    //     style: styleRow,
-    //   },
-    //   {
-    //     dataField: "phonenumber",
-    //     text: "SỐ ĐIỆN THOẠI",
-    //     headerStyle: styleHeader,
-    //     style: styleRow,
-    //   },
-    //   {
-    //     dataField: "password",
-    //     text: "PASSWORD",
-    //     headerStyle: styleHeader,
-    //     style: styleRow,
-    //   },
-    //   {
-    //     dataField: "isActive",
-    //     text: "ACTIVE",
-    //     headerStyle: styleHeader,
-    //     style: styleRow,
-    //   },
-    // ];
-    // const products = [];
+    const styleHeader = {
+      backgroundColor: "#009879",
+      color: "#fff",
+      textAlign: "center",
+      border: "none",
+    };
+    const styleRow = {
+      textAlign: "center",
+      border: "none",
+    };
+    const columns = [
+      {
+        dataField: "stt",
+        text: "Stt",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "createAt",
+        text: "Ngày tạo",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "username",
+        text: "Tên người đại diện",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "email",
+        text: "Địa chỉ mail",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "phonenumber",
+        text: "số điện thoại",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "password",
+        text: "Mật khẩu",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "isActive",
+        text: "Trạng thái tài khoản",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+    ];
+    const products = [];
 
-    // this.props.resArray.map(async (element, index) => {
-    //   let dates = (string) => {
-    //     var options = { year: "numeric", month: "long", day: "numeric" };
-    //     return new Date(string).toLocaleDateString([], options);
-    //   };
+    this.props.resArrayListUser.map(async (element, index) => {
+      // let dates = (string) => {
+      //   var options = { year: "numeric", month: "long", day: "numeric" };
+      //   return new Date(string).toLocaleDateString([], options);
+      // };
 
-    //   let arr = {
-    //     stt: index + 1,
-    //     //createAt: dates(element.createAt),
-    //     createAt: moment(element.createAt).format("DD/MM/YYYY"),
-    //     username: element.username,
-    //     email: element.email,
-    //     phonenumber: element.phonenumber,
-    //     password: element.password ? (
-    //       <i>********</i>
-    //     ) : (
-    //       <i
-    //         className="fa fa-plus-circle"
-    //         data-toggle="modal"
-    //         data-target="#showModalCreate"
-    //         style={{ color: "red" }}
-    //         onClick={(e) => this.createPwUser(element._id, e)}
-    //       ></i>
-    //     ),
-    //     isActive: element.isActive ? (
-    //       <i
-    //         className="fa fa-check"
-    //         style={{ color: "blue" }}
-    //         onClick={(e) =>
-    //           this.upDateActive(this.props.currentUser._id, element._id, e)
-    //         }
-    //       ></i>
-    //     ) : (
-    //       <i
-    //         className="fa fa-times"
-    //         style={{ color: "red" }}
-    //         onClick={(e) =>
-    //           this.upDateActive(this.props.currentUser._id, element._id, e)
-    //         }
-    //       ></i>
-    //     ),
-    //   };
-    //   return products.push(arr);
-    // });
-    let dataUseList = this.props.resArrayListUser.map((element, index) => (
-      <tr key={index + 1}>
-        <td>{index + 1}</td>
-        <td>{moment(element.updateAt).format("DD/MM/YYYY")}</td>
-        <td>{element.username}</td>
-        <td>{element.email}</td>
-        <td>{element.phonenumber}</td>
-        <td>
-          {element.password ? (
-            <i>********</i>
-          ) : (
-            <i
-              className="fa fa-plus-circle"
-              data-toggle="modal"
-              data-target="#showModalCreate"
-              style={{ color: "red" }}
-              onClick={(e) => this.createPwUser(element._id, e)}
-            ></i>
-          )}
-        </td>
-        <td>
-          {element.isActive ? (
-            <i
-              className="fa fa-check"
-              style={{ color: "blue" }}
-              onClick={(e) =>
-                this.upDateActive(this.props.currentUser._id, element._id, e)
-              }
-            ></i>
-          ) : (
-            <i
-              className="fa fa-times"
-              style={{ color: "red" }}
-              onClick={(e) =>
-                this.upDateActive(this.props.currentUser._id, element._id, e)
-              }
-            ></i>
-          )}
-        </td>
-      </tr>
-    ));
+      let arr = {
+        stt: index + 1,
+        //createAt: dates(element.createAt),
+        createAt: moment(element.createAt).format("DD/MM/YYYY"),
+        username: element.username,
+        email: element.email,
+        phonenumber: element.phonenumber,
+        password: element.password ? (
+          <i>********</i>
+        ) : (
+          <i
+            className="fa fa-plus-circle"
+            data-toggle="modal"
+            data-target="#showModalCreate"
+            style={{ color: "red" }}
+            onClick={(e) => this.createPwUser(element._id, e)}
+          ></i>
+        ),
+        isActive: element.isActive ? (
+          <i
+            className="fa fa-check"
+            style={{ color: "blue" }}
+            onClick={(e) =>
+              this.upDateActive(this.props.currentUser._id, element._id, e)
+            }
+          ></i>
+        ) : (
+          <i
+            className="fa fa-times"
+            style={{ color: "red" }}
+            onClick={(e) =>
+              this.upDateActive(this.props.currentUser._id, element._id, e)
+            }
+          ></i>
+        ),
+      };
+      return products.push(arr);
+    });
+
+    // let dataUseList = this.props.resArrayListUser.map((element, index) => (
+    //   <tr key={index + 1}>
+    //     <td>{index + 1}</td>
+    //     <td>{moment(element.updateAt).format("DD/MM/YYYY")}</td>
+    //     <td>{element.username}</td>
+    //     <td>{element.email}</td>
+    //     <td>{element.phonenumber}</td>
+    //     <td>
+    //       {element.password ? (
+    //         <i>********</i>
+    //       ) : (
+    //         <i
+    //           className="fa fa-plus-circle"
+    //           data-toggle="modal"
+    //           data-target="#showModalCreate"
+    //           style={{ color: "red" }}
+    //           onClick={(e) => this.createPwUser(element._id, e)}
+    //         ></i>
+    //       )}
+    //     </td>
+    //     <td>
+    //       {element.isActive ? (
+    //         <i
+    //           className="fa fa-check"
+    //           style={{ color: "blue" }}
+    //           onClick={(e) =>
+    //             this.upDateActive(this.props.currentUser._id, element._id, e)
+    //           }
+    //         ></i>
+    //       ) : (
+    //         <i
+    //           className="fa fa-times"
+    //           style={{ color: "red" }}
+    //           onClick={(e) =>
+    //             this.upDateActive(this.props.currentUser._id, element._id, e)
+    //           }
+    //         ></i>
+    //       )}
+    //     </td>
+    //   </tr>
+    // ));
 
     return (
       <div>
@@ -212,37 +209,40 @@ class ListUser extends Component {
                     hiện tại chưa có người đăng ký tài khoản
                   </div>
                 ) : (
-                  // <BootstrapTable
-                  //   keyField="stt"
-                  //   data={products}
-                  //   columns={columns}
-                  //   // loading={this.state.loading}
-                  //   pagination={paginationFactory({
-                  //     sizePerPage: 5,
-                  //     hideSizePerPage: true,
-                  //     // hidePageListOnlyOnePage: true
-                  //   })}
-                  //   // striped
-                  //   hover
-                  //   // condensed
-                  // />
-                  <table
-                    className={styles.content_table}
-                    style={{ textAlign: "center" }}
-                  >
-                    <thead>
-                      <tr style={{ textAlign: "center" }}>
-                        <th>STT</th>
-                        <th>Ngày tạo</th>
-                        <th>Tên thành viên</th>
-                        <th>Địa chỉ mail</th>
-                        <th>Số điện thoại</th>
-                        <th>Mật khẩu</th>
-                        <th>Kích hoạt</th>
-                      </tr>
-                    </thead>
-                    <tbody>{dataUseList}</tbody>
-                  </table>
+                  <div className="tableis">
+                    <BootstrapTable
+                      keyField="stt"
+                      data={products}
+                      columns={columns}
+                      // loading={this.state.loading}
+                      pagination={paginationFactory({
+                        sizePerPage: 5,
+                        hideSizePerPage: true,
+                        // hidePageListOnlyOnePage: true
+                      })}
+                      striped
+                      hover
+                      condensed
+                      shadow
+                    />
+                  </div>
+                  // <table
+                  //   className={styles.content_table}
+                  //   style={{ textAlign: "center" }}
+                  // >
+                  //   <thead>
+                  //     <tr style={{ textAlign: "center" }}>
+                  //       <th>STT</th>
+                  //       <th>Ngày tạo</th>
+                  //       <th>Tên thành viên</th>
+                  //       <th>Địa chỉ mail</th>
+                  //       <th>Số điện thoại</th>
+                  //       <th>Mật khẩu</th>
+                  //       <th>Kích hoạt</th>
+                  //     </tr>
+                  //   </thead>
+                  //   <tbody>{dataUseList}</tbody>
+                  // </table>
                 )}
               </div>
             </div>

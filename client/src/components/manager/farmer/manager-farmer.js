@@ -14,6 +14,7 @@ import Spinner from "../../UI/Spinner/Spinner";
 import classes from "./Auth.module.css";
 import styles from "./manager-farmer.module.css";
 import { checkValidity } from "../../helpers/validation/checkValidation";
+import "../../helpers/table2.css";
 import moment from "moment";
 
 import Search from "react-leaflet-search";
@@ -425,42 +426,140 @@ class ManagerFarmer extends Component {
     });
   };
   render() {
-    // let map = L.map("map", {
-    //   center: [10.04904, 105.785103],
-    //   zoom: 13,
-    // });
-    // console.log(this.props.resArray);
-    let listFarmer = this.props.resArray.map((element, index) => (
-      <tr
-        key={index + 1}
-        onClick={this.ShowPositionMap}
-        className="text-center"
-      >
-        <td>{index + 1}</td>
-        <td>{moment(element.updateAt).format("DD/MM/YYYY")}</td>
-        <td>{element.farmOwner}</td>
-        <td>{element.typeOfTree}</td>
-        <td>{element.address}</td>
-        <td>{element.landArea}</td>
-        <td>{element.totalTrees}</td>
-        <td onClick={(event) => this.getIdupdateMarker(event, element)}>
+    const styleHeader = {
+      backgroundColor: "#009879",
+      color: "#fff",
+      textAlign: "center",
+      border: "none",
+    };
+    const styleRow = {
+      textAlign: "center",
+      border: "none",
+    };
+
+    const columns = [
+      {
+        dataField: "stt",
+        text: "Stt",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "updateAt",
+        text: "Ngày tạo",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "farmOwner",
+        text: "Tên nông hộ",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "typeOfTree",
+        text: "Loại Xoài",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "address",
+        text: "Địa chỉ cư phú",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "landArea",
+        text: "Diện tích đất trồng",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "totalTrees",
+        text: "Tổng cây trồng",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "polygonScreen",
+        text: "Vẽ ô đất",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "updateFarmer",
+        text: "Cập nhật thông tin",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+    ];
+    const products = [];
+
+    this.props.resArray.map(async (element, index) => {
+      // let dates = (string) => {
+      //   var options = { year: "numeric", month: "long", day: "numeric" };
+      //   return new Date(string).toLocaleDateString([], options);
+      // };
+
+      let arr = {
+        stt: index + 1,
+        updateAt: moment(element.updateAt).format("DD/MM/YYYY"),
+        farmOwner: element.farmOwner,
+        typeOfTree: element.typeOfTree,
+        address: element.address,
+        landArea: element.landArea,
+        totalTrees: element.totalTrees,
+        polygonScreen: (
           <i
             className="fa fa-map-marker"
             style={{ color: "#009879" }}
-            // data-toggle="modal"
-            // data-target="#updatePolysonModel"
+            onClick={(event) => this.getIdupdateMarker(event, element)}
           ></i>
-        </td>
-        <td onClick={(event) => this.getDataTableupdate(event, element._id)}>
+        ),
+        updateFarmer: (
           <i
             style={{ color: "#009879" }}
             data-toggle="modal"
             data-target="#showModalUpdate"
             className="fa fa-wrench suaNongdan"
+            onClick={(event) => this.getDataTableupdate(event, element._id)}
           ></i>
-        </td>
-      </tr>
-    ));
+        ),
+      };
+      return products.push(arr);
+    });
+
+    // let listFarmer = this.props.resArray.map((element, index) => (
+    //   <tr
+    //     key={index + 1}
+    //     onClick={this.ShowPositionMap}
+    //     className="text-center"
+    //   >
+    //     <td>{index + 1}</td>
+    //     <td>{moment(element.updateAt).format("DD/MM/YYYY")}</td>
+    //     <td>{element.farmOwner}</td>
+    //     <td>{element.typeOfTree}</td>
+    //     <td>{element.address}</td>
+    //     <td>{element.landArea}</td>
+    //     <td>{element.totalTrees}</td>
+    //     <td onClick={(event) => this.getIdupdateMarker(event, element)}>
+    //       <i
+    //         className="fa fa-map-marker"
+    //         style={{ color: "#009879" }}
+    //         // data-toggle="modal"
+    //         // data-target="#updatePolysonModel"
+    //       ></i>
+    //     </td>
+    //     <td onClick={(event) => this.getDataTableupdate(event, element._id)}>
+    //       <i
+    //         style={{ color: "#009879" }}
+    //         data-toggle="modal"
+    //         data-target="#showModalUpdate"
+    //         className="fa fa-wrench suaNongdan"
+    //       ></i>
+    //     </td>
+    //   </tr>
+    // ));
     const fileType =
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const fileExtension = ".xlsx";
@@ -521,13 +620,19 @@ class ManagerFarmer extends Component {
       <div>
         <main
           className="page contact-us-page"
-          style={{ minHeight: "100vh", paddingTop: "0px" }}
+          style={{
+            minHeight: "100vh",
+            paddingTop: "0px",
+            //backgroundImage: `url("assets/img/image0.jpg")`,
+            // opacity: 0.6,
+            zIndex: -1,
+          }}
         >
           <section
             className="clean-block clean-form "
             style={{ paddingTop: "0px" }}
           >
-            <div className="container">
+            <div className="container" style={{ minWidth: "90%" }}>
               <div
                 className="block-heading text-center col-12 row"
                 style={{
@@ -586,20 +691,23 @@ class ManagerFarmer extends Component {
                     Hiện tại chưa có thông tin mời bạn nhập thêm thông tin
                   </div>
                 ) : (
-                  <div>
-                    {/* <BootstrapTable
+                  <div className="tableis" style={{ padding: "15px" }}>
+                    <BootstrapTable
                       keyField="stt"
                       data={products}
                       columns={columns}
-                      rowEvents={rowEvents}
+                      // loading={this.state.loading}
                       pagination={paginationFactory({
-                        sizePerPage: 5,
+                        sizePerPage: 2,
                         hideSizePerPage: true,
-                        // hidePageListOnlyOnePage: true
+                        hidePageListOnlyOnePage: true,
                       })}
+                      striped
                       hover
-                    /> */}
-                    <table className={styles.content_table}>
+                      condensed
+                      //  /   shadow
+                    />
+                    {/* <table className={styles.content_table}>
                       <thead>
                         <tr className="text-center">
                           <th>STT</th>
@@ -614,15 +722,16 @@ class ManagerFarmer extends Component {
                         </tr>
                       </thead>
                       <tbody>{listFarmer}</tbody>
-                    </table>
+                    </table> */}
                   </div>
                 )}
               </div>
               <div
-                className="col-12 row"
+                className="col-6 row"
                 style={{
                   height: "50px",
                   paddingBottom: "5px",
+                  marginTop: "-70px",
                 }}
               >
                 <div

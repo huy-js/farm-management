@@ -4,7 +4,7 @@ import axios from "axios";
 import { token } from "../../../components/helpers/checkLogin";
 import * as actionTypes from "../actionType";
 // import * as actions from "../../action/actionAuth";
-
+import * as FileSaver from "file-saver";
 export const fetchFarmerData = (farmerData) => ({
   type: actionTypes.FETCH_FARMER_DATA,
   payload: farmerData,
@@ -325,4 +325,45 @@ export const getDataDiaryFetch = (data) => {
       //  localStorage.removeItem("userToken");
     }
   };
+};
+export const ExportListQrDiary = (id) => {
+  console.log(id);
+  return (dispatch) => {
+    const token = localStorage.userToken;
+
+    if (token) {
+      const accessToken = JSON.parse(token).accessToken;
+
+      return axios
+        .post(
+          `http://localhost:3456/exportfileqrdiary`,
+          { id },
+          {
+            headers: { Authorization: `${accessToken}` },
+          }
+        )
+        .then((res) => {
+          console.log(res.data.dataDowload);
+          // xuat file qr danh sach nhat ky
+          exportToCSV(res.data.dataDowload, "qrDiary");
+          // dispatch(fetchDataDiary(res.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      console.log("ko token");
+    }
+  };
+};
+
+const fileType =
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+const fileExtension = ".xlsx";
+const exportToCSV = (csvData, fileName) => {
+  //const ws = XLSX.utils.json_to_sheet(csvData);
+  // const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+  // const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  const data = new Blob([csvData], { type: fileType });
+  FileSaver.saveAs(data, fileName + fileExtension);
 };

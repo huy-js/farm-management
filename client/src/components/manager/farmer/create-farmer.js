@@ -156,6 +156,80 @@ class CreateFarmer extends Component {
 
     this.setState({
       result: result,
+      controls: {
+        farmOwner: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Nhập tên nông hộ",
+          },
+          value: "",
+          validation: {
+            required: true,
+            isCharacter: true,
+          },
+          valid: false,
+          touched: false,
+        },
+        address: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Nhập địa chỉ",
+          },
+          value: "",
+          validation: {
+            required: false,
+            isCharacter: true,
+          },
+          valid: false,
+          touched: false,
+        },
+        landArea: {
+          elementType: "input",
+          elementConfig: {
+            type: "number",
+            placeholder: "Diện tích đất m²",
+            min: 0,
+          },
+          value: "",
+          validation: {
+            required: true,
+            minLength: 4,
+          },
+          valid: false,
+          touched: false,
+        },
+        typeOfTree: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Giống cây trồng",
+          },
+          value: "",
+          validation: {
+            required: false,
+            minLength: 3,
+          },
+          valid: false,
+          touched: false,
+        },
+        totalTrees: {
+          elementType: "input",
+          elementConfig: {
+            type: "number",
+            placeholder: "Tổng cây có được",
+            min: 0,
+          },
+          value: "",
+          validation: {
+            required: true,
+            minLength: 3,
+          },
+          valid: false,
+          touched: false,
+        },
+      },
     });
     if (result) {
       this.buttonElement.click();

@@ -204,6 +204,9 @@ class ManagerCooperative extends Component {
     dateSelectedMY: new Date(),
     changeDate: "MY",
     dataDetaiView: "",
+    WorkDo: "",
+    colorDateDiary: "",
+    ShowDateDiaryMode: false,
   };
   componentDidMount = async () => {
     await this.props.showCooperativeFetch(this.props.currentUser._id);
@@ -302,6 +305,15 @@ class ManagerCooperative extends Component {
         changeDate: "MY",
       });
     }
+  };
+  ShowDateDiary = (event, type, colorCard) => {
+    event.preventDefault();
+    this.setState({
+      WorkDo: type,
+      ShowDateDiaryMode: true,
+      colorDateDiary: colorCard,
+      dataDetaiView: "",
+    });
   };
   render() {
     console.log(this.state.dataFarmerss);
@@ -577,10 +589,9 @@ class ManagerCooperative extends Component {
                   ? `Hình ảnh Bao trái`
                   : `Hình bón phân`}
               </h5>
-              {/* <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p> */}
+              <p className="card-text">
+                {data.work === "Baotrai" ? "" : "bón phân " + data.ferTiLizer}
+              </p>
             </div>
           </div>
           {/* <p className="mt-3 w-100 float-left text-center">
@@ -711,38 +722,83 @@ class ManagerCooperative extends Component {
         </div>
       );
     };
+    let array = ["Bón Phân", "Phun Thuốc", "Tưới Nước", "Bao Trái", "Sâu Hại"];
+    let arrayvalue = ["bonphan", "phunthuoc", "tuoinuoc", "Baotrai", "sauhai"];
+    let colorCard = [
+      "bg-light",
+      "bg-secondary",
+      "bg-primary",
+      "bg-success",
+      "bg-danger",
+    ];
+    const MenuDiary = array.map((element, index) => {
+      return (
+        <div
+          className="col-12 col-sm-6 col-lg-2"
+          style={{ marginBottom: "5px", textAlign: "center" }}
+          //  key={index + 1}
+        >
+          <div
+            className={"card " + colorCard[index]}
+            style={{
+              border: " none",
+              cursor: "pointer",
+            }}
+            onClick={(event) =>
+              this.ShowDateDiary(event, arrayvalue[index], colorCard[index])
+            }
+          >
+            <div
+              className="card-body"
+              style={{
+                padding: "5px",
+                color: element === "Bón Phân" ? "black" : "#fff",
+              }}
+            >
+              {element}
+            </div>
+          </div>
+        </div>
+      );
+    });
 
     const ShowDiaryMY = this.props.dataDiary.map((e, index) => {
       let dateServer = new Date(e.createAt).getTime();
-      if (dateMYY == dateMY(dateServer)) {
+
+      if (dateMYY == dateMY(dateServer) && this.state.WorkDo === e.work) {
         let viewSelect = "";
         let doWork = "Tưới nước";
+
         if (e.work === "bonphan") {
           doWork = "Bón phân ";
-          viewSelect = SelectBonphanBaoTrai(e);
+          //   viewSelect = SelectBonphanBaoTrai(e);
         }
+
         if (e.work === "Baotrai") {
           doWork = "Bao trái";
-          viewSelect = SelectBonphanBaoTrai(e);
+          //   viewSelect = SelectBonphanBaoTrai(e);
         }
+
         if (e.work === "phunthuoc") {
           doWork = "Phun thuốc";
-          viewSelect = SelectPhunthuoc(e);
+          //  viewSelect = SelectPhunthuoc(e);
         }
+
         if (e.work === "sauhai") {
-          doWork = "Sâu hại";
-          viewSelect = SelectSauHai(e);
+          doWork = "Trị sâu hại";
+          //  viewSelect = SelectSauHai(e);
         }
+
         return (
           <div
             className="col-12 col-sm-6 col-lg-3"
-            //  style={{ marginBottom: "20px" }}
+            style={{ marginBottom: "5px", textAlign: "center" }}
             key={index + 1}
           >
             <div
-              className="card"
+              className={"card " + this.state.colorDateDiary}
               style={{
-                border: " 1px solid #009879",
+                border: "none",
                 cursor: "pointer",
               }}
               onClick={(event) => this.ShowDetail(event, e)}
@@ -751,13 +807,17 @@ class ManagerCooperative extends Component {
                 className="card-body"
                 style={{
                   padding: "5px",
-                  color: "#009879",
+                  color: e.work === "bonphan" ? "black" : "#fff",
                 }}
               >
-                <h6 className="card-title">
+                {/* <h6 className="card-title">
                   {moment(e.createAt).format("DD/MM/YYYY,h:mm a")}
                 </h6>
-                <b>{doWork}</b>
+                <b>{doWork}</b> */}
+
+                {moment(e.createAt).format("DD/MM/YYYY,h:mm a")}
+
+                {/* {doWork} */}
               </div>
             </div>
           </div>
@@ -789,6 +849,7 @@ class ManagerCooperative extends Component {
           className="col-12 "
           style={{
             marginBottom: "20px",
+            color: "black",
           }}
           //  key={index + 1}
         >
@@ -800,16 +861,18 @@ class ManagerCooperative extends Component {
           </div>
           <div
             className="card"
-            // style={{
-            //   border: " 1px solid #009879",
-            // }}
+            style={{
+              border: "none",
+            }}
           >
             <div
               className="card-body"
-              style={{
-                // padding: "5px",
-                color: "#009879",
-              }}
+              style={
+                {
+                  // padding: "5px",
+                  //color: "#009879",
+                }
+              }
             >
               <h6 className="card-title">{viewSelect}</h6>
             </div>
@@ -817,6 +880,7 @@ class ManagerCooperative extends Component {
         </div>
       );
     };
+
     const Calander = () => {
       const ExampleCustomInput = ({ onClick }) => (
         <i
@@ -1424,7 +1488,8 @@ class ManagerCooperative extends Component {
                                   <div key={i + 1} className="row">
                                     <div className="row col-sm-12">
                                       <h2 style={{ marginLeft: "15px" }}>
-                                        Lô {i + 1} - Số cây {e.totalTree}
+                                        Lô {e.numberbatch} - Số cây{" "}
+                                        {e.totalTree}
                                       </h2>
                                     </div>
                                     {result}
@@ -1483,7 +1548,8 @@ class ManagerCooperative extends Component {
                                   <div key={i + 1} className="row">
                                     <div className="row col-sm-12">
                                       <h2 style={{ marginLeft: "15px" }}>
-                                        Lô {i + 1} - số cây {e.totalTree}
+                                        Lô {e.numberbatch} - số cây{" "}
+                                        {e.totalTree}
                                       </h2>
                                     </div>
                                     {result}
@@ -1580,7 +1646,13 @@ class ManagerCooperative extends Component {
                               className=" col-12 row"
                               style={{ paddingBottom: "17px" }}
                             >
-                              {ShowDiaryMY}
+                              {MenuDiary}
+                              <div className="col-12 ">
+                                <hr style={{ border: "1px solid #009879" }} />
+                              </div>
+                              {this.state.ShowDateDiaryMode
+                                ? ShowDiaryMY
+                                : null}
                             </div>
                             <div
                               className=" col-12 row"
@@ -1637,7 +1709,7 @@ class ManagerCooperative extends Component {
                           {this.state.databusiness.map((e, index) => {
                             return (
                               <div
-                                className="col-12 col-sm-6 col-lg-3"
+                                className="col-12 col-sm-6 col-lg-4"
                                 key={index}
                               >
                                 <div className="card bg-light shadow bg-white rounded">

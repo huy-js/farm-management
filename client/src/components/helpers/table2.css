@@ -1,0 +1,26 @@
+.tableis
+  .react-bootstrap-table-pagination
+  .react-bootstrap-table-pagination-list
+  .pagination.react-bootstrap-table-page-btns-ul {
+  float: right;
+}
+.tableis .react-bootstrap-table {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.tableis .react-bootstrap-table .table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+.tableis .react-bootstrap-table .table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+.tableis
+  .row.react-bootstrap-table-pagination
+  .react-bootstrap-table-pagination-list
+  .pagination
+  .active.page-item
+  .page-link {
+  background-color: #009879;
+  border-color: " #009879";
+  color: "#fff";
+}

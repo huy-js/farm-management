@@ -11,6 +11,7 @@ let farmerSchema = new Schema(
     totalTrees: { type: Number },
     CooperativeId: { type: String },
     password: { type: String, default: "" },
+    keyLogin: { type: String, default: "" },
     deletedAt: { type: Boolean, default: false },
     dataPolyson: [
       {
@@ -47,10 +48,13 @@ farmerSchema.statics = {
     return this.findByIdAndUpdate(idfarmer, { totalTrees: totaltree }).exec();
   },
   findFarmerByName(name) {
-    return this.findOne({ farmOwner: name }).exec();
+    return this.findOne({ keyLogin: name }).exec();
   },
   updateDataFarmer(data, idfarmer) {
     return this.findByIdAndUpdate(idfarmer, data).exec();
+  },
+  updateKeyloginFarmer(id, data) {
+    return this.findOneAndUpdate({ _id: id }, { keyLogin: data }).exec();
   },
   deleteFarmer(idfarmer, booleanDelete) {
     return this.findByIdAndUpdate(idfarmer, {

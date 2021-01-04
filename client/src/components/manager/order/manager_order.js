@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { showListOrderFetch } from "../../../trainRedux/action/order/actionOrder";
 import { createListQrFetch } from "../../../trainRedux/action/admin/actionManagement";
 import moment from "moment";
-
+import "../../helpers/table2.css";
 import styles from "../../helpers/desgin-table.module.css";
 class ManagerOrder extends Component {
   state = {
@@ -37,144 +37,140 @@ class ManagerOrder extends Component {
   };
 
   render() {
-    // const styleHeader = {
-    //   fontSize: "18px",
-    //   height: "50px",
-    //   padding: "11px",
-    //   backgroundColor: "#343a40",
-    //   color: "white",
-    //   textAlign: "center",
-    // };
-    // const styleRow = {
-    //   fontSize: "15px",
-    //   color: "#78788c",
-    //   textAlign: "center",
-    //   borderBottom: "2px solid #78788c",
-    //   cursor: "pointer",
-    // };
-    // const columns = [
-    //   {
-    //     dataField: "stt",
-    //     text: "STT",
-    //     // headerStyle: styleHeader,
-    //     // style: styleRow,
-    //   },
-    //   {
-    //     dataField: "createAt",
-    //     text: "NGÀY TẠO",
-    //     // headerStyle: styleHeader,
-    //     // style: styleRow,
-    //   },
-    //   {
-    //     dataField: "nameCooperaTion",
-    //     text: "HTX",
-    //     // headerStyle: styleHeader,
-    //     // style: styleRow,
-    //   },
-    //   {
-    //     dataField: "numberQR",
-    //     text: "SỐ LƯỢNG QR",
-    //     // headerStyle: styleHeader,
-    //     // style: styleRow,
-    //   },
-    //   {
-    //     dataField: "memberfarmer",
-    //     text: "SỐ LƯƠNG NÔNG HỘ ĐĂNG KÝ",
-    //     // headerStyle: styleHeader,
-    //     // style: styleRow,
-    //   },
-    //   // {
-    //   //   dataField: "totalTrees",
-    //   //   text: "TỔNG CÂY",
-    //   //   headerStyle: styleHeader,
-    //   //   style: styleRow,
-    //   // },
-    //   // {
-    //   //   dataField: "landArea",
-    //   //   text: "DIỆN TÍCH",
-    //   //   headerStyle: styleHeader,
-    //   //   style: styleRow,
-    //   // },
-    //   // {
-    //   //   dataField: "totalpay",
-    //   //   text: "TỔNG TIỀN",
-    //   //   headerStyle: styleHeader,
-    //   //   style: styleRow,
-    //   // },
-    //   {
-    //     dataField: "createQR",
-    //     text: "TẠO QRCODE",
-    //     // headerStyle: styleHeader,
-    //     // style: styleRow,
-    //   },
-    //   {
-    //     dataField: "idcur",
-    //     //text: "TẠO QRCODE",
-    //     headerStyle: { display: "none" },
-    //     style: { display: "none" },
-    //   },
-    // ];
-    // const products = [];
+    const styleHeader = {
+      backgroundColor: "#009879",
+      color: "#fff",
+      textAlign: "center",
+      border: "none",
+    };
+    const styleRow = {
+      textAlign: "center",
+      border: "none",
+    };
+    const columns = [
+      {
+        dataField: "stt",
+        text: "Stt",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "createAt",
+        text: "Ngày tạo",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "nameCooperaTion",
+        text: "Hợp tác xã",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "numberQR",
+        text: "Số lượng Qr yêu cầu",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      {
+        dataField: "memberfarmer",
+        text: "Số nông hộ tương ứng",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      // {
+      //   dataField: "totalTrees",
+      //   text: "TỔNG CÂY",
+      //   headerStyle: styleHeader,
+      //   style: styleRow,
+      // },
+      // {
+      //   dataField: "landArea",
+      //   text: "DIỆN TÍCH",
+      //   headerStyle: styleHeader,
+      //   style: styleRow,
+      // },
+      // {
+      //   dataField: "totalpay",
+      //   text: "TỔNG TIỀN",
+      //   headerStyle: styleHeader,
+      //   style: styleRow,
+      // },
+      {
+        dataField: "createQR",
+        text: "Trạng thái tạo mã Qr",
+        headerStyle: styleHeader,
+        style: styleRow,
+      },
+      // {
+      //   dataField: "idcur",
+      //   //text: "TẠO QRCODE",
+      //   headerStyle: { display: "none" },
+      //   style: { display: "none" },
+      // },
+    ];
+    const products = [];
 
-    // this.props.resArray.map(async (element, index) => {
-    //   let dates = (string) => {
-    //     var options = { year: "numeric", month: "long", day: "numeric" };
-    //     return new Date(string).toLocaleDateString([], options);
-    //   };
+    this.props.resArrayOrder.map(async (element, index) => {
+      // let dates = (string) => {
+      //   var options = { year: "numeric", month: "long", day: "numeric" };
+      //   return new Date(string).toLocaleDateString([], options);
+      // };
 
-    //   let arr = {
-    //     stt: index + 1,
-    //     // createAt: dates(element.createAt),
-    //     createAt: moment(element.createAt).format("DD/MM/YYYY"),
-    //     nameCooperaTion: element.nameCooperaTion,
-    //     numberQR: element.numberQR,
-    //     memberfarmer: element.memberfarmer,
-    //     // totalTrees: element.totalTrees, // tông cay trong htx
-    //     // landArea: element.landArea, // diện tích
-    //     // email: element.email,
-    //     // totalpay: element.totalpay,
-    //     // payments: element.payments,
-    //     createQR: element.createQR ? (
-    //       <i className="fa fa-check" style={{ color: "red " }}></i>
-    //     ) : (
-    //       <i
-    //         data-toggle="modal"
-    //         data-target="#showModalCreate"
-    //         key={element._id}
-    //         className="fa fa-plus"
-    //         onClick={(event) => this.setIdOrder(event, element._id)}
-    //       >
-    //         {/* create */}
-    //       </i>
-    //     ),
-    //     idcur: element.idcustomer,
-    //   };
-    //   return products.push(arr);
-    // });
-    let dataListOrder = this.props.resArrayOrder.map((element, index) => (
-      <tr key={index + 1}>
-        <td>{index + 1}</td>
-        <td>{moment(element.updateAt).format("DD/MM/YYYY")}</td>
-        <td>{element.nameCooperaTion}</td>
-        <td>{element.numberQR}</td>
-        <td>{element.memberfarmer}</td>
-        <td>
-          {element.createQR ? (
-            <i className="fa fa-check" style={{ color: "red " }}></i>
-          ) : (
-            <i
-              data-toggle="modal"
-              data-target="#showModalCreate"
-              key={element._id}
-              className="fa fa-plus"
-              onClick={(event) => this.setIdOrder(event, element._id)}
-            >
-              {/* create */}
-            </i>
-          )}
-        </td>
-      </tr>
-    ));
+      let arr = {
+        stt: index + 1,
+        // createAt: dates(element.createAt),
+        createAt: moment(element.createAt).format("DD/MM/YYYY"),
+        nameCooperaTion: element.nameCooperaTion,
+        numberQR: element.numberQR,
+        memberfarmer: element.memberfarmer,
+        // totalTrees: element.totalTrees, // tông cay trong htx
+        // landArea: element.landArea, // diện tích
+        // email: element.email,
+        // totalpay: element.totalpay,
+        // payments: element.payments,
+        createQR: element.createQR ? (
+          <i className="fa fa-check" style={{ color: "red " }}></i>
+        ) : (
+          <i
+            data-toggle="modal"
+            data-target="#showModalCreate"
+            key={element._id}
+            className="fa fa-plus"
+            onClick={(event) => this.setIdOrder(event, element._id)}
+          >
+            {/* create */}
+          </i>
+        ),
+        //  idcur: element.idcustomer,
+      };
+      return products.push(arr);
+    });
+
+    // let dataListOrder = this.props.resArrayOrder.map((element, index) => (
+    //   <tr key={index + 1}>
+    //     <td>{index + 1}</td>
+    //     <td>{moment(element.updateAt).format("DD/MM/YYYY")}</td>
+    //     <td>{element.nameCooperaTion}</td>
+    //     <td>{element.numberQR}</td>
+    //     <td>{element.memberfarmer}</td>
+    //     <td>
+    //       {element.createQR ? (
+    //         <i className="fa fa-check" style={{ color: "red " }}></i>
+    //       ) : (
+    //         <i
+    //           data-toggle="modal"
+    //           data-target="#showModalCreate"
+    //           key={element._id}
+    //           className="fa fa-plus"
+    //           onClick={(event) => this.setIdOrder(event, element._id)}
+    //         >
+    //           {/* create */}
+    //         </i>
+    //       )}
+    //     </td>
+    //   </tr>
+    // ));
     // const rowEvents = {
     //   onClick: (e, row, rowIndex) => {
     //     console.log(row);
@@ -209,33 +205,35 @@ class ManagerOrder extends Component {
                 {this.props.resArrayOrder.length === 0 ? (
                   <div className="text-center"> hiện tại chưa có đơn hàng</div>
                 ) : (
-                  // <BootstrapTable
-                  //   keyField="stt"
-                  //   data={products}
-                  //   columns={columns}
-                  //   // rowEvents={rowEvents}
-                  //   pagination={paginationFactory({
-                  //     sizePerPage: 5,
-                  //     hideSizePerPage: true,
-                  //   })}
-                  //   hover
-                  // />
-                  <table
-                    className={styles.content_table}
-                    style={{ textAlign: "center" }}
-                  >
-                    <thead>
-                      <tr style={{ textAlign: "center" }}>
-                        <th>STT</th>
-                        <th>Ngày tạo</th>
-                        <th>Tên Hợp tác xã</th>
-                        <th>Số Qr yêu cầu</th>
-                        <th>Số nông hộ tương ứng</th>
-                        <th>Kích hoạt</th>
-                      </tr>
-                    </thead>
-                    <tbody>{dataListOrder}</tbody>
-                  </table>
+                  <div className="tableis">
+                    <BootstrapTable
+                      keyField="stt"
+                      data={products}
+                      columns={columns}
+                      // rowEvents={rowEvents}
+                      pagination={paginationFactory({
+                        sizePerPage: 5,
+                        hideSizePerPage: true,
+                      })}
+                      hover
+                    />
+                  </div>
+                  // <table
+                  //   className={styles.content_table}
+                  //   style={{ textAlign: "center" }}
+                  // >
+                  //   <thead>
+                  //     <tr style={{ textAlign: "center" }}>
+                  //       <th>STT</th>
+                  //       <th>Ngày tạo</th>
+                  //       <th>Tên Hợp tác xã</th>
+                  //       <th>Số Qr yêu cầu</th>
+                  //       <th>Số nông hộ tương ứng</th>
+                  //       <th>Kích hoạt</th>
+                  //     </tr>
+                  //   </thead>
+                  //   <tbody>{dataListOrder}</tbody>
+                  // </table>
                 )}
               </div>
             </div>

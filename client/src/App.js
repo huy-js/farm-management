@@ -27,7 +27,7 @@ import Profile from "./components/profile/Profile";
 import DiaryManager from "./components/manager/diary/diary_manager";
 import ManagerCooperative from "./components/manager/cooperative/cooperative-management";
 import NotFound from "./components/NotFound";
-import Header from './components/navigation/header/Header';
+import Header from "./components/navigation/header/Header";
 import * as actions from "./trainRedux/action/authentication/actionAuth";
 
 class App extends Component {
@@ -82,6 +82,7 @@ class App extends Component {
           <Route path="/manager-order" component={ManagerOrder} />
           <Route path="/list-user" component={ListUser} />
           <Route path="/manager-cooperative" component={ManagerCooperative} />
+          <Route path="/profile" component={Profile} />
           <Route path="/" exact component={Home} />
           <Route path="/logout" component={Logout} />
           <Route component={NotFound} />
@@ -92,7 +93,7 @@ class App extends Component {
 
     return (
       <div>
-        <Header/>
+        <Header />
         {routes}
         <Footer />
       </div>

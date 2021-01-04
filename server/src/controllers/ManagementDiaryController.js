@@ -13,6 +13,7 @@ const moment = require("moment");
 // const { get } = require("http");
 var lodash = require("lodash");
 const { element } = require("prop-types");
+const createExcel = require("../helpers/createExcelDiary.helper");
 let getDataFarmerProfile = async (req, res) => {
   try {
     let idFarmer = req.params.id;
@@ -348,13 +349,14 @@ let writeDiary = async (req, res) => {
       console.log("is batch " + datadiary.isBatch);
       let dataBatch = await batchModel.findBatch(datadiary.isBatch);
       console.log("is batch " + dataBatch);
-      dataBatch.stumps.map(async (e) => {
-        await batchModel.updateStumpsBatchDiary(
-          // dataBatch._id,
-          e._id,
-          createData._id
-        );
-      });
+      await batchModel.updateOneBatch(dataBatch._id, createData._id);
+      // dataBatch.stumps.map(async (e) => {
+      //   await batchModel.updateStumpsBatchDiary(
+      //     // dataBatch._id,
+      //     e._id,
+      //     createData._id
+      //   );
+      // });
     }
     if (datadiary.title == "Stumps") {
       console.log("is array stumps " + datadiary.arrayStumps);
@@ -457,17 +459,21 @@ let getDataDiary = async (req, res) => {
 };
 let getDiaryFarmer = async (req, res) => {
   try {
+    console.log("tai get diary server");
     let data = req.body.data;
+    console.log(data);
     let dataFarmer = await diaryModel.getDataOfFarmer(data.idfarmer);
-    // console.log(dataFarmer);
+    console.log(dataFarmer);
 
     let array = dataFarmer.filter((ele) => {
       // ele = ele.toObject();
-      let month = ele.updateAt.getUTCMonth() + 1; //months from 1-12
-      // let day = ele.updateAt.getUTCDate();
-      let year = ele.updateAt.getUTCFullYear();
-      date = month + "/" + year;
-      if (date == data.date) {
+      // let month = ele.updateAt.getUTCMonth() + 1; //months from 1-12
+      // // let day = ele.updateAt.getUTCDate();
+      // let year = ele.updateAt.getUTCFullYear();
+      // date = month + "/" + year;
+      let dataCreate = moment(ele.updateAt).format("MM/YYYY");
+      //console.log(dataCreate);
+      if (dataCreate == data.date) {
         //  console.log(year + "/" + month + "/" + day);
         //  ele.dayCreate = year + "/" + month + "/" + day;
         return ele;
@@ -831,6 +837,31 @@ let updateEndSeason = async (req, res) => {
     return res.status(500).json({ message: "update season failed" });
   }
 };
+let exportFileQrDiary = async (req, res) => {
+  try {
+    console.log("down load file");
+    let id = req.body.id;
+    console.log(id);
+    let listFarmer = await userModel.getDataPwfarmer(id);
+    //console.log(listFarmer);
+    let ListQR = listFarmer.dataFarmer.map(async (e) => {
+      let qrList = await qrDiaryModel.getListQr(e.idFarmer);
+      // console.log(qrList);
+      if (qrList !== null) {
+        // console.log(qrList);
+        return qrList;
+      }
+    });
+    let listQrDiary = await Promise.all(ListQR);
+    let qrDiaryArray = listQrDiary.filter((e) => e !== undefined);
+    console.log(qrDiaryArray);
+    let result = await createExcel.createFileExcelQrDiary(qrDiaryArray);
+    //  console.log(result);
+    return res.status(200).json({ dataDowload: result });
+  } catch (error) {
+    return res.status(500).json({ message: "download  failed" });
+  }
+};
 module.exports = {
   getDataFarmerProfile: getDataFarmerProfile,
   showListFarmer: showListFarmer,
@@ -851,4 +882,5 @@ module.exports = {
   createSeason: createSeason,
   getDataseason: getDataseason,
   updateEndSeason: updateEndSeason,
+  exportFileQrDiary: exportFileQrDiary,
 };

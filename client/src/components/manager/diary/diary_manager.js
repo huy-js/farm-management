@@ -7,6 +7,8 @@ import * as actions from "../../../trainRedux/action/diary/actionDiaryMap";
 import * as actionss from "../../../trainRedux/action/diary/actionDiaryMap";
 
 //import * as actions from "../../../trainRedux/action/user/actionManagement";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 class DiaryManager extends Component {
   state = {
     countView: 5,
@@ -18,7 +20,7 @@ class DiaryManager extends Component {
   componentDidMount = async () => {
     await this.props.showListFarmerMapsFetch(this.props.currentUser._id);
     this.setState({
-      id: this.props.resArray[0]._id,
+      id: this.props.resArray.length === 0 ? null : this.props.resArray[0]._id,
       dataFarmerss: this.props.resArray[0],
     });
   };
@@ -54,6 +56,10 @@ class DiaryManager extends Component {
   //   });
   //   this.buttonElements.click();
   // };
+  exportFileQrDiary = (e, id) => {
+    console.log(id);
+    this.props.ExportListQrDiary(id);
+  };
   render() {
     console.log(this.props.resArray);
     let name = "";
@@ -66,6 +72,18 @@ class DiaryManager extends Component {
       return;
     });
     //console.log(idfarmer);
+    // xuat file qr danh sach nhat ky
+    // const fileType =
+    //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    // const fileExtension = ".xlsx";
+    // const exportToCSV = (csvData, fileName) => {
+    //   const ws = XLSX.utils.json_to_sheet(csvData);
+    //   const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    //   const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    //   const data = new Blob([excelBuffer], { type: fileType });
+    //   FileSaver.saveAs(data, fileName + fileExtension);
+    // };
+
     return (
       <main
         className="page landing-page "
@@ -174,8 +192,9 @@ class DiaryManager extends Component {
                         //   //   this.props.resArray.length === 0 ? "none" : "block",
                         // }}
                         onClick={(e) => {
-                          const data = new Date().getTime();
+                          //const data = new Date().getTime();
                           //  exportToCSV(this.props.dataPWFarmer, `Password-${data}`);
+                          this.exportFileQrDiary(e, this.props.currentUser._id);
                         }}
                       >
                         Xuất file danh sach Qr nhật ký
@@ -217,6 +236,7 @@ const mapDispatchToProps = (dispatch, props) => ({
   changeScreenMap: (bl) => dispatch(actionss.changeScreenMap(bl)),
   // showFarmerFetch: (dataCreate) =>
   //   dispatch(actions.showFarmerFetch(dataCreate)),
+  ExportListQrDiary: (id) => dispatch(actionss.ExportListQrDiary(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiaryManager);

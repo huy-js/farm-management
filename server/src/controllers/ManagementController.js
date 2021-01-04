@@ -126,10 +126,15 @@ let createFarmer = async (req, res) => {
     let dataFarmer = await farmerModel.createNew(data); // createNew laf function dc tao trong file model
     //console.log("data famer " + dataFarmer);
     //console.log(idUser);
+    // doi ten là them idfarmer tuong ung vs nong dan do'
+    let countId = dataFarmer._id.toString();
+    let lastIdUsername = countId.substr(countId.length - 5);
+    await farmerModel.updateKeyloginFarmer(dataFarmer._id, lastIdUsername);
     await userModel.updateDatafarmer(
       idUser,
       dataFarmer.farmOwner,
-      dataFarmer._id
+      dataFarmer._id,
+      lastIdUsername
     );
     //tao data batch lo thua
     await callCreateBatch.createBatch(dataFarmer);
@@ -285,12 +290,12 @@ let createDataOrder = async (req, res) => {
     //  console.log(req.body.dataCreate);
     let dataSave = {
       idcustomer: req.body.dataCreate.idcustomer,
-      numberQR: req.body.dataCreate.tongQR, // song qr yeu cau'
-      memberfarmer: req.body.dataCreate.tongNongdan,
+      numberQR: req.body.dataCreate.numberQR, // song qr yeu cau'
+      memberfarmer: req.body.dataCreate.memberfarmer,
       email: req.body.dataCreate.email,
       inForQR: req.body.dataOrder,
     };
-    //console.log(dataSave);
+    console.log(dataSave);
     await orderModel.createNew(dataSave);
     return res.status(200).json({ message: "create succession." });
   } catch (error) {
@@ -541,7 +546,7 @@ let searchProductQR = async (req, res) => {
     }
     //return res.status(200).json(decoded);
   } catch (error) {
-    return res.status(500).json({ message: "create failed" });
+    return res.status(500).json({ message: "thông tin Qr không tồn tại" });
   }
 };
 // let getDataPWFarmer = async (req, res) => {

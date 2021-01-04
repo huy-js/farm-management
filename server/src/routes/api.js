@@ -81,6 +81,11 @@ let initAPIs = (app) => {
   router.post("/confrommap", ManagementDiaryController.conFromMap);
   router.post("/checkmap", ManagementDiaryController.checkMap);
   router.post("/getdatadiary", ManagementDiaryController.getDataDiary);
+  router.post(
+    "/exportfileqrdiary",
+    ManagementDiaryController.exportFileQrDiary
+  );
+
   // user view diary
   router.get(
     "/showimagediary/:id",

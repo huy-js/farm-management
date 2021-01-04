@@ -62,7 +62,8 @@ let generateTokenQR = (data, secretSignature, tokenLife) => {
       secretSignature,
       {
         algorithm: "HS256",
-        expiresIn: tokenLife,
+        // expiresIn: tokenLife,
+        issuer: "Phat-Huy-B16",
       },
       (error, token) => {
         if (error) {

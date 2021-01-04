@@ -28,5 +28,8 @@ qrDiarySchema.statics = {
       $and: [{ idFarmOwner: idfarmer }, { active: true }],
     }).exec();
   },
+  getListQr(idFarmer) {
+    return this.findOne({ idFarmOwner: idFarmer }).exec();
+  },
 };
 module.exports = mongoose.model("qrDiary", qrDiarySchema);

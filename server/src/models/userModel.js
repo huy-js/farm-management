@@ -75,11 +75,14 @@ userSchema.statics = {
       },
     }).exec();
   },
-  updateDatafarmer(iduser, namefarmer, idfarmer) {
+  updateDatafarmer(iduser, namefarmer, idfarmer, lastIdUsername) {
     return this.findOneAndUpdate(
       { $and: [{ _id: iduser }, { "dataFarmer.username": namefarmer }] },
       {
-        $set: { "dataFarmer.$.idFarmer": idfarmer },
+        $set: {
+          "dataFarmer.$.idFarmer": idfarmer,
+          "dataFarmer.$.username": lastIdUsername,
+        },
       }
     ).exec();
   },

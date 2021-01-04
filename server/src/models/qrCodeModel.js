@@ -6,7 +6,7 @@ const qrCodeSchema = new Schema(
   {
     idOrder: { type: String },
     // arrayQR: [{ qrId: String }],
-    ActiveOrder: { type: Boolean, default: false },
+    //ActiveOrder: { type: Boolean, default: false },
     deletedAt: { type: Boolean, default: false },
     idCoopare: { type: String },
     ListFarmerQR: [

@@ -158,44 +158,47 @@ class Profile extends Component {
               </button>
             </div> */}
 
-            <div className="container" style={{ paddingTop: "100px" }}>
-              <div className="row">
-                <div className="col-12 col-sm-5 col-md-5 col-lg-3">
-                  <div className="card">
+            <div
+              className="container row col-12"
+              style={{ paddingTop: "100px" }}
+            >
+              {/* <div className="row" style={{ textAlign: "center" }}> */}
+              <div className="col-4"></div>
+              <div className=" col-sm-4 ">
+                <div className=" card">
+                  <img
+                    className="card-img-top"
+                    src="assets/img/imageway.jpg"
+                    alt="Bologna"
+                  />
+                  <div className="card-body text-center">
                     <img
-                      className="card-img-top"
-                      src="assets/img/imageway.jpg"
+                      className="avatar rounded-circle"
+                      src="assets/img/avatar-default.png"
                       alt="Bologna"
                     />
-                    <div className="card-body text-center">
-                      <img
-                        className="avatar rounded-circle"
-                        src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/robert.jpg"
-                        alt="Bologna"
-                      />
-                      <h4 className="card-title">
-                        {dataProfilecurren.username}
-                      </h4>
-                      <h6 className="card-subtitle mb-2 text-muted">
-                        {" "}
-                        {dataProfilecurren.phonenumber}
-                      </h6>
-                      {/* <p className="card-text">
+                    <h4 className="card-title">{dataProfilecurren.username}</h4>
+                    <h6 className="card-subtitle mb-2 text-muted">
+                      {" "}
+                      {dataProfilecurren.phonenumber}
+                    </h6>
+                    {/* <p className="card-text">
                         địa chỉ: {dataProfilecurren.address}
                       </p> */}
 
-                      <button
-                        className="btn btn-outline-success"
-                        type="button"
-                        data-toggle="modal"
-                        data-target="#modelEditPass"
-                      >
-                        Đổi mật khẩu
-                      </button>
-                    </div>
+                    <button
+                      className="btn btn-outline-success"
+                      type="button"
+                      data-toggle="modal"
+                      data-target="#modelEditPass"
+                    >
+                      Đổi mật khẩu
+                    </button>
                   </div>
                 </div>
               </div>
+              <div className="col-4"></div>
+              {/* </div> */}
             </div>
           </section>
         </main>
@@ -208,9 +211,19 @@ class Profile extends Component {
           // aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLongTitle">
+            <div className="modal-content" style={{ borderRadius: "30px" }}>
+              <div
+                className="modal-header"
+                style={{
+                  backgroundColor: "#009879",
+                  borderRadius: "30px 30px 0px 0px",
+                }}
+              >
+                <h5
+                  className="modal-title"
+                  id="exampleModalLongTitle"
+                  style={{ color: "#fff" }}
+                >
                   đổi mật khẩu
                 </h5>
                 <button
@@ -232,7 +245,9 @@ class Profile extends Component {
                     style={{ paddingBottom: "60px" }}
                   >
                     {form}
-                    <Button btnType="Success">confirm</Button>
+                    <div style={{ textAlign: "center" }}>
+                      <Button btnType="Success">confirm</Button>
+                    </div>
                   </form>
                 </div>
               </div>
