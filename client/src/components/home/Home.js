@@ -1,12 +1,41 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import CarouselComponent from "../carousel/CarouselComponent";
-
+import QrReader from "react-qr-reader";
 class Home extends Component {
+  state = {
+    result: "No result",
+  };
+
+  handleScan = (data) => {
+    if (data) {
+      this.setState({
+        result: data,
+      });
+    }
+  };
+  handleError = (err) => {
+    console.error(err);
+  };
+
   render() {
     return (
       <div>
         <CarouselComponent />
+        {/* <div style={{ height: "100vh" }}>
+          <div style={{ padding: "50px", margin: "0px auto" }}>
+            Search Qr code
+            <div className="col-12">
+              <QrReader
+                delay={300}
+                onError={this.handleError}
+                onScan={this.handleScan}
+                style={{ width: "30%", height: "30%" }}
+              />
+              <p>{this.state.result}</p>
+            </div>
+          </div>
+        </div> */}
         <div
           className="modal fade"
           id="exampleModalCenter"

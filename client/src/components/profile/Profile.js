@@ -6,6 +6,7 @@ import Button from "../UI/Button/Button";
 import { checkValidity } from "../helpers/validation/checkValidation";
 import { updataPassWordFetch } from "../../trainRedux/action/authentication/actionAuth";
 import "./profile.css";
+import { showCoopareFetch } from "../../trainRedux/action/order/actionOrder";
 class Profile extends Component {
   state = {
     controls: {
@@ -55,7 +56,9 @@ class Profile extends Component {
     error: "",
     result: false,
   };
-
+  componentDidMount = () => {
+    this.props.showCoopareFetch(this.props.currentUser._id);
+  };
   handleSubmit = async (event) => {
     event.preventDefault();
     // console.log(this.state);
@@ -104,7 +107,7 @@ class Profile extends Component {
   };
 
   render() {
-    console.log(this.props.currentUser);
+    console.log(this.props.dataCooper);
     let dataProfilecurren = this.props.currentUser;
     const formElementsArray = [];
     for (let key in this.state.controls) {
@@ -168,32 +171,70 @@ class Profile extends Component {
                 <div className=" card">
                   <img
                     className="card-img-top"
-                    src="assets/img/imageway.jpg"
+                    // src="assets/img/imageway.jpg"
+                    src="assets/img/image0.jpg"
                     alt="Bologna"
                   />
-                  <div className="card-body text-center">
-                    <img
-                      className="avatar rounded-circle"
-                      src="assets/img/avatar-default.png"
-                      alt="Bologna"
-                    />
-                    <h4 className="card-title">{dataProfilecurren.username}</h4>
-                    <h6 className="card-subtitle mb-2 text-muted">
-                      {" "}
-                      {dataProfilecurren.phonenumber}
-                    </h6>
-                    {/* <p className="card-text">
-                        địa chỉ: {dataProfilecurren.address}
-                      </p> */}
+                  <div className="card-body ">
+                    <div>
+                      <h3>Thông tin tài khoản</h3>
+                    </div>
+                    <div className="row col-12" style={{ padding: "0px" }}>
+                      <div className="col-5" style={{ float: "left" }}>
+                        {" "}
+                        <b>Tên người dùng :</b>
+                      </div>
+                      <div className="col-7">{dataProfilecurren.username}</div>
+                    </div>
+                    <div className="row col-12" style={{ padding: "0px" }}>
+                      <div className="col-5" style={{ float: "left" }}>
+                        {" "}
+                        <b>Địa chỉ mail:</b>
+                      </div>
+                      <div className="col-7">{dataProfilecurren.email}</div>
+                    </div>
+                    <div className="row col-12" style={{ padding: "0px" }}>
+                      <div className="col-5" style={{ float: "left" }}>
+                        {" "}
+                        <b>Số điện thoại :</b>
+                      </div>
+                      <div className="col-7">
+                        {dataProfilecurren.phonenumber}
+                      </div>
+                    </div>
+                    {this.props.dataCooper !== null ? (
+                      <div>
+                        <div className="row col-12" style={{ padding: "0px" }}>
+                          <div className="col-5" style={{ float: "left" }}>
+                            {" "}
+                            <b>Đại diện hợp tác xã:</b>
+                          </div>
+                          <div className="col-7">
+                            {this.props.dataCooper.nameOfCooperative}
+                          </div>{" "}
+                        </div>
+                        <div className="row col-12" style={{ padding: "0px" }}>
+                          <div className="col-5" style={{ float: "left" }}>
+                            {" "}
+                            <b>Địa chỉ hợp tác xã:</b>
+                          </div>
+                          <div className="col-7">
+                            {this.props.dataCooper.address}
+                          </div>{" "}
+                        </div>
+                      </div>
+                    ) : null}
 
-                    <button
-                      className="btn btn-outline-success"
-                      type="button"
-                      data-toggle="modal"
-                      data-target="#modelEditPass"
-                    >
-                      Đổi mật khẩu
-                    </button>
+                    <div style={{ padding: "10px" }}>
+                      <button
+                        className="btn btn-outline-success"
+                        type="button"
+                        data-toggle="modal"
+                        data-target="#modelEditPass"
+                      >
+                        Đổi mật khẩu
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -273,11 +314,13 @@ class Profile extends Component {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.authReducer.currentUser,
+    dataCooper: state.orderReducer.dataCooper,
   };
 };
 const mapDispatchToProps = (dispatch) => ({
   updataPassWord: (data, checkVali) =>
     dispatch(updataPassWordFetch(data, checkVali)),
+  showCoopareFetch: (id) => dispatch(showCoopareFetch(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

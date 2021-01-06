@@ -96,24 +96,27 @@ function callFunctionSeriesMDCay(
   arrayDiaryIdBatch.forEach((e) => {
     arrayDiary.forEach((ele, index) => {
       if (ele._id === e.idDiary) {
-        CountMD = index + 1;
+        // CountMD = index + 1;
+        CountMD++;
       }
     });
   });
+  console.log(CountMD);
   let arrayStumpNode = [];
   arrayDiaryIdStump.forEach((e) => {
     arrayDiary.forEach((ele) => {
       if (ele._id === e.idDiary) {
         if (ele.node.length === 0) {
-          CountMD = CountMD + 1;
+          // CountMD = CountMD + 1;
+          CountMD++;
         } else {
           arrayStumpNode.push(ele.node);
         }
       }
     });
   });
-  // console.log(CountMD);
-
+  console.log(CountMD);
+  console.log("----------");
   CountDefault = CountMD;
 
   let array = [];
@@ -347,6 +350,7 @@ class ManagerCooperative extends Component {
       "Phun Thuốc",
       "Tưới nước",
       "Bao Trái",
+      "Bệnh Hại",
     ];
     arrayMatDo.map((e, index) => {
       let option = {};
@@ -385,6 +389,12 @@ class ManagerCooperative extends Component {
         option = {
           value: "Baotrai",
           label: "Bao Trái",
+        };
+      }
+      if (e === "Bệnh Hại") {
+        option = {
+          value: "benhhai",
+          label: "Bệnh Hại",
         };
       }
       optionMatDo.push(option);
@@ -567,66 +577,111 @@ class ManagerCooperative extends Component {
     let dateMYY = dateMY(this.state.dateSelectedMY.getTime());
     //console.log(dataNow);
     //console.log(dateMYY);
-
     let SelectBonphanBaoTrai = (data) => {
       return (
-        <div className="col-12 col-md-4 mt-4">
-          <div className="card profile-card-5">
-            <div className="card-img-block" style={{ paddingLeft: "0px" }}>
+        <div
+          className="col-6 col-md-8 mt-4 row  "
+          style={{
+            border: "1px solid #c9d1cb",
+            borderRadius: "10px",
+            padding: "10px",
+            margin: "10px",
+          }}
+        >
+          <div className="col-sm-6">
+            <h5 className="card-title">
+              {" "}
+              {data.work === "Baotrai"
+                ? `Hình ảnh Bao trái`
+                : "Bón phân " + data.ferTiLizer}
+            </h5>
+            {/* <p className="card-text">
+              {data.work === "Baotrai" ? "" : "bón phân " + data.ferTiLizer}
+            </p> */}
+          </div>
+          <div className="col-sm-6">
+            {data.files.length !== 0 ? (
               <img
                 className="card-img-top"
                 src={`data:${data.files[0].contentType};base64,${bufferToBase64(
                   data.files[0].data.data
                 )}`}
                 alt="Card image cap"
-                style={{ width: "230px", height: "230px" }}
+                style={{
+                  width: "200px",
+                  height: "200px",
+                  borderRadius: "10px",
+                  float: "right",
+                }}
               />
-            </div>
-            <div className="card-body pt-0">
-              <h5 className="card-title">
-                {" "}
-                {data.work === "Baotrai"
-                  ? `Hình ảnh Bao trái`
-                  : `Hình bón phân`}
-              </h5>
-              <p className="card-text">
-                {data.work === "Baotrai" ? "" : "bón phân " + data.ferTiLizer}
-              </p>
-            </div>
+            ) : null}
           </div>
-          {/* <p className="mt-3 w-100 float-left text-center">
-            <strong>Card with Floting Picture</strong>
-          </p> */}
         </div>
+        // <div className="col-12 col-md-4 mt-4">
+        //   <div className="card profile-card-5">
+        //     <div className="card-img-block" style={{ paddingLeft: "0px" }}>
+        //       <img
+        //         className="card-img-top"
+        //         src={`data:${data.files[0].contentType};base64,${bufferToBase64(
+        //           data.files[0].data.data
+        //         )}`}
+        //         alt="Card image cap"
+        //         style={{ width: "230px", height: "230px" }}
+        //       />
+        //     </div>
+        //     <div className="card-body pt-0">
+        //       <h5 className="card-title">
+        //         {" "}
+        //         {data.work === "Baotrai"
+        //           ? `Hình ảnh Bao trái`
+        //           : `Hình bón phân`}
+        //       </h5>
+        //       <p className="card-text">
+        //         {data.work === "Baotrai" ? "" : "bón phân " + data.ferTiLizer}
+        //       </p>
+        //     </div>
+        //   </div>
+        // </div>
       );
     };
     let SelectPhunthuoc = (data) => {
       let dataThuoc = data.preparation.map((ele, inx) => {
         return (
-          <div key={inx} className="row">
-            <div className="col-12 col-md-4 mt-4">
-              <div className="card profile-card-5">
-                <div className="card-img-block">
-                  <img
-                    className="card-img-top"
-                    src={`data:${
-                      data.files[0].contentType
-                    };base64,${bufferToBase64(data.files[0].data.data)}`}
-                    alt="Card image cap"
-                    style={{ width: "230px", height: "230px" }}
-                  />
-                </div>
-                <div className="card-body pt-0">
-                  <h5 className="card-title">
-                    {" " + ele.thuoc + "(" + ele.loai + ")"}
-                  </h5>
-                  <p>
-                    Dung tích:
-                    {" " + ele.dungtich} ml, Số lượng: {" " + ele.soluong},
-                    Lượng nước pha chế: {" " + ele.luongnuoc} lit
-                  </p>
-                </div>
-              </div>
+          <div
+            key={inx}
+            className="col-6 col-md-5 mt-4 row "
+            style={{
+              border: "1px solid #c9d1cb",
+              borderRadius: "10px",
+              padding: "5px",
+              margin: "10px",
+            }}
+          >
+            <div className="col-sm-6">
+              <h5 className="card-title">
+                {" " + ele.thuoc + " (" + ele.loai + ")"}
+              </h5>
+              <p>
+                Dung tích:
+                {" " + ele.dungtich} ml, Số lượng: {" " + ele.soluong}, Lượng
+                nước pha chế: {" " + ele.luongnuoc} lit
+              </p>
+            </div>
+            <div className="col-sm-6">
+              {data.files.length !== 0 ? (
+                <img
+                  //className="card-img-top"
+                  src={`data:${
+                    data.files[0].contentType
+                  };base64,${bufferToBase64(data.files[0].data.data)}`}
+                  alt="Card image cap"
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    borderRadius: "10px",
+                  }}
+                />
+              ) : null}
             </div>
           </div>
         );
@@ -636,41 +691,48 @@ class ManagerCooperative extends Component {
         <div
           // className="dropdown-menu"
           // aria-labelledby="dropdownMenuButton"
-          style={{ border: "none" }}
+          className="col-12 row"
         >
-          <h6
-            style={{
-              fontWeight: "bold",
-              display: data.work === "Baotrai" ? "none" : "block",
-            }}
-          >
-            Thông tin pha chế và hình ảnh
-          </h6>
           {dataThuoc}
         </div>
       );
     };
     let SelectSauHai = (data) => {
-      let readFile = data.files.map((eles, indx) => {
+      let dataWorm = data.worm.theCure.split(",");
+      console.log(dataWorm);
+      let ThongTinBenh = data.files.map((eles, indx) => {
         return (
-          <div key={indx} className="col-12 col-md-4 mt-4">
-            <div className="card profile-card-5">
-              <div className="card-img-block">
+          <div
+            key={indx}
+            className="col-6 col-md-5 mt-1 row "
+            style={{
+              border: "1px solid #c9d1cb",
+              borderRadius: "10px",
+              padding: "10px",
+              margin: "10px",
+            }}
+          >
+            <div className="col-sm-6">
+              <h5 className="card-title">
+                {indx === 0 ? "Ảnh sâu hại" : indx >= 1 ? "cách trị" : ""}
+              </h5>
+              <p>{indx === 0 ? data.worm.type : dataWorm[indx - 1]}</p>
+            </div>
+            <div className="col-sm-6">
+              {data.files.length !== 0 ? (
                 <img
                   className="card-img-top"
                   src={`data:${eles.contentType};base64,${bufferToBase64(
                     eles.data.data
                   )}`}
-                  alt="Card image cap"
-                  style={{ width: "230px", height: "230px" }}
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    borderRadius: "10px",
+                    //  marginTop: indx === 1 ? "20px" : "",
+                  }}
                 />
-              </div>
-              <div className="card-body pt-0">
-                <h5 className="card-title">
-                  {indx === 0 ? "Ảnh sâu hại" : indx === 1 ? "cách trị" : ""}
-                </h5>
-                <p>{indx === 0 ? data.worm.type : data.worm.theCure}</p>
-              </div>
+              ) : null}
             </div>
           </div>
         );
@@ -680,13 +742,14 @@ class ManagerCooperative extends Component {
         return (
           <div
             className="col-12 col-sm-6 col-lg-4"
-            //  style={{ marginBottom: "20px" }}
+            style={{ padding: "10px" }}
             key={inx}
           >
             <div
               className="card"
               style={{
                 border: " 1px solid #009879",
+                padding: "5px",
               }}
             >
               <div
@@ -712,24 +775,97 @@ class ManagerCooperative extends Component {
 
       return (
         <div>
-          <div className="row">{readFile}</div>
-          <div className="row" style={{ paddingTop: "20px" }}>
-            <div className="col-12" style={{ paddingBottom: "10px" }}>
-              <h4>các loại thuốc đã dùng</h4>
+          <div className="col-12 row">{ThongTinBenh}</div>
+          <div className="col-12 row">
+            <div className="col-12 ">
+              <h5>Thông tin thuốc đã dùng</h5>
             </div>
             {dataThuoc}
           </div>
         </div>
       );
     };
-    let array = ["Bón Phân", "Phun Thuốc", "Tưới Nước", "Bao Trái", "Sâu Hại"];
-    let arrayvalue = ["bonphan", "phunthuoc", "tuoinuoc", "Baotrai", "sauhai"];
+    let SelectBenhHai = (data) => {
+      console.log(data);
+      let dataThuoc = data.preparation.map((ele, inx) => {
+        return (
+          <div
+            key={inx}
+            className="col-6 col-md-5 mt-4 row "
+            style={{
+              border: "1px solid #c9d1cb",
+              borderRadius: "10px",
+              padding: "5px",
+              margin: "10px",
+            }}
+          >
+            <div className="col-sm-6">
+              <h5 className="card-title">
+                {" " + ele.thuoc + " (" + ele.loai + ")"}
+              </h5>
+              <p>
+                Dung tích:
+                {" " + ele.dungtich} ml, Số lượng: {" " + ele.soluong}, Lượng
+                nước pha chế: {" " + ele.luongnuoc} lit
+              </p>
+            </div>
+            <div className="col-sm-6">
+              {data.files.length !== 0 ? (
+                <img
+                  //className="card-img-top"
+                  src={`data:${
+                    data.files[0].contentType
+                  };base64,${bufferToBase64(data.files[0].data.data)}`}
+                  alt="Card image cap"
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    borderRadius: "10px",
+                  }}
+                />
+              ) : null}
+            </div>
+          </div>
+        );
+      });
+
+      return (
+        <div>
+          <div>
+            <h5>{data.Disease.name}</h5>
+            <b>Cách trị: </b>
+            {data.Disease.theCure}
+          </div>
+          <div>
+            <h5>Thông tin thuốc đã dùng</h5>
+          </div>
+          <div className="col-12 row">{dataThuoc}</div>
+        </div>
+      );
+    };
+    let array = [
+      "Bón Phân",
+      "Phun Thuốc",
+      "Tưới Nước",
+      "Bao Trái",
+      "Sâu Hại",
+      "Bệnh Hại",
+    ];
+    let arrayvalue = [
+      "bonphan",
+      "phunthuoc",
+      "tuoinuoc",
+      "Baotrai",
+      "sauhai",
+      "benhhai",
+    ];
     let colorCard = [
       "bg-light",
       "bg-secondary",
       "bg-primary",
       "bg-success",
       "bg-danger",
+      "bg-dark",
     ];
     const MenuDiary = array.map((element, index) => {
       return (
@@ -766,32 +902,32 @@ class ManagerCooperative extends Component {
       let dateServer = new Date(e.createAt).getTime();
 
       if (dateMYY == dateMY(dateServer) && this.state.WorkDo === e.work) {
-        let viewSelect = "";
-        let doWork = "Tưới nước";
+        // let viewSelect = "";
+        // let doWork = "Tưới nước";
 
-        if (e.work === "bonphan") {
-          doWork = "Bón phân ";
-          //   viewSelect = SelectBonphanBaoTrai(e);
-        }
+        // if (e.work === "bonphan") {
+        //   doWork = "Bón phân ";
+        //   //   viewSelect = SelectBonphanBaoTrai(e);
+        // }
 
-        if (e.work === "Baotrai") {
-          doWork = "Bao trái";
-          //   viewSelect = SelectBonphanBaoTrai(e);
-        }
+        // if (e.work === "Baotrai") {
+        //   doWork = "Bao trái";
+        //   //   viewSelect = SelectBonphanBaoTrai(e);
+        // }
 
-        if (e.work === "phunthuoc") {
-          doWork = "Phun thuốc";
-          //  viewSelect = SelectPhunthuoc(e);
-        }
+        // if (e.work === "phunthuoc") {
+        //   doWork = "Phun thuốc";
+        //   //  viewSelect = SelectPhunthuoc(e);
+        // }
 
-        if (e.work === "sauhai") {
-          doWork = "Trị sâu hại";
-          //  viewSelect = SelectSauHai(e);
-        }
+        // if (e.work === "sauhai") {
+        //   doWork = "Trị sâu hại";
+        //   //  viewSelect = SelectSauHai(e);
+        // }
 
         return (
           <div
-            className="col-12 col-sm-6 col-lg-3"
+            className="col-sm-12"
             style={{ marginBottom: "5px", textAlign: "center" }}
             key={index + 1}
           >
@@ -844,6 +980,10 @@ class ManagerCooperative extends Component {
         doWork = "Sâu hại";
         viewSelect = SelectSauHai(this.state.dataDetaiView);
       }
+      if (this.state.dataDetaiView.work === "benhhai") {
+        doWork = "Bệnh hại";
+        viewSelect = SelectBenhHai(this.state.dataDetaiView);
+      }
       return (
         <div
           className="col-12 "
@@ -859,24 +999,7 @@ class ManagerCooperative extends Component {
               "DD/MM/YYYY,h:mm a"
             )}
           </div>
-          <div
-            className="card"
-            style={{
-              border: "none",
-            }}
-          >
-            <div
-              className="card-body"
-              style={
-                {
-                  // padding: "5px",
-                  //color: "#009879",
-                }
-              }
-            >
-              <h6 className="card-title">{viewSelect}</h6>
-            </div>
-          </div>
+          <div className="row col-12">{viewSelect}</div>
         </div>
       );
     };
@@ -1265,7 +1388,8 @@ class ManagerCooperative extends Component {
                           ) : null} */}
                           <TileLayer
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            url="https://api.mapbox.com/styles/v1/huuphat/ckjkvp38x0ag419o1ii84o9ff/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaHV1cGhhdCIsImEiOiJja2prdXMzZDkwYzFmMnJwNHMyYWNlZjVsIn0.Lqm8ndLXGJBPUXKQO2kxfg"
                           />
                           {this.props.resArray.length === 0
                             ? null
@@ -1584,11 +1708,12 @@ class ManagerCooperative extends Component {
                     id="exampleModalCenter"
                     // aria-labelledby="exampleModalCenterTitle"
                     //  aria-hidden="true"
+                    style={{ paddingRight: "0px" }}
                   >
                     <div
-                      className="diary modal-dialog"
-                      role="document"
-                      // style={{ maxWidth: `1000px !important` }}
+                      className="diary modal-dialog  modal-xl"
+                      // role="document"
+                      style={{ maxWidth: "80%" }}
                     >
                       <div
                         className="modal-content"
@@ -1650,9 +1775,9 @@ class ManagerCooperative extends Component {
                               <div className="col-12 ">
                                 <hr style={{ border: "1px solid #009879" }} />
                               </div>
-                              {this.state.ShowDateDiaryMode
+                              {/* {this.state.ShowDateDiaryMode
                                 ? ShowDiaryMY
-                                : null}
+                                : null} */}
                             </div>
                             <div
                               className=" col-12 row"
@@ -1660,7 +1785,22 @@ class ManagerCooperative extends Component {
                                 paddingBottom: "17px",
                               }}
                             >
-                              <DetailDiary />
+                              <div
+                                className="col-sm-2"
+                                style={{
+                                  paddingRight: "0px",
+                                  paddingLeft: "0px",
+                                  borderRight: "1px solid",
+                                }}
+                              >
+                                {this.state.ShowDateDiaryMode
+                                  ? ShowDiaryMY
+                                  : null}
+                              </div>
+
+                              <div className="col-sm-10">
+                                <DetailDiary />
+                              </div>
                             </div>
                           </div>
                         </div>

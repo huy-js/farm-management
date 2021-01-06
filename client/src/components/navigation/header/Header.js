@@ -10,7 +10,7 @@ import {
 import { connect } from "react-redux";
 import styles from "./Header.css";
 import * as actions from "../../../trainRedux/action/authentication/actionAuth";
-
+import { Popover, OverlayTrigger } from "react-bootstrap";
 export class Header extends Component {
   render() {
     let isLogin = this.props.isLogin;
@@ -129,7 +129,15 @@ export class Header extends Component {
         <div className="container" style={{ minWidth: "100%" }}>
           <span className="navbar-brand logo">
             <ul className="nav navbar-nav ml-auto">
-              <li className="nav-item" role="presentation">
+              <li
+                className="nav-item"
+                role="presentation"
+                // style={{
+                //   fontWeight: "600",
+                //   fontSize: ".8rem",
+                //   textTransform: "uppercase",
+                // }}
+              >
                 <NavLink
                   to={"/profile"}
                   className="nav-link"
@@ -142,6 +150,27 @@ export class Header extends Component {
                     ? " (Customer)"
                     : null}
                 </NavLink>
+
+                {/* <OverlayTrigger
+                  trigger="click"
+                  key="bottom"
+                  placement="bottom"
+                  overlay={
+                    <Popover id={`popover-positioned-bottom`}>
+                      <Popover.Title as="h3">{`Popover bottom`}</Popover.Title>
+                      <Popover.Content>
+                        <strong>Holy guacamole!</strong> Check this info.
+                      </Popover.Content>
+                    </Popover>
+                  }
+                >
+                  {this.props.currentUser.username}
+                  {role === "admin"
+                    ? " (Admin)"
+                    : role === "customer"
+                    ? " (Customer)"
+                    : null}
+                </OverlayTrigger> */}
               </li>
             </ul>
           </span>

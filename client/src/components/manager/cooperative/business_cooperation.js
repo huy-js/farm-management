@@ -190,12 +190,15 @@ class BusinessCooperation extends Component {
       dataPolygonDb = this.state.dataPolygonDelete;
     }
     // let dataPolygonDb = this.state.dataAtPolysona;
-    return this.props.updateMarkerFetch(
+    this.props.updateMarkerFetch(
       this.state.arraydataPolyson,
       this.state.dataPolysons.id,
       this.props.currentUser._id,
       dataPolygonDb
     );
+    this.setState({
+      dataPolysons: null,
+    });
   };
   DeletePolygon = (e, id) => {
     console.log(id);
@@ -653,13 +656,6 @@ class BusinessCooperation extends Component {
                           ", "}
                         {this.state.dataPolysons.address}
                       </div>
-                      <div
-                        className="btn btn-outline-success  btn-sm "
-                        onClick={this.sendDataPolyson}
-                        style={{ float: "right" }}
-                      >
-                        hoàn tắc vẽ
-                      </div>
                     </div>
                   ) : null}
                 </div>
@@ -703,7 +699,8 @@ class BusinessCooperation extends Component {
                   ) : null}
                   <TileLayer
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    url="https://api.mapbox.com/styles/v1/huuphat/ckjkvp38x0ag419o1ii84o9ff/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaHV1cGhhdCIsImEiOiJja2prdXMzZDkwYzFmMnJwNHMyYWNlZjVsIn0.Lqm8ndLXGJBPUXKQO2kxfg"
                   />
                   {this.state.dataPolysons === null
                     ? this.state.markerArrayAll.map((e, index) => {
@@ -742,6 +739,15 @@ class BusinessCooperation extends Component {
                       })}
                 </Map>
               </div>
+              {this.state.dataPolysons !== null ? (
+                <div
+                  className="btn btn-outline-success  btn-sm "
+                  onClick={this.sendDataPolyson}
+                  style={{ float: "right", margin: "10px" }}
+                >
+                  hoàn tắc vẽ
+                </div>
+              ) : null}
             </div>
           </div>
           <Company />

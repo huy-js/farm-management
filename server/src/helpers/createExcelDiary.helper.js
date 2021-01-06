@@ -1,4 +1,5 @@
 var FileSaver = require("file-saver");
+var xlsx = require("xlsx");
 const fse = require("fs-extra");
 let xl = require("excel4node");
 let wb = new xl.Workbook();
@@ -16,22 +17,23 @@ let createFileExcelQrDiary = async (dataQrDiary) => {
   return new Promise(async (resolve, reject) => {
     console.log("alo create file multi");
     dataQrDiary.forEach((element, index) => {
-      let ws = wb.addWorksheet(`${"qrDiary" + "_" + index}`);
-      ws.cell(index + 1, index + 1)
-        .string(element.idFarmOwner)
-        .style(style);
+      // let ws = wb.addWorksheet(`${"qrDiary" + "_" + index}`);
+      let ws = wb.addWorksheet(`${element.nameFarmer}`);
+      // ws.cell(index + 1, index + 1)
+      //   .string(element.nameFarmer)
+      //   .style(style);
 
       let stay = 0;
       element.batchs.forEach((ele, inde) => {
         let stays = stay + inde;
         ws.cell(stays + 2, 1)
-          .string("Lo " + ele.numberbatch)
+          .string("LÔ " + ele.numberbatch)
           .style(style);
 
         ele.arrayQR.forEach((e, inx) => {
           let thua = inx + 1;
           ws.cell(stays + 2, inx + 2)
-            .string("thua " + thua)
+            .string("Thửa " + thua)
             .style(style);
           ws.cell(stays + 3, inx + 2)
             .string(e.idQR)
@@ -42,34 +44,12 @@ let createFileExcelQrDiary = async (dataQrDiary) => {
       });
     });
     //await wb.write(`./server/src/public/diaryqr/fileqrdiary.xlsx`);
-    const fileType =
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    const fileExtension = ".xlsx";
-
-    // const excelBuffer = await wb.write(
-    //   `./server/src/public/diaryqr/fileqrdiary.xlsx`
-    // );
-    //  const data = new Blob([excelBuffer], { type: fileType });
-    // FileSaver.saveAs(data, "qrDiary" + fileExtension);
-    //   await wb.write(`./server/src/public/fileqr.xlsx`);
-    await wb.write(
-      `./server/src/public/diaryqr/fileqrdiary.xlsx`,
-      function (err, stats) {
-        if (err) {
-          console.error(err);
-          reject(false);
-        } else {
-          console.log("write");
-          excelBuffer = fse.readFile(
-            "./server/src/public/diaryqr/fileqrdiary.xlsx"
-          );
-          // const data = new Blob([excelBuffer], { type: fileType });
-          // FileSaver.saveAs(data, "qrDiary" + fileExtension);
-          resolve(excelBuffer);
-        }
-      }
-    );
-    //return true;
+    await wb
+      .writeToBuffer(`./server/src/public/diaryqr/fileqrdiary.xlsx`)
+      .then(function (buffer) {
+        //const xlsxFileBuffer = Buffer.from(buffer);
+        resolve(buffer);
+      });
   });
 };
 module.exports = {

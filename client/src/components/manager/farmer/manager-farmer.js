@@ -127,7 +127,8 @@ class ManagerFarmer extends Component {
     display: "none",
     dataFarmerUpdate: "",
     deleteFarmer: null,
-    position: [10.04904, 105.785103],
+    // position: [10.04904, 105.785103],
+    position: [10.053893, 105.807237],
     dataPolysons: null,
     arraydataPolyson: [], //data moi
     dataAtPolysona: null, // lay data tu db show ra
@@ -394,12 +395,15 @@ class ManagerFarmer extends Component {
     } else {
       dataPolygonDb = this.state.dataPolygonDelete;
     }
-    return this.props.updatePolysonFetch(
+    this.props.updatePolysonFetch(
       this.state.arraydataPolyson,
       this.state.dataPolysons.id,
       this.props.currentUser._id,
       dataPolygonDb
     );
+    this.setState({
+      dataPolysons: null,
+    });
   };
   // catchPolygon = (e, id) => {
   //   console.log(id);
@@ -747,7 +751,10 @@ class ManagerFarmer extends Component {
                       <div className="btn btn-outline-success  btn-sm ">
                         <i
                           className="fa fa-times"
-                          style={{ padding: "5px", margin: "0px auto" }}
+                          style={{
+                            // padding: "5px",
+                            margin: "0px auto",
+                          }}
                           onClick={() => {
                             this.setState({
                               dataPolysons: null,
@@ -759,13 +766,6 @@ class ManagerFarmer extends Component {
                       <div className=" txt-outline-success  btn-sm ">
                         {"Nông hộ " + this.state.dataPolysons.username + ", "}
                         {this.state.dataPolysons.address}
-                      </div>
-                      <div
-                        className="btn btn-outline-success  btn-sm "
-                        onClick={this.sendDataPolyson}
-                        style={{ float: "right" }}
-                      >
-                        hoàn tắc vẽ
                       </div>
                     </div>
                   ) : null}
@@ -834,7 +834,7 @@ class ManagerFarmer extends Component {
                   ) : null}
                   <TileLayer
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    url="https://api.mapbox.com/styles/v1/huuphat/ckjkvp38x0ag419o1ii84o9ff/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaHV1cGhhdCIsImEiOiJja2prdXMzZDkwYzFmMnJwNHMyYWNlZjVsIn0.Lqm8ndLXGJBPUXKQO2kxfg"
                   />
                   {this.state.dataPolysons === null
                     ? this.props.resArray.map((e, index) => {
@@ -889,6 +889,15 @@ class ManagerFarmer extends Component {
                       })}
                 </Map>
               </div>
+              {this.state.dataPolysons !== null ? (
+                <div
+                  className="btn btn-outline-success  btn-sm "
+                  onClick={this.sendDataPolyson}
+                  style={{ float: "right", margin: "10px" }}
+                >
+                  hoàn tắc vẽ
+                </div>
+              ) : null}
             </div>
           </section>
         </main>

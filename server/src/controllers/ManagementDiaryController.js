@@ -337,8 +337,11 @@ let writeDiary = async (req, res) => {
     if (datadiary.work === "sauhai") {
       data.worm = datadiary.sau;
     }
+    if (datadiary.work === "benhhai") {
+      data.Disease = datadiary.Disease;
+    }
     console.log(data);
-    //return;
+    // return;
     let createData = await diaryModel.createNew(data);
 
     if (datadiary.title === "allbatch") {
@@ -842,6 +845,7 @@ let exportFileQrDiary = async (req, res) => {
     console.log("down load file");
     let id = req.body.id;
     console.log(id);
+
     let listFarmer = await userModel.getDataPwfarmer(id);
     //console.log(listFarmer);
     let ListQR = listFarmer.dataFarmer.map(async (e) => {
@@ -854,10 +858,24 @@ let exportFileQrDiary = async (req, res) => {
     });
     let listQrDiary = await Promise.all(ListQR);
     let qrDiaryArray = listQrDiary.filter((e) => e !== undefined);
-    console.log(qrDiaryArray);
-    let result = await createExcel.createFileExcelQrDiary(qrDiaryArray);
+    let arrayQRListDiary = qrDiaryArray.map(async (elem) => {
+      elem = elem.toObject();
+      let dataFarmer = await farmerModel.findFarmer(elem.idFarmOwner);
+      //console.log(dataFarmer.farmOwner);
+      elem.nameFarmer = dataFarmer.farmOwner;
+      return elem;
+    });
+    let dataOrLs = await Promise.all(arrayQRListDiary);
+    // console.log(qrDiaryArray);
+    let result = await createExcel.createFileExcelQrDiary(dataOrLs);
     //  console.log(result);
+    // res.set(
+    //   "Content-Type",
+    //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    // );
+    // res.set("Content-Disposition", "attachment; filename=excel-export.xlsx");
     return res.status(200).json({ dataDowload: result });
+    // return res.status(200).json({ dataDowload: dataOrLs });
   } catch (error) {
     return res.status(500).json({ message: "download  failed" });
   }

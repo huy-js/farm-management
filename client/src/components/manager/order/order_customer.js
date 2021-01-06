@@ -233,7 +233,11 @@ class OrderCustomer extends Component {
         numberQR: element.numberQR,
         memberfarmer: element.memberfarmer,
         email: element.email,
-        createQR: element.createQR ? "done" : "wait",
+        createQR: element.createQR ? (
+          <i class="fa fa-check" style={{ color: "red" }}></i>
+        ) : (
+          <i class="fa fa-spinner"></i>
+        ),
       };
       return arrayOrder.push(arr);
     });

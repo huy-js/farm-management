@@ -18,6 +18,10 @@ let diarySchema = new Schema(
     ferTiLizer: { type: String }, //phan bo'
     // wormType: { type: String },
     // theCure: { type: String },
+    Disease: {
+      name: { type: String },
+      theCure: { type: String },
+    },
     worm: {
       type: { type: String }, // ten sau
       theCure: { type: String }, // cach tri

@@ -5,6 +5,7 @@ import { token } from "../../../components/helpers/checkLogin";
 import * as actionTypes from "../actionType";
 // import * as actions from "../../action/actionAuth";
 import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 export const fetchFarmerData = (farmerData) => ({
   type: actionTypes.FETCH_FARMER_DATA,
   payload: farmerData,
@@ -340,13 +341,27 @@ export const ExportListQrDiary = (id) => {
           { id },
           {
             headers: { Authorization: `${accessToken}` },
-          }
+          },
+          { responseType: "blob" }
         )
         .then((res) => {
           console.log(res.data.dataDowload);
+          let json = JSON.stringify(res.data.dataDowload);
+          let buffer = Buffer.from(JSON.parse(json).data);
+          //  let readUTF8 = buffer.toString("utf8");
+          //  let blob = "";
+
+          FileSaver.saveAs(
+            new Blob([buffer], {
+              type:
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            }),
+            `FileQrDiary.xlsx`
+          );
           // xuat file qr danh sach nhat ky
-          exportToCSV(res.data.dataDowload, "qrDiary");
+          //  exportToCSV(res.data.dataDowload);
           // dispatch(fetchDataDiary(res.data));
+          //  convertData(res.data.dataDowload);
         })
         .catch((error) => {
           console.log(error);
@@ -357,13 +372,46 @@ export const ExportListQrDiary = (id) => {
   };
 };
 
-const fileType =
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-const fileExtension = ".xlsx";
-const exportToCSV = (csvData, fileName) => {
-  //const ws = XLSX.utils.json_to_sheet(csvData);
-  // const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-  // const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-  const data = new Blob([csvData], { type: fileType });
-  FileSaver.saveAs(data, fileName + fileExtension);
-};
+// const fileType =
+//   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+// const fileExtension = ".xlsx";
+// const exportToCSV = (csvData) => {
+//   let dataDone = "";
+//   let check = false;
+//   //const ws = XLSX.utils.json_to_sheet(csvData);
+//   csvData.forEach((e, index) => {
+//     let Max = e.batchs.lenght;
+//     var ws = XLSX.utils.json_to_sheet(
+//       [{ S: 1, h: 2, e: 3, e_1: 4, t: 5, J: 6, S_1: 7 }],
+//       { header: ["S", "h", "e", "e_1", "t", "J", "S_1"] }
+//     );
+//     const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+//     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+//     const data = new Blob([excelBuffer], { type: fileType });
+//     if (index + 1 === Max) {
+//       check = true;
+//       dataDone = data;
+//     }
+//   });
+//   // var ws = XLSX.utils.json_to_sheet(
+//   //   [{ S: 1, h: 2, e: 3, e_1: 4, t: 5, J: 6, S_1: 7 }],
+//   //   { header: ["S", "h", "e", "e_1", "t", "J", "S_1"] }
+//   // );
+
+//   // const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+//   // const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+//   // const data = new Blob([excelBuffer], { type: fileType });
+//   if (check) {
+//     FileSaver.saveAs(dataDone, "dataQrDiarys" + fileExtension);
+//   }
+// };
+// const convertData = (dataQr) => {
+//   let newArray = dataQr.map((e) => {
+//     return {
+//       nameFarmer: e.nameFarmer,
+//       batchs: e.batchs,
+//     };
+//   });
+//   console.log(newArray);
+//   exportToCSV(dataQr);
+// };
