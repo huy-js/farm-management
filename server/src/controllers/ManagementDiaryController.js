@@ -227,14 +227,15 @@ let deleteStump = async (req, res) => {
 };
 let conFromMap = async (req, res) => {
   try {
-    //console.log(req.body.data);
+    console.log("tạo Qr diary");
     let idfarmer = req.body.data.idFarmer;
     let dataBatch = await batchModel.findBatchFarmer(req.body.data.idFarmer);
     //console.log(dataBatch);
-    let number = 0;
+    //let number = 0;
     // array = [];
+    let totalbatchs = dataBatch.length;
     let settingvalue = dataBatch.map(async (e, index) => {
-      number = number + 1;
+      //number = number + 1;
       let settingstump = e.stumps.map(async (ele) => {
         let data = {
           idQR: await qrcode.toDataURL(
@@ -245,21 +246,26 @@ let conFromMap = async (req, res) => {
       });
       let deCodeQR = await Promise.all(settingstump);
       let result = {
-        idFarmOwner: idfarmer,
-        totalbatch: number,
-        batchs: {
-          numberbatch: index + 1,
-          arrayQR: deCodeQR,
-        },
+        //idFarmOwner: idfarmer,
+        // totalbatch: number,
+        //  batchs: {
+        numberbatch: index + 1,
+        arrayQR: deCodeQR,
+        //},
       };
       return result;
     });
     let createDataMap = await Promise.all(settingvalue);
-    // console.log(settingvalue);
+    let dataCreate = {
+      idFarmOwner: idfarmer,
+      totalbatch: totalbatchs,
+      batchs: createDataMap,
+    };
+    console.log(dataCreate);
     // settingvalue.forEach((element) => {
     //   console.log(element.batchs);
     // });
-    await qrDiaryModel.createNew(createDataMap);
+    await qrDiaryModel.createNew(dataCreate);
 
     return res.status(200).json({ message: "success" });
   } catch (error) {
@@ -866,7 +872,6 @@ let exportFileQrDiary = async (req, res) => {
       return elem;
     });
     let dataOrLs = await Promise.all(arrayQRListDiary);
-    // console.log(qrDiaryArray);
     let result = await createExcel.createFileExcelQrDiary(dataOrLs);
     //  console.log(result);
     // res.set(

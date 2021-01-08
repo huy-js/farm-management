@@ -350,13 +350,13 @@ export const ExportListQrDiary = (id) => {
           let buffer = Buffer.from(JSON.parse(json).data);
           //  let readUTF8 = buffer.toString("utf8");
           //  let blob = "";
-
+          let Date = new Date().getTime();
           FileSaver.saveAs(
             new Blob([buffer], {
               type:
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             }),
-            `FileQrDiary.xlsx`
+            `FileQrDiary_${Date}.xlsx`
           );
           // xuat file qr danh sach nhat ky
           //  exportToCSV(res.data.dataDowload);

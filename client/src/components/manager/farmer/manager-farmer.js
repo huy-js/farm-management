@@ -702,7 +702,7 @@ class ManagerFarmer extends Component {
                       columns={columns}
                       // loading={this.state.loading}
                       pagination={paginationFactory({
-                        sizePerPage: 2,
+                        sizePerPage: 5,
                         hideSizePerPage: true,
                         hidePageListOnlyOnePage: true,
                       })}

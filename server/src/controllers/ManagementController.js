@@ -11,7 +11,7 @@ const fse = require("fs-extra");
 const jwtHelper = require("../helpers/jwt.helper");
 
 const generator = require("generate-password");
-
+// import uuidv4 from "uuid/v4";// varifytoken
 const bcrypt = require("bcrypt");
 const saltRounds = 7;
 
@@ -58,24 +58,27 @@ let updateActiveUser = async (req, res) => {
 
 let createPwAndSendMail = async (req, res) => {
   try {
-    // console.log(req.body.data);
+    console.log(req.body.data);
     if (!(await userModel.checkAdmin(req.body.data.iduser)))
       return res.status(500).json({ message: "ban khong phai admin" });
     let dataUser = await userModel.findActiveById(req.body.data.id);
-    //  console.log(dataUser);
+    console.log(dataUser);
     if (dataUser === null)
       return res.status(500).json({ message: "user undefinded" });
 
-    let ranDomPassWord = generator.generate({
-      length: 5,
-      numbers: true,
-    });
+    // let ranDomPassWord = generator.generate({
+    //   length: 5,
+    //   numbers: true,
+    // });
     //console.log(ranDomPassWord);
-    let salt = bcrypt.genSaltSync(saltRounds); // tao muoi bam :))
-    let password = bcrypt.hashSync(ranDomPassWord, salt);
-    //console.log(password)
-    await userModel.createPassward(dataUser._id, password);
-    sendMail(dataUser.email, ranDomPassWord)
+    // let salt = bcrypt.genSaltSync(saltRounds); // tao muoi bam :))
+    // let password = bcrypt.hashSync(ranDomPassWord, salt);
+    // //console.log(password)
+    // await userModel.createPassward(dataUser._id, password);
+    let linkVerify = `${req.protocol}://${req.get("host")}/verify/${
+      dataUser.verifyToken
+    }`;
+    sendMail(dataUser.email, linkVerify)
       .then((success) => {
         return success;
       })
@@ -85,13 +88,12 @@ let createPwAndSendMail = async (req, res) => {
         await userModel.removeById(dataUser._id);
         // xoa htx
         await coopertationModel.removeById(dataUser._id);
-
         return error;
       });
 
     return res
       .status(200)
-      .json({ message: "success update", passwork: ranDomPassWord });
+      .json({ message: "success update", passwork: "ranDomPassWord" });
   } catch (error) {
     return res.status(500).json({ message: "update failed" });
   }
@@ -103,7 +105,6 @@ let createFarmer = async (req, res) => {
     let data = req.body.dataFamer;
     let idUser = data.idUser;
     let idCoopera = await coopertationModel.findIdCoopera(data.idUser);
-
     let getPassWord = await randomPW.createPassWord(data);
     let salt = bcrypt.genSaltSync(saltRounds); // tao muoi bam :))
     let password = bcrypt.hashSync(getPassWord, salt);
@@ -360,8 +361,8 @@ let newCreateQR = async (req, res) => {
           let data = {
             idCoopare: idCoopare._id,
             idFarmer: e.idFarmer,
-            code: ranDomPassWord,
-            passTable: passTableQR,
+            code: ranDomPassWord + dataOrder._id, // cong them idorder
+            passTable: passTableQR + dataOrder._id, // cong them idorder
           };
           arrayQR.push(data);
         }
@@ -563,6 +564,7 @@ let searchProductQR = async (req, res) => {
 // };
 let updateQrSold = async (req, res) => {
   try {
+    // console.log(req.body);
     let dataQR = req.body.data;
     console.log("updateQRarray");
 
@@ -574,7 +576,7 @@ let updateQrSold = async (req, res) => {
       }
     });
     let arrayDecoded = await Promise.all(dataArray);
-    //console.log(arrayDecoded);
+    console.log(arrayDecoded);
     let arrayUpdate = [];
     for (let i = 0; i < arrayDecoded.length; i++) {
       let check = true;

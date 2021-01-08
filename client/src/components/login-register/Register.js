@@ -54,21 +54,6 @@ class Register extends Component {
         valid: false,
         touched: false,
       },
-      // numberQR: {
-      //   elementType: "input",
-      //   elementConfig: {
-      //     type: "number",
-      //     placeholder: "Qr định đăng ký",
-      //     min: "0",
-      //   },
-      //   value: "",
-      //   validation: {
-      //     required: false,
-      //     minLength: 3,
-      //   },
-      //   valid: false,
-      //   touched: false,
-      // },
       username: {
         elementType: "input",
         elementConfig: {
@@ -97,23 +82,39 @@ class Register extends Component {
         valid: false,
         touched: false,
       },
-      phonenumber: {
+      password: {
         elementType: "input",
         elementConfig: {
-          type: "number",
-          placeholder: "Số điện thoại người đăng ký",
-          min: "0",
+          type: "password",
+          placeholder: "Nhập mật khẩu",
+          // min: "0",
         },
         value: "",
         validation: {
           required: false,
-          minLength: 3,
+          minLength: 5,
+        },
+        valid: false,
+        touched: false,
+      },
+      repassword: {
+        elementType: "input",
+        elementConfig: {
+          type: "password",
+          placeholder: "Nhập lại mật khẩu",
+          // min: "0",
+        },
+        value: "",
+        validation: {
+          required: false,
+          minLength: 5,
         },
         valid: false,
         touched: false,
       },
     },
     // isSignup: true,
+    alertPw: "",
   };
   // componentDidMount() {
   //   this.props.error = ''
@@ -128,7 +129,7 @@ class Register extends Component {
       // numberQR: this.state.controls.numberQR.value,
       username: this.state.controls.username.value,
       email: this.state.controls.email.value,
-      phonenumber: this.state.controls.phonenumber.value,
+      password: this.state.controls.password.value,
     };
     let checkVali = [
       this.state.controls.nameOfCooperative.valid,
@@ -137,8 +138,13 @@ class Register extends Component {
       // this.state.controls.numberQR.valid,
       this.state.controls.username.valid,
       this.state.controls.email.valid,
-      this.state.controls.phonenumber.valid,
+      this.state.controls.password.valid,
     ];
+    if (
+      this.state.controls.password.value !==
+      this.state.controls.repassword.value
+    )
+      return this.setState({ alertPw: "Mật khẩu không khớp" });
     this.props.userRegisterFetch(data, checkVali);
     //return history.goBack();
   };
@@ -156,7 +162,7 @@ class Register extends Component {
         touched: true,
       },
     };
-    this.setState({ controls: updatedControls });
+    this.setState({ controls: updatedControls, alertPw: "" });
   };
 
   render() {
@@ -190,7 +196,9 @@ class Register extends Component {
     if (this.props.error) {
       errorMessage = <p className={classes.error}>{this.props.error}</p>;
     }
-
+    if (this.state.alertPw !== "") {
+      errorMessage = <p className={classes.error}>{this.state.alertPw}</p>;
+    }
     let authRedirect = null;
     if (this.props.error === "ok") {
       alert("Thông tin đăng ký đã được gửi đi hãy đợi nhận mail từ chúng tối");
@@ -204,7 +212,7 @@ class Register extends Component {
           style={{ minHeight: "120vh" }}
         >
           <div className="container">
-            <div className="block-heading" style={{ paddingTop: "30px" }}>
+            <div className="block-heading" style={{ paddingTop: "20px" }}>
               <h2 className={styles.tieuDe}>Đăng ký tài khoản giao dịch</h2>
             </div>
             <div>
@@ -213,7 +221,7 @@ class Register extends Component {
               <form
                 onSubmit={this.handleSubmit}
                 style={{
-                  paddingBottom: "60px",
+                  paddingBottom: "30px",
                   borderTopColor: "#00483E",
                   borderRadius: "30px",
                 }}

@@ -14,6 +14,7 @@ let initAPIs = (app) => {
   //all
   router.post("/login", AuthController.login);
   router.post("/register", AuthController.register);
+  router.get("/verify/:token", AuthController.verify);
   // diary farmer
   router.post("/loginfarmer", AuthController.loginFarmer);
   router.get("/getMap/:idfarmer", ManagementDiaryController.getMapFarmer);

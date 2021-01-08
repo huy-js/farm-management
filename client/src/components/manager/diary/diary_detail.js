@@ -480,12 +480,12 @@ class DiaryDetail extends Component {
                 <img
                   //className="card-img-top"
                   src={`data:${
-                    data.files[0].contentType
-                  };base64,${bufferToBase64(data.files[0].data.data)}`}
+                    data.files[inx].contentType
+                  };base64,${bufferToBase64(data.files[inx].data.data)}`}
                   alt="Card image cap"
                   style={{
                     width: "150px",
-                    height: "150px",
+                    height: "180px",
                     borderRadius: "10px",
                   }}
                 />

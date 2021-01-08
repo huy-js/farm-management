@@ -8,7 +8,6 @@
   padding: 10px 10px;
   margin-top: 10px;
   font-weight: bold;
-  outline: "none";
 }
 
 /* .Button:first-of-type {
@@ -16,7 +15,7 @@
   padding-left: 0;
 } */
 
-.Button:hover{
+.Button:hover {
   color: #fff;
   background-color: #009879;
 }
@@ -28,7 +27,6 @@
 
 .Success {
   /* color: #5C9210; */
-
   color: #00483e;
 }
 

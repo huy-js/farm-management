@@ -7,7 +7,7 @@ const userSchema = new Schema(
     username: { type: String },
     email: { type: String },
     password: { type: String, default: "" },
-    phonenumber: { type: String, default: "" },
+    verifyToken: { type: String },
     // profile: {
     //   fullName: { type: String, default: "" },
     //   avatar: { type: String, default: "" },
@@ -17,13 +17,13 @@ const userSchema = new Schema(
     dataFarmer: [
       {
         idFarmer: { type: String },
-        username: { type: String },
+        keyLogin: { type: String },
         password: { type: String },
       },
     ],
     role: { type: String, default: "customer" },
     deletedAt: { type: Boolean, default: false },
-    isActive: { type: Boolean, default: true },
+    isActive: { type: Boolean, default: false },
   },
   {
     timestamps: {
@@ -35,6 +35,15 @@ const userSchema = new Schema(
 userSchema.statics = {
   createNew(item) {
     return this.create(item);
+  },
+  findByToken(token) {
+    return this.findOne({ verifyToken: token }, { password: 0 }).exec();
+  },
+  verify(token) {
+    return this.findOneAndUpdate(
+      { verifyToken: token },
+      { isActive: true, verifyToken: null }
+    ).exec();
   },
   checkAdmin(id) {
     return this.findOne({ $and: [{ _id: id }, { role: "admin" }] }).exec();
@@ -49,7 +58,7 @@ userSchema.statics = {
     return this.find({ role: "customer" }).exec();
   },
   findActiveById(id) {
-    return this.findById(id, { isActive: 1, email: 1 }).exec();
+    return this.findById(id, { isActive: 1, email: 1, verifyToken: 1 }).exec();
   },
   updateActiveUser(id, defaultActive) {
     return this.findByIdAndUpdate(id, { isActive: !defaultActive }).exec();
@@ -67,7 +76,7 @@ userSchema.statics = {
           $each: [
             {
               idFarmer: data.idFarmer,
-              username: data.username,
+              keyLogin: data.username,
               password: data.password,
             },
           ],
@@ -77,11 +86,11 @@ userSchema.statics = {
   },
   updateDatafarmer(iduser, namefarmer, idfarmer, lastIdUsername) {
     return this.findOneAndUpdate(
-      { $and: [{ _id: iduser }, { "dataFarmer.username": namefarmer }] },
+      { $and: [{ _id: iduser }, { "dataFarmer.keyLogin": namefarmer }] },
       {
         $set: {
           "dataFarmer.$.idFarmer": idfarmer,
-          "dataFarmer.$.username": lastIdUsername,
+          "dataFarmer.$.keyLogin": lastIdUsername,
         },
       }
     ).exec();

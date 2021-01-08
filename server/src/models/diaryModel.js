@@ -3,7 +3,7 @@ let Schema = mongoose.Schema;
 let diarySchema = new Schema(
   {
     work: { type: String }, //công việc
-    detail: { type: String }, // nôi dung công việc
+    //detail: { type: String }, // nôi dung công việc
     idFarmer: { type: String }, // chủ lô
     // danh cho phun thuoc
     preparation: [

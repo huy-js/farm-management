@@ -81,15 +81,15 @@ class ListUser extends Component {
         headerStyle: styleHeader,
         style: styleRow,
       },
-      {
-        dataField: "phonenumber",
-        text: "số điện thoại",
-        headerStyle: styleHeader,
-        style: styleRow,
-      },
+      // {
+      //   dataField: "phonenumber",
+      //   text: "số điện thoại",
+      //   headerStyle: styleHeader,
+      //   style: styleRow,
+      // },
       {
         dataField: "password",
-        text: "Mật khẩu",
+        text: "Xác nhận tài khoản",
         headerStyle: styleHeader,
         style: styleRow,
       },
@@ -114,18 +114,25 @@ class ListUser extends Component {
         createAt: moment(element.createAt).format("DD/MM/YYYY"),
         username: element.username,
         email: element.email,
-        phonenumber: element.phonenumber,
-        password: element.password ? (
-          <i>********</i>
-        ) : (
-          <i
-            className="fa fa-plus-circle"
-            data-toggle="modal"
-            data-target="#showModalCreate"
-            style={{ color: "red" }}
-            onClick={(e) => this.createPwUser(element._id, e)}
-          ></i>
-        ),
+        // phonenumber: element.phonenumber,
+        password:
+          element.verifyToken === null ? (
+            <i
+              data-toggle="modal"
+              data-target="#showModalCreate"
+              className="fa fa-check"
+              style={{ color: "#009879" }}
+              // onClick={(e) => this.createPwUser(element._id, e)}
+            ></i>
+          ) : (
+            <i
+              class="fa fa-envelope"
+              data-toggle="modal"
+              data-target="#showModalCreate"
+              style={{ color: "#009879" }}
+              onClick={(e) => this.createPwUser(element._id, e)}
+            ></i>
+          ),
         isActive: element.isActive ? (
           <i
             className="fa fa-check"
@@ -199,7 +206,7 @@ class ListUser extends Component {
             <div className="container">
               <div className="block-heading" style={{ marginTop: "50px" }}>
                 <h2 className="text-info" className={styles.tieuDe}>
-                  Danh sach người dùng đại diện hợp tác xã
+                  Danh Sách Người Dùng Đại Diện Hợp Tác Xã
                 </h2>
               </div>
               <div className="container-body">

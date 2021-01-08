@@ -198,7 +198,7 @@ class ManagerOrder extends Component {
             <div className="container">
               <div className="block-heading" style={{ marginTop: "50px" }}>
                 <h2 className="text-info" className={styles.tieuDe}>
-                  Danh sách đặt Qr
+                  Danh Sách Đặt Qr
                 </h2>
               </div>
               <div className="container-body text-center">

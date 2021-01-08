@@ -1159,7 +1159,7 @@ class ManagerCooperative extends Component {
           className="block-heading text-center"
           style={{ marginTop: "20px", marginRight: "0px" }}
         >
-          <h2 className={styles.tieuDe}>Quản lý hợp tác xã</h2>
+          <h2 className={styles.tieuDe}>Quản Lý Hợp Tác Xã</h2>
         </div>
 
         <section
@@ -1185,7 +1185,7 @@ class ManagerCooperative extends Component {
                           textAlign: "center",
                         }}
                       >
-                        Danh sách Htx
+                        Danh Sách HTX
                       </p>
                     </div>
                     <div
@@ -1255,7 +1255,7 @@ class ManagerCooperative extends Component {
                       <span className="m-0 ">
                         <b style={{ color: "#009879" }}>
                           {" "}
-                          Mã số thuế {this.state.dataFarmerss.taxCode}
+                          Mã Số Thuế {this.state.dataFarmerss.taxCode}
                         </b>
                       </span>
                     </div>

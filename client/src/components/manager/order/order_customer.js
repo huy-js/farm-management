@@ -289,7 +289,7 @@ class OrderCustomer extends Component {
               className="block-heading text-center"
               style={{ paddingTop: "50px" }}
             >
-              <h2 className={styles.tieuDe}>Giao dịch QR Code</h2>
+              <h2 className={styles.tieuDe}>Giao Dịch QR Code</h2>
             </div>
             {/* <div>
               <div className="card shadow">
@@ -393,7 +393,7 @@ class OrderCustomer extends Component {
             >
               <div class="col-sm-4">
                 <div>
-                  <h3>Chọn Qr cho nông hộ</h3>
+                  <h3>Chọn Qr Cho Nông Hộ</h3>
                 </div>
                 <table
                   className={styles.content_table}
@@ -438,10 +438,10 @@ class OrderCustomer extends Component {
                     paddingBottom: "10px",
                   }}
                 >
-                  <h3>Thông tin đặt Qr</h3>
+                  <h3>Thông Tin Đặt Qr</h3>
                 </div>
                 <div
-                  className="card shadow"
+                  className="card "
                   style={{ padding: "20px", margin: "6px" }}
                 >
                   <div
@@ -467,7 +467,7 @@ class OrderCustomer extends Component {
                       <span style={{ float: "right" }}> {tongQR} </span>
                     </div>
                     <div className="col-sm-5">
-                      <b>Địa chỉ Mail nhận</b>
+                      <b>Địa chỉ mail nhận</b>
                       <input
                         type="email"
                         value={this.state.isMail}
@@ -493,7 +493,7 @@ class OrderCustomer extends Component {
                     padding: "5px",
                   }}
                 >
-                  <h3>Lịch sử giao dịch</h3>
+                  <h3>Lịch Sử Giao Dịch</h3>
                 </div>
                 <div className="shadow">
                   <BootstrapTable

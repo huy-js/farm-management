@@ -16,6 +16,7 @@ var style = wb.createStyle({
 let createFileExcelQrDiary = async (dataQrDiary) => {
   return new Promise(async (resolve, reject) => {
     console.log("alo create file multi");
+    console.log(dataQrDiary);
     dataQrDiary.forEach((element, index) => {
       // let ws = wb.addWorksheet(`${"qrDiary" + "_" + index}`);
       let ws = wb.addWorksheet(`${element.nameFarmer}`);
@@ -43,13 +44,46 @@ let createFileExcelQrDiary = async (dataQrDiary) => {
         stay++;
       });
     });
-    //await wb.write(`./server/src/public/diaryqr/fileqrdiary.xlsx`);
+
+    // for (let i = 0; i < dataQrDiary.length; i++) {
+    //   let ws = wb.addWorksheet(`${dataQrDiary[i].nameFarmer}`);
+    //   let stays = 0;
+    //   for (let j = 0; j < dataQrDiary[i].batchs.length; j++) {
+    //     let numberlo = +dataQrDiary[i].batchs[j].numberbatch + 1;
+    //     ws.cell(stays + 2, 1)
+    //       .string("LÔ " + numberlo)
+    //       .style(style);
+    //     for (let k = 0; k < dataQrDiary[i].batchs[j].arrayQR.length; k++) {
+    //       let thua = k + 1;
+    //       ws.cell(stays + 2, k + 2)
+    //         .string("Thửa " + thua)
+    //         .style(style);
+    //       ws.cell(stays + 3, k + 2)
+    //         .string(dataQrDiary[i].batchs[j].arrayQR[k].idQR)
+    //         .style(style);
+    //     }
+    //     stays++;
+    //   }
+    // }
+
+    await wb.write(`./server/src/public/diaryqr/fileqrdiary.xlsx`);
     await wb
       .writeToBuffer(`./server/src/public/diaryqr/fileqrdiary.xlsx`)
       .then(function (buffer) {
         //const xlsxFileBuffer = Buffer.from(buffer);
         resolve(buffer);
       });
+    // wb.write(
+    //   "./server/src/public/diaryqr/fileqrdiary.xlsx",
+    //   function (err, stats) {
+    //     if (err) {
+    //       console.error(err);
+    //     } else {
+    //       // console.log(stats); // Prints out an instance of a node.js fs.Stats object
+    //       resolve(true);
+    //     }
+    //   }
+    // );
   });
 };
 module.exports = {

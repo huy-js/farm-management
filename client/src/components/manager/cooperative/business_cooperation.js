@@ -575,7 +575,7 @@ class BusinessCooperation extends Component {
                 data-toggle="modal"
                 data-target="#showModalCreate"
               ></i>
-              <h2 className={styles.tieuDe}>Thông tin nhà phân phối</h2>
+              <h2 className={styles.tieuDe}>Thông Tin Nhà Phân Phối</h2>
             </div>
             <div className="container-body">
               {this.props.dataCompany.length === 0 ? (

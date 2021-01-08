@@ -7,6 +7,7 @@ import { checkValidity } from "../helpers/validation/checkValidation";
 import { updataPassWordFetch } from "../../trainRedux/action/authentication/actionAuth";
 import "./profile.css";
 import { showCoopareFetch } from "../../trainRedux/action/order/actionOrder";
+import moment from "moment";
 class Profile extends Component {
   state = {
     controls: {
@@ -107,7 +108,7 @@ class Profile extends Component {
   };
 
   render() {
-    console.log(this.props.dataCooper);
+    console.log(this.props.currentUser);
     let dataProfilecurren = this.props.currentUser;
     const formElementsArray = [];
     for (let key in this.state.controls) {
@@ -189,19 +190,22 @@ class Profile extends Component {
                     <div className="row col-12" style={{ padding: "0px" }}>
                       <div className="col-5" style={{ float: "left" }}>
                         {" "}
-                        <b>Địa chỉ mail:</b>
+                        <b>Vị trí :</b>
                       </div>
-                      <div className="col-7">{dataProfilecurren.email}</div>
+                      <div className="col-7">
+                        {dataProfilecurren.role === "admin"
+                          ? "Quản trị viên"
+                          : "Khách hàng"}
+                      </div>
                     </div>
                     <div className="row col-12" style={{ padding: "0px" }}>
                       <div className="col-5" style={{ float: "left" }}>
                         {" "}
-                        <b>Số điện thoại :</b>
+                        <b>Địa chỉ mail:</b>
                       </div>
-                      <div className="col-7">
-                        {dataProfilecurren.phonenumber}
-                      </div>
+                      <div className="col-7">{dataProfilecurren.email}</div>
                     </div>
+
                     {this.props.dataCooper !== null ? (
                       <div>
                         <div className="row col-12" style={{ padding: "0px" }}>

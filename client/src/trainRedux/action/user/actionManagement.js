@@ -107,7 +107,7 @@ export const getListPassWordFarmer = (listPWFarmer, listFarmer) => {
         let valueconvert = {
           id: ele.idFarmer,
           tennongdan: e.farmOwner,
-          username: ele.username,
+          keyLogin: ele.keyLogin,
           password: ele.password,
         };
         array.push(valueconvert);
