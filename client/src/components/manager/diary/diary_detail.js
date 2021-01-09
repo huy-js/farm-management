@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 //import ReactApexChart from "apexcharts";
 import ReactApexChart from "react-apexcharts";
-
+import classes from "../../helpers/Auth.module.css";
 import { connect } from "react-redux";
 import * as actions from "../../../trainRedux/action/diary/actionDiaryMap";
 import Select from "react-select";
@@ -171,6 +171,8 @@ class DiaryDetail extends Component {
     WorkDo: "",
     colorDateDiary: "",
     ShowDateDiaryMode: false,
+    //dataEditUpdate: "",
+    notifiUpdate: "",
   };
   HanddleDateSelected = (date, value) => {
     console.log(value);
@@ -223,29 +225,63 @@ class DiaryDetail extends Component {
   handleChangeMap = (event) => {
     console.log(event.target.name);
     let name = event.target.name;
-    this.setState({ [name]: event.target.value });
+    this.setState({ [name]: event.target.value, notifiUpdate: "" });
     // console.log(`Option selected:`, selectedOption);
   };
+  // SetDataUpdateMap = (data) => {
+  //   console.log(data);
+  //   this.setState({
+  //     dataEditUpdate: data,
+  //   });
+  // };
   handleSubmit = (event) => {
     event.preventDefault();
-    //console.log(this.state);
+    let dataStump = "";
+    this.props.resBatchArray.map((e, i) => {
+      if (e.numberbatch === this.state.selectedOption) {
+        e.stumps.map((ele, index) => {
+          if (ele.numberStumps === this.state.selectedStumps) {
+            dataStump = ele;
+          }
+        });
+      }
+    });
+    //console.log(dataStump);
+    let row = this.state.row !== null ? this.state.row : dataStump.row;
+    let col = this.state.col !== null ? this.state.col : dataStump.col;
+    let total =
+      this.state.stumpTotalTree !== null
+        ? this.state.stumpTotalTree
+        : dataStump.totalTree;
+    let checkTotal = +row * +col;
     if (
       this.state.stumpTotalTree !== null ||
       this.state.row !== null ||
       this.state.col !== null
     ) {
-      let data = {
-        iduser: this.props.currentUser._id,
-        idFarmer: this.state.idFarmer,
-        selectedOption: this.state.selectedOption,
-        selectedStumps: this.state.selectedStumps,
-        stumpTotalTree: this.state.stumpTotalTree,
-        row: this.state.row,
-        col: this.state.col,
-      };
-      this.props.updateMapBatch(data);
+      if (checkTotal >= +total) {
+        let data = {
+          iduser: this.props.currentUser._id,
+          idFarmer: this.state.idFarmer,
+          selectedOption: this.state.selectedOption,
+          selectedStumps: this.state.selectedStumps,
+          stumpTotalTree: +total,
+          row: +row,
+          col: +col,
+        };
+        //console.log(data);
+        this.props.updateMapBatch(data);
+        this.buttonElement.click();
+      } else {
+        this.setState({
+          notifiUpdate: "vị trí hàng cột cần tương ứng với số cây",
+        });
+      }
+    } else {
+      this.setState({
+        notifiUpdate: "bạn chưa thay đổi thông tin nào cả",
+      });
     }
-    this.buttonElement.click();
   };
   resetValue = (event) => {
     event.preventDefault();
@@ -265,18 +301,44 @@ class DiaryDetail extends Component {
     event.preventDefault();
     //console.log(this.state);
     if (this.state.stumpTotalTree !== null) {
-      let data = {
-        iduser: this.props.currentUser._id,
-        idFarmer: this.state.idFarmer,
-        selectedOption: this.state.selectedOption,
-        // selectedStumps: this.state.selectedStumps,
-        stumpTotalTree: this.state.stumpTotalTree,
-        row: this.state.row !== null ? this.state.row : 10,
-        col: this.state.col !== null ? this.state.col : 5,
-      };
-      this.props.updateBatchCountStump(data);
+      let row = this.state.row !== null ? this.state.row : 10;
+      let col = this.state.col !== null ? this.state.col : 5;
+      let checkTotal = +row * +col;
+      if (checkTotal >= +this.state.stumpTotalTree) {
+        console.log("So cay tao " + checkTotal);
+        let data = {
+          iduser: this.props.currentUser._id,
+          idFarmer: this.state.idFarmer,
+          selectedOption: this.state.selectedOption,
+          // selectedStumps: this.state.selectedStumps,
+          stumpTotalTree: this.state.stumpTotalTree,
+          row: this.state.row !== null ? this.state.row : 10,
+          col: this.state.col !== null ? this.state.col : 5,
+        };
+        this.props.updateBatchCountStump(data);
+        this.buttonElement.click();
+      } else {
+        this.setState({
+          notifiUpdate: "vị trí hàng cột cần tương ứng với số cây",
+        });
+      }
+    } else {
+      this.setState({
+        notifiUpdate: "bạn chưa nhập Số cây trồng",
+      });
     }
-    this.buttonElement.click();
+    // if (this.state.stumpTotalTree !== null) {
+    //   let data = {
+    //     iduser: this.props.currentUser._id,
+    //     idFarmer: this.state.idFarmer,
+    //     selectedOption: this.state.selectedOption,
+    //     // selectedStumps: this.state.selectedStumps,
+    //     stumpTotalTree: this.state.stumpTotalTree,
+    //     row: this.state.row !== null ? this.state.row : 10,
+    //     col: this.state.col !== null ? this.state.col : 5,
+    //   };
+    //   //this.props.updateBatchCountStump(data);
+    // }
   };
 
   CountBatch = (event) => {
@@ -348,7 +410,12 @@ class DiaryDetail extends Component {
     });
   };
   render() {
-    console.log(this.props.resBatchArray);
+    //  console.log(this.props.resBatchArray);
+    let errorMessage = null;
+
+    if (this.state.notifiUpdate !== " ") {
+      errorMessage = <p className={classes.error}>{this.state.notifiUpdate}</p>;
+    }
     // {
     //   this.props.changeFarmer ? this.screenMap() : null;
     // }
@@ -964,12 +1031,15 @@ class DiaryDetail extends Component {
         });
       }
     });
-
+    // const getDataStump = (data) => {
+    //   return this.SetDataUpdateMap(data);
+    // };
     let showdetail = this.props.resBatchArray.map((e, i) => {
       if (e.numberbatch === this.state.selectedOption) {
         let lengthstump = e.stumps.length;
         let data = e.stumps.map((ele, index) => {
           if (ele.numberStumps === this.state.selectedStumps) {
+            //getDataStump(ele);
             return (
               <div key={index + 1} style={{ minHeight: "300px" }}>
                 {/* <div
@@ -1008,7 +1078,7 @@ class DiaryDetail extends Component {
                         <input
                           type="Number"
                           defaultValue={ele.totalTree}
-                          min="0"
+                          min="1"
                           max="50"
                           name="stumpTotalTree"
                           onChange={this.handleChangeMap}
@@ -1024,8 +1094,8 @@ class DiaryDetail extends Component {
                         <input
                           type="Number"
                           defaultValue={ele.row}
-                          min="0"
-                          max="50"
+                          min="1"
+                          max="10"
                           name="row"
                           onChange={this.handleChangeMap}
                           style={{ float: "right" }}
@@ -1040,8 +1110,8 @@ class DiaryDetail extends Component {
                         <input
                           type="Number"
                           defaultValue={ele.col}
-                          min="0"
-                          max="50"
+                          min="1"
+                          max="10"
                           name="col"
                           onChange={this.handleChangeMap}
                           style={{ float: "right" }}
@@ -1141,7 +1211,7 @@ class DiaryDetail extends Component {
                   <input
                     type="Number"
                     //defaultValue={ele.totalTree}
-                    min="0"
+                    min="1"
                     max="50"
                     name="stumpTotalTree"
                     style={{ float: "right" }}
@@ -1157,7 +1227,8 @@ class DiaryDetail extends Component {
                   <input
                     type="Number"
                     defaultValue={10}
-                    min="0"
+                    min="1"
+                    max="10"
                     name="row"
                     style={{ float: "right" }}
                     onChange={this.handleChangeMap}
@@ -1172,7 +1243,8 @@ class DiaryDetail extends Component {
                   <input
                     type="Number"
                     defaultValue={5}
-                    min="0"
+                    min="1"
+                    max="10"
                     name="col"
                     style={{ float: "right" }}
                     onChange={this.handleChangeMap}
@@ -1585,6 +1657,7 @@ class DiaryDetail extends Component {
                 </button>
               </div>
               <div className="modal-body">
+                <div>{errorMessage}</div>
                 <label>Chọn lô</label>
                 <Select
                   options={options}
